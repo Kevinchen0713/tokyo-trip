@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Tokyo Trip Planner</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tokyo Trip">
+<meta name="theme-color" content="#1A1B2E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A1B2E;
+    --ink-soft:#2A2C45;
+    --paper:#F5F1E8;
+    --paper-dim:#EAE4D6;
+    --vermilion:#E8543E;
+    --gold:#E3B23C;
+    --teal:#2DD4C4;
+    --grey:#8B8A9E;
+    --line: rgba(245,241,232,0.14);
+    --line-dark: rgba(26,27,46,0.12);
+  }
+  *{box-sizing:border-box;}
+  html{ background: var(--ink); }
+  body{
+    margin:0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .app{ max-width: 880px; margin: 0 auto; padding: 20px 20px 60px; }
+
+  /* Header */
+  .hero{
+    position:relative;
+    padding: 30px 26px 26px;
+    border-radius: 18px;
+    background: radial-gradient(120% 140% at 15% 0%, #35234a 0%, var(--ink) 55%);
+    border: 1px solid var(--line);
+    overflow:hidden;
+    margin-bottom: 16px;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; right:-40px; top:-40px; width:220px; height:220px;
+    background: radial-gradient(circle, rgba(232,84,62,0.35) 0%, rgba(232,84,62,0) 70%);
+  }
+  .hero::before{
+    content:"";
+    position:absolute; left:-30px; bottom:-60px; width:220px; height:220px;
+    background: radial-gradient(circle, rgba(45,212,196,0.20) 0%, rgba(45,212,196,0) 70%);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color: var(--teal); margin:0 0 10px;
+  }
+  .hero h1{
+    font-family:'Shippori Mincho', serif;
+    font-weight:800;
+    font-size: clamp(28px, 6vw, 42px);
+    margin: 0 0 6px;
+    letter-spacing: .01em;
+    position:relative;
+  }
+  .hero .sub{ color: var(--grey); font-size: 14px; margin: 0 0 18px; }
+  .hero .stats{ display:flex; gap: 22px; flex-wrap:wrap; position:relative; }
+  .stat .num{ font-family:'JetBrains Mono', monospace; font-size: 26px; font-weight:600; color: var(--gold); line-height:1; font-variant-numeric: tabular-nums; }
+  .stat .lbl{ font-size: 11px; color: var(--grey); text-transform:uppercase; letter-spacing:.08em; margin-top:4px; }
+  .sync-status{
+    position:relative; margin-top:16px; display:inline-flex; align-items:center; gap:7px;
+    font-family:'JetBrains Mono', monospace; font-size:11px; color: var(--grey);
+  }
+  .sync-status .dot{ width:6px; height:6px; border-radius:50%; background: var(--teal); flex-shrink:0; }
+
+  .a2hs{
+    display:flex; align-items:center; gap:12px;
+    background: var(--ink-soft); border:1px solid var(--line); border-radius:12px;
+    padding: 12px 14px; margin-bottom:16px; font-size:12.5px; color: var(--grey);
+  }
+  .a2hs strong{ color: var(--paper); }
+  .a2hs button{ margin-left:auto; background:none; border:none; color:var(--grey); font-size:18px; cursor:pointer; padding:0 4px; flex-shrink:0; }
+  .a2hs button:hover{ color: var(--paper); }
+  .a2hs[hidden]{ display:none; }
+
+  .noren{ display:flex; gap:3px; margin-bottom:22px; overflow-x:auto; }
+  .noren button{
+    flex:1;
+    background: var(--ink-soft); border: 1px solid var(--line); border-top: none; color: var(--grey);
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:700; font-size: 12.5px;
+    padding: 14px 5px 12px; cursor:pointer; border-radius: 0 0 10px 10px; position:relative;
+    transition: color .2s ease, background .2s ease, transform .15s ease; white-space:nowrap;
+  }
+  .noren button::before{ content:""; position:absolute; top:-1px; left:0; right:0; height:3px; background: transparent; border-radius: 3px 3px 0 0; transition: background .2s ease; }
+  .noren button.active{ color: var(--paper); background: var(--ink-soft); transform: translateY(2px); }
+  .noren button.active::before{ background: var(--vermilion); }
+  .noren button:hover{ color: var(--paper); }
+  .noren button:focus-visible{ outline: 2px solid var(--teal); outline-offset: 2px; }
+
+  .panel{ display:none; animation: fade .35s ease; }
+  .panel.active{ display:block; }
+  @keyframes fade{ from{ opacity:0; transform: translateY(6px);} to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce){ .panel{ animation:none; } }
+
+  h2.section-title{ font-family:'Shippori Mincho', serif; font-size: 20px; font-weight:700; margin: 0 0 4px; display:flex; align-items:baseline; gap:10px; }
+  h2.section-title .jp{ color: var(--vermilion); font-size:15px; }
+  .section-note{ color: var(--grey); font-size:13px; margin: 0 0 18px; }
+
+  .day-card{ background: var(--ink-soft); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 12px; overflow:hidden; }
+  .day-head{ display:flex; align-items:center; justify-content:space-between; padding: 14px 18px; cursor:pointer; }
+  .day-head-left{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .day-badge{ font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:600; background: rgba(232,84,62,0.15); color: var(--vermilion); padding: 4px 9px; border-radius: 20px; white-space:nowrap; }
+  .day-title{ font-weight:700; font-size:14.5px; }
+  .day-tag{ color: var(--teal); font-size:12px; }
+  .day-count{ color: var(--grey); font-size:12px; font-family:'JetBrains Mono', monospace; }
+  .chevron{ color: var(--grey); transition: transform .2s ease; font-size:14px; }
+  .day-card.open .chevron{ transform: rotate(90deg); }
+  .day-body{ display:none; padding: 0 18px 16px; }
+  .day-card.open .day-body{ display:block; }
+
+  .stop{ display:flex; gap:12px; align-items:flex-start; padding: 10px 0; border-top: 1px solid var(--line); }
+  .stop:first-child{ border-top:none; }
+  .stop-time{ font-family:'JetBrains Mono', monospace; font-size:11.5px; color: var(--gold); min-width: 78px; padding-top:2px; }
+  .stop-main{ flex:1; }
+  .stop-name{ font-weight:700; font-size:14px; }
+  .stop-note{ color: var(--grey); font-size:12.5px; margin-top:2px; }
+  .stop-del{ background:none; border:none; color: var(--grey); cursor:pointer; font-size:16px; padding: 2px 6px; opacity:.6; }
+  .stop-del:hover{ opacity:1; color: var(--vermilion); }
+
+  .add-row{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .add-row input{ background: var(--ink); border: 1px solid var(--line); color: var(--paper); border-radius: 8px; padding: 8px 10px; font-family: inherit; font-size:13px; }
+  .add-row input.time{ width:80px; }
+  .add-row input.name{ flex:1; min-width:120px; }
+  .add-row input.note{ flex:1.4; min-width:140px; }
+  .btn{ background: var(--vermilion); color: var(--paper); border:none; border-radius: 8px; padding: 8px 16px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; transition: filter .15s ease, transform .1s ease; }
+  .btn:hover{ filter: brightness(1.1); }
+  .btn:active{ transform: scale(.97); }
+  .btn.ghost{ background:transparent; border:1px solid var(--line); color:var(--paper); }
+  .btn.small{ padding:6px 12px; font-size:12px; }
+  .btn:disabled{ opacity:.5; cursor:default; }
+
+  .cluster-grid{ display:grid; grid-template-columns: 1fr; gap:14px; }
+  @media(min-width:640px){ .cluster-grid{ grid-template-columns: 1fr 1fr; } }
+  .cluster{ background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding: 16px 18px; }
+  .cluster-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .cluster-name{ font-weight:700; font-size:15px; }
+  .cluster-tag{ font-size:11px; color: var(--teal); font-family:'JetBrains Mono', monospace; }
+  .spot{ display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-top:1px solid var(--line); }
+  .spot:first-child{ border-top:none; }
+  .spot input[type=checkbox]{ margin-top:3px; accent-color: var(--vermilion); }
+  .spot-main.done .spot-name{ text-decoration: line-through; color: var(--grey); }
+  .spot-name{ font-weight:600; font-size:13.5px; }
+  .spot-note{ color: var(--grey); font-size:12px; margin-top:1px; }
+  .spot-del{ background:none;border:none;color:var(--grey);cursor:pointer;opacity:.6;font-size:15px;}
+  .spot-del:hover{ opacity:1; color:var(--vermilion); }
+  .cluster-add{ display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+  .cluster-add input{ background: var(--ink); border:1px solid var(--line); color:var(--paper); border-radius:7px; padding:6px 9px; font-size:12.5px; font-family:inherit; flex:1; min-width:90px; }
+  .new-cluster-row{ display:flex; gap:8px; margin-top:16px; }
+  .new-cluster-row input{ background: var(--ink-soft); border:1px solid var(--line); color:var(--paper); border-radius:8px; padding:9px 12px; font-family:inherit; font-size:13px; flex:1; }
+
+  /* Nearby */
+  .nearby-card{ background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:16px; }
+  .nearby-controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:4px; }
+  .nearby-controls select{ background: var(--ink); border:1px solid var(--line); color:var(--paper); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:13px; }
+  .chip-row{ display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
+  .chip{ background: var(--ink); border:1px solid var(--line); color:var(--grey); font-size:12px; padding:6px 12px; border-radius:20px; cursor:pointer; font-family:inherit; }
+  .chip.active{ color: var(--paper); border-color: var(--vermilion); background: rgba(232,84,62,0.12); }
+  .nearby-meta{ font-size:11.5px; color:var(--grey); margin-top:10px; font-family:'JetBrains Mono', monospace; }
+  .rest-list{ display:flex; flex-direction:column; gap:0; margin-top:14px; }
+  .rest-card{ display:flex; align-items:center; gap:12px; padding:12px 0; border-top:1px solid var(--line); }
+  .rest-card:first-child{ border-top:none; }
+  .rest-main{ flex:1; min-width:0; }
+  .rest-name{ font-weight:700; font-size:14px; }
+  .rest-tags{ color:var(--grey); font-size:12px; margin-top:2px; }
+  .rest-dist{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--gold); white-space:nowrap; text-align:right; flex-shrink:0; }
+  .rest-go{ display:block; font-size:11px; color:var(--teal); text-decoration:none; margin-top:2px; }
+  .state-msg{ color:var(--grey); font-size:13px; padding: 14px 0; }
+  .state-msg.err{ color: var(--vermilion); }
+  .spinner{ display:inline-block; width:14px; height:14px; border:2px solid var(--line); border-top-color:var(--gold); border-radius:50%; animation:spin .8s linear infinite; vertical-align:-2px; margin-right:8px; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .spinner{ animation:none; } }
+
+  /* Budget */
+  .budget-top{ background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:16px; }
+  .fx-card{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; background: var(--ink); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:16px; }
+  .fx-rate{ font-family:'JetBrains Mono', monospace; font-size:15px; font-weight:600; color: var(--paper); }
+  .fx-meta{ font-size:11px; color:var(--grey); margin-top:2px; }
+  .goal-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:14px; }
+  .goal-row label{ font-size:12px; color:var(--grey); }
+  .goal-row input{ background: var(--ink); border:1px solid var(--line); color:var(--paper); border-radius:8px; padding:7px 10px; font-family:'JetBrains Mono', monospace; font-size:13px; width:120px; }
+  .goal-note{ color:var(--grey); font-size:11.5px; margin: -8px 0 14px; }
+  .progress-wrap{ margin-top:6px; }
+  .progress-track{ height:10px; border-radius:6px; background: var(--ink); overflow:hidden; border:1px solid var(--line); }
+  .progress-fill{ height:100%; background: linear-gradient(90deg, var(--vermilion), var(--gold)); border-radius:6px; transition: width .3s ease; }
+  .progress-labels{ display:flex; justify-content:space-between; font-size:12px; color:var(--grey); margin-top:6px; font-family:'JetBrains Mono', monospace; }
+  .progress-labels .spent{ color: var(--paper); font-weight:700; }
+  .cat-breakdown{ margin-top:16px; display:flex; flex-direction:column; gap:8px; }
+  .cat-row{ display:flex; align-items:center; gap:10px; }
+  .cat-label{ width:100px; font-size:12px; color:var(--grey); flex-shrink:0; }
+  .cat-bar-track{ flex:1; height:7px; background:var(--ink); border-radius:5px; overflow:hidden; }
+  .cat-bar-fill{ height:100%; border-radius:5px; }
+  .cat-amt{ width:80px; text-align:right; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--paper); flex-shrink:0; font-variant-numeric: tabular-nums; }
+  .expense-add{ display:flex; gap:8px; flex-wrap:wrap; background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:16px; }
+  .expense-add input, .expense-add select{ background: var(--ink); border:1px solid var(--line); color:var(--paper); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:13px; }
+  .expense-add .amt{ width:110px; }
+  .expense-add .cat{ width:150px; }
+  .expense-add .note{ flex:1; min-width:140px; }
+  .expense-add .date{ width:130px; }
+  .expense-list{ display:flex; flex-direction:column; gap:0; }
+  .expense-row{ display:flex; align-items:center; gap:12px; padding:10px 4px; border-top:1px solid var(--line); }
+  .expense-row:first-child{ border-top:none; }
+  .exp-date{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--grey); width:64px; flex-shrink:0; }
+  .exp-cat-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .exp-main{ flex:1; }
+  .exp-note{ font-size:13px; font-weight:600; }
+  .exp-cat{ font-size:11px; color:var(--grey); }
+  .exp-amt{ font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--gold); font-weight:600; white-space:nowrap; font-variant-numeric: tabular-nums; }
+  .exp-del{ background:none;border:none;color:var(--grey);cursor:pointer;opacity:.5;font-size:15px; }
+  .exp-del:hover{ opacity:1; color:var(--vermilion); }
+
+  /* Info */
+  .info-grid{ display:grid; grid-template-columns:1fr; gap:14px; margin-bottom:22px; }
+  @media(min-width:640px){ .info-grid{ grid-template-columns:1fr 1fr; } }
+  .booked-card{ background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding:16px 18px; }
+  .booked-card .bk-head{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .booked-card .bk-name{ font-weight:700; font-size:14.5px; }
+  .bk-check{ font-size:11px; font-weight:700; color: var(--teal); background: rgba(45,212,196,0.14); padding:2px 8px; border-radius:20px; font-family:'JetBrains Mono', monospace; }
+  .booked-card .bk-detail{ color:var(--grey); font-size:12.5px; line-height:1.6; }
+  .booked-card .bk-detail b{ color:var(--paper-dim); font-weight:600; }
+  .booked-card .bk-cost{ margin-top:10px; font-family:'JetBrains Mono', monospace; font-size:15px; color:var(--gold); font-weight:600; }
+  .decision-list{ display:flex; flex-direction:column; gap:0; background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding: 6px 18px; }
+  .decision-row{ display:flex; align-items:flex-start; gap:10px; padding:11px 0; border-top:1px solid var(--line); }
+  .decision-row:first-child{ border-top:none; }
+  .decision-row input[type=checkbox]{ margin-top:3px; accent-color: var(--vermilion); flex-shrink:0; }
+  .decision-text{ font-size:13.5px; line-height:1.5; }
+  .decision-row.done .decision-text{ text-decoration: line-through; color: var(--grey); }
+  .backup-card{ background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding:16px 18px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .backup-note{ color:var(--grey); font-size:12px; flex:1; min-width:200px; }
+
+  .empty{ color:var(--grey); font-size:13px; padding: 14px 0; font-style:italic; }
+  ::placeholder{ color: rgba(245,241,232,0.35); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hero">
+    <p class="eyebrow">Nov 2 — Nov 11, 2026 · Cathay Pacific · Hotel Gracery Shinjuku</p>
+    <h1>東京 Tokyo Trip</h1>
+    <p class="sub">Food crawls · Anime & Pokémon shopping · teamLab · DisneySea</p>
+    <div class="stats">
+      <div class="stat"><div class="num" id="countdownNum">—</div><div class="lbl">Days to go</div></div>
+      <div class="stat"><div class="num" id="tripLenNum">9</div><div class="lbl">Nights</div></div>
+      <div class="stat"><div class="num" id="spentNum">¥0</div><div class="lbl">Logged so far</div></div>
+    </div>
+    <div class="sync-status" id="syncStatus"><span class="dot"></span><span class="txt">Saved on this device</span></div>
+  </div>
+
+  <div class="a2hs" id="a2hsTip">
+    <span><strong>Tip:</strong> add this to your Home Screen — Share → Add to Home Screen — so it opens full-screen like an app.</span>
+    <button id="a2hsClose" aria-label="Dismiss">×</button>
+  </div>
+
+  <div class="noren">
+    <button class="tab-btn active" data-tab="itinerary">Itinerary</button>
+    <button class="tab-btn" data-tab="food">Food Crawl</button>
+    <button class="tab-btn" data-tab="nearby">Nearby</button>
+    <button class="tab-btn" data-tab="budget">Budget</button>
+    <button class="tab-btn" data-tab="info">Info</button>
+  </div>
+
+  <!-- ITINERARY -->
+  <div class="panel active" id="panel-itinerary">
+    <h2 class="section-title">Day by day <span class="jp">日程</span></h2>
+    <p class="section-note">Tap a day to expand. Add stops with a time and note.</p>
+    <div id="dayList"></div>
+  </div>
+
+  <!-- FOOD CRAWL -->
+  <div class="panel" id="panel-food">
+    <h2 class="section-title">Food & shopping clusters <span class="jp">食べ歩き</span></h2>
+    <p class="section-note">Grouped by neighborhood so you can crawl on foot without zigzagging across the city.</p>
+    <div class="cluster-grid" id="clusterGrid"></div>
+    <div class="new-cluster-row">
+      <input type="text" id="newClusterName" placeholder="Add a neighborhood (e.g. Kichijoji)">
+      <button class="btn" id="addClusterBtn">Add area</button>
+    </div>
+  </div>
+
+  <!-- NEARBY -->
+  <div class="panel" id="panel-nearby">
+    <h2 class="section-title">Nearby <span class="jp">近くの店</span></h2>
+    <p class="section-note">Live lookup from OpenStreetMap, using your phone's location. No ratings/reviews — just what's actually close.</p>
+    <div class="nearby-card">
+      <div class="nearby-controls">
+        <button class="btn" id="findNearbyBtn">Find restaurants near me</button>
+        <select id="radiusSelect">
+          <option value="400">400 m</option>
+          <option value="800" selected>800 m</option>
+          <option value="1500">1.5 km</option>
+        </select>
+      </div>
+      <div class="chip-row" id="typeChips">
+        <button class="chip active" data-type="all">All</button>
+        <button class="chip" data-type="restaurant">Restaurants</button>
+        <button class="chip" data-type="cafe">Cafés</button>
+        <button class="chip" data-type="fast_food">Fast food</button>
+        <button class="chip" data-type="bar,pub">Bars</button>
+      </div>
+      <div class="nearby-meta" id="nearbyMeta"></div>
+      <div id="nearbyResults"></div>
+    </div>
+  </div>
+
+  <!-- BUDGET -->
+  <div class="panel" id="panel-budget">
+    <h2 class="section-title">Trip budget <span class="jp">予算</span></h2>
+    <p class="section-note">Log spend as you go. Amounts entered in yen.</p>
+
+    <div class="budget-top">
+      <div class="fx-card">
+        <div>
+          <div class="fx-rate" id="fxRateDisplay">1 USD = ¥— </div>
+          <div class="fx-meta" id="fxMeta">Fetching live rate…</div>
+        </div>
+        <button class="btn small ghost" id="refreshFxBtn">Refresh rate</button>
+      </div>
+      <div class="goal-row">
+        <label>Total budget (¥)</label>
+        <input type="number" id="budgetGoal" placeholder="786000">
+        <span style="color:var(--grey); font-size:12px;">≈ <span id="goalUsd">$0</span></span>
+      </div>
+      <p class="goal-note">Default is the ~$5,242 left after flights &amp; hotel — see Info tab for what's already booked.</p>
+      <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <div class="progress-labels">
+          <span><span class="spent" id="spentLabel">¥0</span> spent</span>
+          <span id="remainLabel">¥0 remaining</span>
+        </div>
+      </div>
+      <div class="cat-breakdown" id="catBreakdown"></div>
+    </div>
+
+    <div class="expense-add">
+      <input type="date" class="date" id="expDate">
+      <select class="cat" id="expCat">
+        <option>Food</option>
+        <option>Shopping / Collectibles</option>
+        <option>Attractions</option>
+        <option>Transport</option>
+        <option>Lodging</option>
+        <option>Other</option>
+      </select>
+      <input type="number" class="amt" id="expAmt" placeholder="¥ amount">
+      <input type="text" class="note" id="expNote" placeholder="What was it?">
+      <button class="btn" id="addExpBtn">Add</button>
+    </div>
+
+    <div class="expense-list" id="expenseList"></div>
+  </div>
+
+  <!-- INFO -->
+  <div class="panel" id="panel-info">
+    <h2 class="section-title">Booked <span class="jp">予約済み</span></h2>
+    <p class="section-note">Confirmation details for the trip.</p>
+    <div class="info-grid">
+      <div class="booked-card">
+        <div class="bk-head"><span class="bk-name">Flights</span><span class="bk-check">✓ booked</span></div>
+        <div class="bk-detail">
+          <b>Cathay Pacific</b> · JFK–HND via HKG · conf. <b>D393XQ</b><br>
+          Out: CX843+CX548, Nov 1 12:55 AM → Nov 2 1:45 PM (4h15m HKG layover)<br>
+          Back: CX543+CX840, Nov 11 10:10 AM → 7:05 PM (2h HKG layover)
+        </div>
+        <div class="bk-cost">$2,610.86</div>
+      </div>
+      <div class="booked-card">
+        <div class="bk-head"><span class="bk-name">Hotel</span><span class="bk-check">✓ booked</span></div>
+        <div class="bk-detail">
+          <b>Hotel Gracery Shinjuku</b> · Nov 2–11 (2 stays)<br>
+          Nov 2–6: conf. <b>2531138596</b> ($943.72, Freedom Student)<br>
+          Nov 6–11: conf. <b>2531142178</b> ($1,203.38, Freedom Unlimited)<br>
+          Split booking cleared two $600-spend promos → $200 in statement credits
+        </div>
+        <div class="bk-cost">$2,147.10</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Open decisions <span class="jp">要確認</span></h2>
+    <p class="section-note">Check these off as you handle them.</p>
+    <div class="decision-list" id="decisionList"></div>
+
+    <h2 class="section-title" style="margin-top:24px;">Data & backup <span class="jp">バックアップ</span></h2>
+    <p class="section-note">Everything here is saved only in this browser. Export a backup before switching devices or clearing Safari data.</p>
+    <div class="backup-card">
+      <span class="backup-note">Export downloads a JSON file of your itinerary, food list, expenses, and checklist. Import restores from one.</span>
+      <button class="btn small ghost" id="exportBtn">Export backup</button>
+      <label class="btn small ghost" style="cursor:pointer;">Import backup<input type="file" id="importInput" accept="application/json" style="display:none;"></label>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CATEGORY_COLORS = {
+  "Food": "#E8543E",
+  "Shopping / Collectibles": "#E3B23C",
+  "Attractions": "#2DD4C4",
+  "Transport": "#8B8A9E",
+  "Lodging": "#B57BFF",
+  "Other": "#5CA8E8"
+};
+
+let state = null;
+let saveTimer = null;
+
+function uid(){ return Math.random().toString(36).slice(2,9); }
+
+function defaultDays(){
+  const meta = [
+    { date:"Nov 2 (Mon)", tag:"Arrival" },
+    { date:"Nov 3 (Tue)", tag:"Nakano & Shimokitazawa" },
+    { date:"Nov 4 (Wed)", tag:"Tokyo DisneySea" },
+    { date:"Nov 5 (Thu)", tag:"Shibuya & Harajuku" },
+    { date:"Nov 6 (Fri)", tag:"Akihabara" },
+    { date:"Nov 7 (Sat)", tag:"Tsukiji & Ginza" },
+    { date:"Nov 8 (Sun)", tag:"Ikebukuro" },
+    { date:"Nov 9 (Mon)", tag:"Toyosu" },
+    { date:"Nov 10 (Tue)", tag:"Azabudai Hills + Borderless" },
+    { date:"Nov 11 (Wed)", tag:"Departure" }
+  ];
+  const seeds = [
+    [
+      {time:"1:45 PM", name:"Land at Haneda", note:"Transfer to Shinjuku (~40–50 min)"},
+      {time:"~3:00 PM", name:"Check in — Hotel Gracery Shinjuku", note:""},
+      {time:"Evening", name:"Omoide Yokocho", note:"Yakitori alley — first food crawl stop"},
+      {time:"Night", name:"Kabukicho walk", note:""}
+    ],
+    [
+      {time:"", name:"Culture Day (national holiday)", note:"Nakano fits better than Akihabara on a holiday crowd"},
+      {time:"Morning–early PM", name:"Nakano Broadway", note:"Manga/anime collector mecca, Mandarake flagship"},
+      {time:"Afternoon", name:"Shimokitazawa", note:"Vintage clothing, indie shops"},
+      {time:"Evening", name:"Shimokitazawa food crawl", note:"Small izakayas"}
+    ],
+    [
+      {time:"", name:"Tokyo DisneySea — full day", note:"Off-peak weekday. Buy tickets exactly 2 months before, 2:00 PM JST (Sept 4)"}
+    ],
+    [
+      {time:"Morning", name:"Takeshita Street, Harajuku", note:"Crepes, fashion shopping"},
+      {time:"Midday", name:"Shibuya Scramble", note:"Walk through, no observation deck"},
+      {time:"Afternoon", name:"Shibuya109", note:"Clothes shopping"},
+      {time:"Afternoon", name:"Nintendo TOKYO", note:"Shibuya PARCO — Mario/Zelda merch"},
+      {time:"Aft.–Evening", name:"Shibuya food crawl", note:"Depachika food halls, Nonbei Yokocho"}
+    ],
+    [
+      {time:"Morning", name:"Akihabara Electric Town", note:"Mandarake, Animate, Radio Kaikan"},
+      {time:"Lunch", name:"Akiba food crawl", note:"Curry, gyoza alley"},
+      {time:"Afternoon", name:"Suehirocho backstreets", note:"Cheaper used shops"},
+      {time:"Afternoon", name:"Gachapon Kaikan", note:"Hundreds of gatcha machines"},
+      {time:"Afternoon", name:"GiGO Akihabara", note:"Arcade, claw machines, rhythm games"},
+      {time:"Evening", name:"Izakaya crawl back in Shinjuku", note:""}
+    ],
+    [
+      {time:"Morning", name:"Tsukiji Outer Market", note:"Seafood, tamagoyaki, sushi breakfast"},
+      {time:"Midday", name:"Ginza shopping", note:"Uniqlo, Mitsukoshi, Apple"},
+      {time:"Evening", name:"Ginza splurge dinner", note:""}
+    ],
+    [
+      {time:"", name:"Otome Road", note:""},
+      {time:"", name:"Sunshine City", note:"Animate main store"},
+      {time:"", name:"Pokémon Center Mega Tokyo", note:"Sunshine City — give it real browsing time"},
+      {time:"", name:"Second gatcha round", note:"Near Sunshine City, if you want more"},
+      {time:"", name:"Snack shopping", note:"Don Quijote / depachika basement for souvenirs"}
+    ],
+    [
+      {time:"Morning", name:"Toyosu Market", note:"Sushi breakfast — succeeded Tsukiji's wholesale trade"},
+      {time:"Late AM–early PM", name:"teamLab Planets TOKYO", note:"Barefoot, water rooms — book ahead, closes end of 2027"},
+      {time:"Afternoon", name:"Open", note:"More shopping or food if energy allows"}
+    ],
+    [
+      {time:"Morning–Aft.", name:"teamLab Borderless", note:"Azabudai Hills — dry, maze-like, 50+ art spaces, ~2 hrs, book separately from Planets"},
+      {time:"Afternoon", name:"Azabudai Hills shopping/dining", note:"Modern development with restaurants"},
+      {time:"Evening", name:"Final food crawl", note:"Last-minute clothes + snack shopping, pack"}
+    ],
+    [
+      {time:"10:10 AM", name:"Flight departs", note:"Checkout at 11 AM isn't a factor — you'll leave earlier"}
+    ]
+  ];
+  return meta.map((m,i)=>({ id: uid(), label:`Day ${i+1}`, date:m.date, tag:m.tag, open: i===0, stops: seeds[i].map(s=>({id:uid(),...s})) }));
+}
+
+function defaultClusters(){
+  const seed = [
+    { name:"Shinjuku", tag:"home base", spots:[
+      {name:"Omoide Yokocho", note:"Yakitori alley, go early evening", done:false},
+      {name:"Golden Gai", note:"Tiny bars, mixed crowd", done:false},
+      {name:"Kabukicho", note:"Night walk", done:false}
+    ]},
+    { name:"Nakano", tag:"manga & collectibles", spots:[
+      {name:"Nakano Broadway", note:"Mandarake flagship, 8 floors", done:false}
+    ]},
+    { name:"Shimokitazawa", tag:"vintage clothing", spots:[
+      {name:"Vintage shops", note:"Indie clothing stores", done:false}
+    ]},
+    { name:"Shibuya / Harajuku", tag:"clothes + food", spots:[
+      {name:"Takeshita Street crepes", note:"", done:false},
+      {name:"Shibuya109", note:"Clothes shopping", done:false},
+      {name:"Nintendo TOKYO", note:"Shibuya PARCO", done:false},
+      {name:"Nonbei Yokocho", note:"Depachika food halls nearby", done:false}
+    ]},
+    { name:"Akihabara", tag:"anime + arcade", spots:[
+      {name:"Mandarake Complex", note:"8 floors of everything", done:false},
+      {name:"Radio Kaikan", note:"Manga/figures", done:false},
+      {name:"Gachapon Kaikan", note:"Hundreds of gatcha machines", done:false},
+      {name:"GiGO Akihabara", note:"Arcade, claw machines", done:false}
+    ]},
+    { name:"Tsukiji / Ginza", tag:"seafood + shopping", spots:[
+      {name:"Tsukiji Outer Market", note:"Sushi breakfast", done:false},
+      {name:"Ginza — Uniqlo, Mitsukoshi, Apple", note:"", done:false}
+    ]},
+    { name:"Ikebukuro", tag:"Pokémon + anime", spots:[
+      {name:"Otome Road", note:"", done:false},
+      {name:"Pokémon Center Mega Tokyo", note:"Sunshine City", done:false},
+      {name:"Animate main store", note:"", done:false}
+    ]},
+    { name:"Toyosu", tag:"market + teamLab", spots:[
+      {name:"Toyosu Market", note:"Sushi breakfast", done:false},
+      {name:"teamLab Planets TOKYO", note:"Book ahead", done:false}
+    ]},
+    { name:"Azabudai Hills", tag:"teamLab + dining", spots:[
+      {name:"teamLab Borderless", note:"Book separately from Planets", done:false}
+    ]}
+  ];
+  return seed.map(c=>({ id: uid(), name:c.name, tag:c.tag, spots: c.spots.map(s=>({id:uid(),...s})) }));
+}
+
+function defaultDecisions(){
+  return [
+    "Buy DisneySea ticket for Nov 4 — opens Sept 4, 2:00 PM Japan time",
+    "Book teamLab Planets (Nov 9) — Nov tickets just opened, book soon",
+    "Book teamLab Borderless (Nov 10) — book separately from Planets",
+    "Nov 9: confirm Toyosu (current plan) or swap for Kamakura/Nikko day trip",
+    "Book Nozomi/Tobu tickets in advance if doing a day trip",
+    "Grab an IC card (Suica/Pasmo) at Haneda on arrival",
+    "Decide if Samurai Restaurant Time or a cooking class gets a fixed evening slot"
+  ].map(text=>({ id: uid(), text, done:false }));
+}
+
+function defaultState(){
+  return {
+    days: defaultDays(),
+    clusters: defaultClusters(),
+    decisions: defaultDecisions(),
+    expenses: [],
+    budgetGoal: 786000,
+    fxRate: 150,
+    fxRateAt: null
+  };
+}
+
+// ---- Persistence: this is a plain hosted site now (not a Claude Artifact),
+// so there's no cross-device sync channel — everything lives in localStorage
+// on whichever device/browser has it open. Export/Import covers backup. ----
+const LOCAL_KEY = 'tokyo-trip-state-v2';
+
+function loadState(){
+  let loaded = null;
+  try{ const raw = localStorage.getItem(LOCAL_KEY); if(raw) loaded = JSON.parse(raw); }catch(e){}
+  state = loaded ? Object.assign(defaultState(), loaded) : defaultState();
+  render();
+}
+
+function setSyncStatus(mode, label){
+  const el = document.getElementById('syncStatus');
+  el.className = 'sync-status ' + mode;
+  el.querySelector('.txt').textContent = label;
+}
+
+function scheduleSave(){
+  setSyncStatus('pending', 'Saving…');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    try{
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
+      setSyncStatus('saved', 'Saved on this device');
+    }catch(e){
+      setSyncStatus('error', 'Could not save — storage full or blocked');
+    }
+  }, 400);
+}
+
+// ---- A2HS tip ----
+(function(){
+  const tip = document.getElementById('a2hsTip');
+  if(localStorage.getItem('tokyo-hide-a2hs') === '1'){ tip.hidden = true; return; }
+  document.getElementById('a2hsClose').addEventListener('click', ()=>{
+    tip.hidden = true;
+    try{ localStorage.setItem('tokyo-hide-a2hs', '1'); }catch(e){}
+  });
+})();
+
+// ---- Export / Import ----
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'tokyo-trip-backup.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+document.getElementById('importInput').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const parsed = JSON.parse(reader.result);
+      state = Object.assign(defaultState(), parsed);
+      scheduleSave(); render();
+    }catch(err){
+      alert('That file could not be read as a valid backup.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+// ---- Tabs ----
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ---- Countdown ----
+function updateCountdown(){
+  const trip = new Date('2026-11-02T00:00:00');
+  const now = new Date();
+  const diff = Math.ceil((trip - now) / 86400000);
+  document.getElementById('countdownNum').textContent = diff > 0 ? diff : (diff===0?'Today':'—');
+}
+
+// ---- Render: Itinerary ----
+function renderDays(){
+  const list = document.getElementById('dayList');
+  list.innerHTML = '';
+  state.days.forEach(day=>{
+    const card = document.createElement('div');
+    card.className = 'day-card' + (day.open ? ' open' : '');
+    card.innerHTML = `
+      <div class="day-head">
+        <div class="day-head-left">
+          <span class="day-badge">${day.label}</span>
+          <span class="day-title">${day.date}</span>
+          ${day.tag ? `<span class="day-tag">${day.tag}</span>` : ''}
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="day-count">${day.stops.length} stop${day.stops.length!==1?'s':''}</span>
+          <span class="chevron">▶</span>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="stops-wrap"></div>
+        <div class="add-row">
+          <input type="text" class="time" placeholder="Time">
+          <input type="text" class="name" placeholder="Stop name">
+          <input type="text" class="note" placeholder="Note (optional)">
+          <button class="btn small add-stop-btn">Add</button>
+        </div>
+      </div>
+    `;
+    const stopsWrap = card.querySelector('.stops-wrap');
+    if(day.stops.length === 0){
+      stopsWrap.innerHTML = '<div class="empty">No stops yet</div>';
+    } else {
+      day.stops.forEach(stop=>{
+        const row = document.createElement('div');
+        row.className = 'stop';
+        row.innerHTML = `
+          <div class="stop-time">${stop.time || ''}</div>
+          <div class="stop-main">
+            <div class="stop-name">${stop.name}</div>
+            ${stop.note ? `<div class="stop-note">${stop.note}</div>` : ''}
+          </div>
+          <button class="stop-del">×</button>
+        `;
+        row.querySelector('.stop-del').addEventListener('click', (e)=>{
+          e.stopPropagation();
+          day.stops = day.stops.filter(s=>s.id !== stop.id);
+          scheduleSave(); renderDays();
+        });
+        stopsWrap.appendChild(row);
+      });
+    }
+
+    card.querySelector('.day-head').addEventListener('click', ()=>{
+      day.open = !day.open;
+      scheduleSave();
+      card.classList.toggle('open');
+    });
+
+    const addBtn = card.querySelector('.add-stop-btn');
+    addBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const timeInp = card.querySelector('.add-row .time');
+      const nameInp = card.querySelector('.add-row .name');
+      const noteInp = card.querySelector('.add-row .note');
+      if(!nameInp.value.trim()) return;
+      day.stops.push({ id: uid(), time: timeInp.value.trim(), name: nameInp.value.trim(), note: noteInp.value.trim() });
+      day.open = true;
+      scheduleSave(); renderDays();
+    });
+    card.querySelector('.add-row').addEventListener('click', e=>e.stopPropagation());
+
+    list.appendChild(card);
+  });
+}
+
+// ---- Render: Food Crawl ----
+function renderClusters(){
+  const grid = document.getElementById('clusterGrid');
+  grid.innerHTML = '';
+  state.clusters.forEach(cluster=>{
+    const el = document.createElement('div');
+    el.className = 'cluster';
+    el.innerHTML = `
+      <div class="cluster-head">
+        <div>
+          <div class="cluster-name">${cluster.name}</div>
+          ${cluster.tag ? `<div class="cluster-tag">${cluster.tag}</div>` : ''}
+        </div>
+        <button class="stop-del cluster-del">×</button>
+      </div>
+      <div class="spots-wrap"></div>
+      <div class="cluster-add">
+        <input type="text" class="spot-name-inp" placeholder="Add a spot">
+        <input type="text" class="spot-note-inp" placeholder="Note">
+        <button class="btn small add-spot-btn">+</button>
+      </div>
+    `;
+    const spotsWrap = el.querySelector('.spots-wrap');
+    if(cluster.spots.length===0){
+      spotsWrap.innerHTML = '<div class="empty">No spots added yet</div>';
+    } else {
+      cluster.spots.forEach(spot=>{
+        const row = document.createElement('div');
+        row.className = 'spot';
+        row.innerHTML = `
+          <input type="checkbox" ${spot.done?'checked':''}>
+          <div class="spot-main ${spot.done?'done':''}" style="flex:1;">
+            <div class="spot-name">${spot.name}</div>
+            ${spot.note ? `<div class="spot-note">${spot.note}</div>` : ''}
+          </div>
+          <button class="spot-del">×</button>
+        `;
+        row.querySelector('input[type=checkbox]').addEventListener('change', (e)=>{
+          spot.done = e.target.checked;
+          scheduleSave(); renderClusters();
+        });
+        row.querySelector('.spot-del').addEventListener('click', ()=>{
+          cluster.spots = cluster.spots.filter(s=>s.id !== spot.id);
+          scheduleSave(); renderClusters();
+        });
+        spotsWrap.appendChild(row);
+      });
+    }
+
+    el.querySelector('.cluster-del').addEventListener('click', ()=>{
+      state.clusters = state.clusters.filter(c=>c.id !== cluster.id);
+      scheduleSave(); renderClusters();
+    });
+
+    el.querySelector('.add-spot-btn').addEventListener('click', ()=>{
+      const nameInp = el.querySelector('.spot-name-inp');
+      const noteInp = el.querySelector('.spot-note-inp');
+      if(!nameInp.value.trim()) return;
+      cluster.spots.push({ id: uid(), name: nameInp.value.trim(), note: noteInp.value.trim(), done:false });
+      scheduleSave(); renderClusters();
+    });
+
+    grid.appendChild(el);
+  });
+}
+
+document.getElementById('addClusterBtn').addEventListener('click', ()=>{
+  const inp = document.getElementById('newClusterName');
+  if(!inp.value.trim()) return;
+  state.clusters.push({ id: uid(), name: inp.value.trim(), tag:'', spots: [] });
+  inp.value = '';
+  scheduleSave(); renderClusters();
+});
+
+// ---- Render: Info (decisions) ----
+function renderDecisions(){
+  const wrap = document.getElementById('decisionList');
+  wrap.innerHTML = '';
+  if(state.decisions.length === 0){
+    wrap.innerHTML = '<div class="empty">Nothing open — you\'re all set</div>';
+    return;
+  }
+  state.decisions.forEach(d=>{
+    const row = document.createElement('div');
+    row.className = 'decision-row' + (d.done ? ' done' : '');
+    row.innerHTML = `
+      <input type="checkbox" ${d.done?'checked':''}>
+      <div class="decision-text">${d.text}</div>
+    `;
+    row.querySelector('input[type=checkbox]').addEventListener('change', (e)=>{
+      d.done = e.target.checked;
+      scheduleSave(); renderDecisions();
+    });
+    wrap.appendChild(row);
+  });
+}
+
+// ---- Live FX rate (frankfurter.app — ECB daily rates, free, no key) ----
+function fmtAgo(iso){
+  if(!iso) return 'never';
+  const diffMs = Date.now() - new Date(iso).getTime();
+  const mins = Math.round(diffMs/60000);
+  if(mins < 1) return 'just now';
+  if(mins < 60) return mins + ' min ago';
+  const hrs = Math.round(mins/60);
+  if(hrs < 24) return hrs + ' hr ago';
+  return Math.round(hrs/24) + ' day(s) ago';
+}
+
+function renderFx(){
+  document.getElementById('fxRateDisplay').textContent = '1 USD = ¥' + Number(state.fxRate).toLocaleString(undefined,{maximumFractionDigits:2});
+  const source = state.fxRateAt ? `Live rate, updated ${fmtAgo(state.fxRateAt)} (open.er-api.com)` : 'Default rate — tap Refresh for live pricing';
+  document.getElementById('fxMeta').textContent = source;
+}
+
+const FX_ENDPOINTS = [
+  { url: 'https://open.er-api.com/v6/latest/USD', parse: d => d && d.rates && d.rates.JPY },
+  { url: 'https://api.frankfurter.app/latest?from=USD&to=JPY', parse: d => d && d.rates && d.rates.JPY }
+];
+
+async function fetchFxRate(showLoading){
+  if(showLoading) document.getElementById('fxMeta').textContent = 'Fetching live rate…';
+  for(const src of FX_ENDPOINTS){
+    try{
+      const res = await fetch(src.url, {cache:'no-store'});
+      if(!res.ok) throw new Error('bad response');
+      const data = await res.json();
+      const rate = src.parse(data);
+      if(!rate) throw new Error('no rate');
+      state.fxRate = rate;
+      state.fxRateAt = new Date().toISOString();
+      scheduleSave(); renderFx(); renderBudget();
+      return;
+    }catch(e){ /* try next source */ }
+  }
+  document.getElementById('fxMeta').textContent = state.fxRateAt
+    ? `Couldn't refresh — showing rate from ${fmtAgo(state.fxRateAt)}`
+    : "Couldn't reach a live rate source — using default ¥150/USD";
+}
+document.getElementById('refreshFxBtn').addEventListener('click', ()=>fetchFxRate(true));
+
+// ---- Render: Budget ----
+function fmtYen(n){ return '¥' + Math.round(n).toLocaleString(); }
+
+function renderBudget(){
+  const goalInp = document.getElementById('budgetGoal');
+  if(state.budgetGoal != null) goalInp.value = state.budgetGoal;
+
+  const total = state.expenses.reduce((s,e)=>s+Number(e.amount||0),0);
+  const goal = Number(goalInp.value) || 0;
+  const fx = Number(state.fxRate) || 150;
+
+  document.getElementById('goalUsd').textContent = goal ? '$' + Math.round(goal/fx).toLocaleString() + ' at current rate' : '$0';
+  document.getElementById('spentLabel').textContent = fmtYen(total);
+  document.getElementById('remainLabel').textContent = fmtYen(Math.max(goal-total,0)) + ' remaining';
+  document.getElementById('progressFill').style.width = goal ? Math.min(100,(total/goal)*100)+'%' : '0%';
+  document.getElementById('spentNum').textContent = fmtYen(total);
+
+  const byCat = {};
+  state.expenses.forEach(e=>{ byCat[e.category] = (byCat[e.category]||0) + Number(e.amount||0); });
+  const maxCat = Math.max(1, ...Object.values(byCat));
+  const catWrap = document.getElementById('catBreakdown');
+  catWrap.innerHTML = '';
+  Object.keys(CATEGORY_COLORS).forEach(cat=>{
+    const amt = byCat[cat] || 0;
+    if(amt === 0) return;
+    const row = document.createElement('div');
+    row.className = 'cat-row';
+    row.innerHTML = `
+      <div class="cat-label">${cat}</div>
+      <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${(amt/maxCat)*100}%; background:${CATEGORY_COLORS[cat]}"></div></div>
+      <div class="cat-amt">${fmtYen(amt)}</div>
+    `;
+    catWrap.appendChild(row);
+  });
+  if(Object.keys(byCat).length===0){
+    catWrap.innerHTML = '<div class="empty">No expenses logged yet</div>';
+  }
+
+  const list = document.getElementById('expenseList');
+  list.innerHTML = '';
+  const sorted = [...state.expenses].sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+  if(sorted.length===0){
+    list.innerHTML = '<div class="empty">Nothing logged yet — add your first expense above</div>';
+  } else {
+    sorted.forEach(exp=>{
+      const row = document.createElement('div');
+      row.className = 'expense-row';
+      const dateLabel = exp.date ? exp.date.slice(5) : '—';
+      row.innerHTML = `
+        <div class="exp-date">${dateLabel}</div>
+        <div class="exp-cat-dot" style="background:${CATEGORY_COLORS[exp.category]||'#8B8A9E'}"></div>
+        <div class="exp-main">
+          <div class="exp-note">${exp.note || exp.category}</div>
+          <div class="exp-cat">${exp.category}</div>
+        </div>
+        <div class="exp-amt">${fmtYen(exp.amount)}</div>
+        <button class="exp-del">×</button>
+      `;
+      row.querySelector('.exp-del').addEventListener('click', ()=>{
+        state.expenses = state.expenses.filter(e=>e.id !== exp.id);
+        scheduleSave(); renderBudget();
+      });
+      list.appendChild(row);
+    });
+  }
+}
+
+document.getElementById('budgetGoal').addEventListener('change', (e)=>{
+  state.budgetGoal = Number(e.target.value) || null;
+  scheduleSave(); renderBudget();
+});
+document.getElementById('addExpBtn').addEventListener('click', ()=>{
+  const date = document.getElementById('expDate').value;
+  const cat = document.getElementById('expCat').value;
+  const amt = document.getElementById('expAmt').value;
+  const note = document.getElementById('expNote').value;
+  if(!amt || Number(amt) <= 0) return;
+  state.expenses.push({ id: uid(), date: date || new Date().toISOString().slice(0,10), category: cat, amount: Number(amt), note: note.trim() });
+  document.getElementById('expAmt').value = '';
+  document.getElementById('expNote').value = '';
+  scheduleSave(); renderBudget();
+});
+
+// ---- Nearby: geolocation + OpenStreetMap Overpass ----
+const OVERPASS_ENDPOINTS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter'
+];
+let nearbyType = 'all';
+let lastNearby = null; // { lat, lon, radius, results, at }
+
+document.getElementById('typeChips').addEventListener('click', (e)=>{
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  document.querySelectorAll('#typeChips .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  nearbyType = chip.dataset.type;
+  if(lastNearby) renderNearbyResults(lastNearby.results);
+});
+
+function haversine(lat1, lon1, lat2, lon2){
+  const R = 6371000;
+  const toRad = d => d * Math.PI/180;
+  const dLat = toRad(lat2-lat1), dLon = toRad(lon2-lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function overpassQuery(lat, lon, radius){
+  return `[out:json][timeout:20];(node["amenity"~"^(restaurant|cafe|fast_food|bar|pub|food_court|ice_cream)$"](around:${radius},${lat},${lon});way["amenity"~"^(restaurant|cafe|fast_food|bar|pub|food_court|ice_cream)$"](around:${radius},${lat},${lon}););out center 60;`;
+}
+
+async function queryOverpass(lat, lon, radius){
+  const body = 'data=' + encodeURIComponent(overpassQuery(lat, lon, radius));
+  let lastErr;
+  for(const endpoint of OVERPASS_ENDPOINTS){
+    try{
+      const ctrl = new AbortController();
+      const t = setTimeout(()=>ctrl.abort(), 12000);
+      const res = await fetch(endpoint, { method:'POST', body, headers:{'Content-Type':'application/x-www-form-urlencoded'}, signal: ctrl.signal });
+      clearTimeout(t);
+      if(!res.ok) throw new Error('status ' + res.status);
+      const data = await res.json();
+      return data.elements || [];
+    }catch(e){ lastErr = e; }
+  }
+  throw lastErr || new Error('all endpoints failed');
+}
+
+function renderNearbyResults(results){
+  const wrap = document.getElementById('nearbyResults');
+  const filtered = nearbyType === 'all'
+    ? results
+    : results.filter(r => nearbyType.split(',').includes(r.amenity));
+  if(filtered.length === 0){
+    wrap.innerHTML = '<div class="state-msg">Nothing matching that filter nearby — try a wider radius or a different category.</div>';
+    return;
+  }
+  wrap.innerHTML = '<div class="rest-list"></div>';
+  const list = wrap.querySelector('.rest-list');
+  filtered.forEach(r=>{
+    const row = document.createElement('div');
+    row.className = 'rest-card';
+    const tagsParts = [r.cuisine ? r.cuisine.replace(/_/g,' ') : r.amenity.replace(/_/g,' ')];
+    row.innerHTML = `
+      <div class="rest-main">
+        <div class="rest-name">${r.name}</div>
+        <div class="rest-tags">${tagsParts.join(' · ')}</div>
+        <a class="rest-go" target="_blank" rel="noopener" href="https://maps.apple.com/?daddr=${r.lat},${r.lon}&dirflg=w">Walking directions →</a>
+      </div>
+      <div class="rest-dist">${r.dist < 1000 ? Math.round(r.dist) + ' m' : (r.dist/1000).toFixed(1) + ' km'}</div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+async function findNearby(){
+  const btn = document.getElementById('findNearbyBtn');
+  const meta = document.getElementById('nearbyMeta');
+  const results = document.getElementById('nearbyResults');
+  if(!('geolocation' in navigator)){
+    results.innerHTML = '<div class="state-msg err">This browser doesn\'t support location lookup.</div>';
+    return;
+  }
+  btn.disabled = true;
+  results.innerHTML = '<div class="state-msg"><span class="spinner"></span>Getting your location…</div>';
+  meta.textContent = '';
+
+  navigator.geolocation.getCurrentPosition(async (pos)=>{
+    const { latitude: lat, longitude: lon } = pos.coords;
+    const radius = Number(document.getElementById('radiusSelect').value);
+    results.innerHTML = '<div class="state-msg"><span class="spinner"></span>Searching OpenStreetMap…</div>';
+    try{
+      const elements = await queryOverpass(lat, lon, radius);
+      const named = elements
+        .filter(el => el.tags && el.tags.name)
+        .map(el => {
+          const elat = el.type === 'node' ? el.lat : el.center.lat;
+          const elon = el.type === 'node' ? el.lon : el.center.lon;
+          return {
+            name: el.tags.name,
+            amenity: el.tags.amenity,
+            cuisine: el.tags.cuisine,
+            lat: elat, lon: elon,
+            dist: haversine(lat, lon, elat, elon)
+          };
+        })
+        .sort((a,b)=>a.dist-b.dist);
+      lastNearby = { lat, lon, radius, results: named, at: new Date() };
+      meta.textContent = `${named.length} spot${named.length!==1?'s':''} within ${radius < 1000 ? radius+' m' : (radius/1000)+' km'} · just now`;
+      renderNearbyResults(named);
+    }catch(e){
+      results.innerHTML = '<div class="state-msg err">Couldn\'t reach OpenStreetMap right now — check your connection and try again.</div>';
+    }finally{
+      btn.disabled = false;
+    }
+  }, (err)=>{
+    btn.disabled = false;
+    const msg = err.code === err.PERMISSION_DENIED
+      ? 'Location access was denied. Enable it in Settings → Privacy → Location Services → Safari Websites to use this.'
+      : 'Could not get your location — try again.';
+    results.innerHTML = `<div class="state-msg err">${msg}</div>`;
+  }, { enableHighAccuracy:true, timeout:15000, maximumAge:60000 });
+}
+document.getElementById('findNearbyBtn').addEventListener('click', findNearby);
+
+function render(){
+  renderDays();
+  renderClusters();
+  renderDecisions();
+  renderFx();
+  renderBudget();
+  updateCountdown();
+}
+
+loadState();
+fetchFxRate(false);
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>
