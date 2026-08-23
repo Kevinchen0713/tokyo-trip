@@ -191,6 +191,27 @@
   @keyframes spin{ to{ transform:rotate(360deg); } }
   @media (prefers-reduced-motion: reduce){ .spinner{ animation:none; } }
 
+  /* Weather */
+  .weather-strip{ display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; margin-bottom:6px; -webkit-overflow-scrolling:touch; }
+  .weather-chip{ flex:0 0 auto; background: var(--ink-soft); border:1px solid var(--line); border-radius:12px; padding:10px 14px; text-align:center; min-width:74px; }
+  .weather-chip .wd-date{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--grey); }
+  .weather-chip .wd-emoji{ font-size:21px; margin:5px 0 3px; }
+  .weather-chip .wd-temp{ font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:600; white-space:nowrap; }
+  .weather-chip .wd-temp .lo{ color:var(--grey); font-weight:400; }
+  .weather-note{ font-size:11px; color:var(--grey); margin: 0 0 18px; }
+
+  /* Calculator */
+  .calc-card{ background: var(--ink); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .calc-card input{ background: var(--ink-soft); border:1px solid var(--line); color:var(--paper); border-radius:8px; padding:8px 10px; font-family:'JetBrains Mono', monospace; font-size:14px; width:110px; }
+  .calc-eq{ color:var(--grey); font-size:13px; }
+  .calc-lbl{ font-size:11px; color:var(--grey); }
+
+  .rest-badge{ font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:20px; font-family:'JetBrains Mono', monospace; white-space:nowrap; flex-shrink:0; }
+  .rest-badge.open{ color: var(--teal); background: rgba(45,212,196,0.14); }
+  .rest-badge.closed{ color: var(--vermilion); background: rgba(232,84,62,0.14); }
+  .rest-badge.unknown{ color: var(--grey); background: rgba(139,138,158,0.14); }
+  .rest-tags-row{ display:flex; align-items:center; gap:8px; margin-top:2px; }
+
   /* Budget */
   .budget-top{ background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:16px; }
   .fx-card{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; background: var(--ink); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:16px; }
@@ -284,6 +305,8 @@
   <div class="panel active" id="panel-itinerary">
     <h2 class="section-title">Day by day <span class="jp">日程</span></h2>
     <p class="section-note">Tap a day to expand. Add stops with a time and note.</p>
+    <div class="weather-strip" id="weatherStrip"></div>
+    <p class="weather-note" id="weatherNote">Loading weather…</p>
     <div id="dayList"></div>
   </div>
 
@@ -302,6 +325,13 @@
   <div class="panel" id="panel-nearby">
     <h2 class="section-title">Nearby <span class="jp">近くの店</span></h2>
     <p class="section-note">Live lookup from OpenStreetMap, using your phone's location. No ratings/reviews — just what's actually close.</p>
+    <div class="calc-card">
+      <span class="calc-lbl">Quick convert</span>
+      <input type="number" id="calcUsd" placeholder="0" inputmode="decimal">
+      <span class="calc-eq">USD =</span>
+      <input type="text" id="calcJpy" placeholder="0" inputmode="decimal">
+      <span class="calc-eq">JPY</span>
+    </div>
     <div class="nearby-card">
       <div class="nearby-controls">
         <button class="btn" id="findNearbyBtn">Find restaurants near me</button>
@@ -399,6 +429,13 @@
     <h2 class="section-title">Open decisions <span class="jp">要確認</span></h2>
     <p class="section-note">Check these off as you handle them.</p>
     <div class="decision-list" id="decisionList"></div>
+
+    <h2 class="section-title">Calendar <span class="jp">カレンダー</span></h2>
+    <p class="section-note">Adds each day of the trip, your flights, and the DisneySea ticket window to your phone's calendar.</p>
+    <div class="backup-card" style="margin-bottom:22px;">
+      <span class="backup-note">One .ics file, all 12 events — re-download any time after editing the itinerary to update it (add it again; most calendar apps will create duplicates rather than replace).</span>
+      <button class="btn small ghost" id="icsBtn">Add to Calendar</button>
+    </div>
 
     <h2 class="section-title" style="margin-top:24px;">Data & backup <span class="jp">バックアップ</span></h2>
     <p class="section-note">Everything here is saved only in this browser. Export a backup before switching devices or clearing Safari data.</p>
@@ -1017,10 +1054,16 @@ function renderNearbyResults(results){
     const row = document.createElement('div');
     row.className = 'rest-card';
     const tagsParts = [r.cuisine ? r.cuisine.replace(/_/g,' ') : r.amenity.replace(/_/g,' ')];
+    const open = isOpenNow(r.opening_hours);
+    const badgeClass = open === true ? 'open' : open === false ? 'closed' : 'unknown';
+    const badgeText = open === true ? 'Open now' : open === false ? 'Closed now' : 'Hours unknown';
     row.innerHTML = `
       <div class="rest-main">
         <div class="rest-name">${r.name}</div>
-        <div class="rest-tags">${tagsParts.join(' · ')}</div>
+        <div class="rest-tags-row">
+          <div class="rest-tags">${tagsParts.join(' · ')}</div>
+          <span class="rest-badge ${badgeClass}">${badgeText}</span>
+        </div>
         <a class="rest-go" target="_blank" rel="noopener" href="https://maps.apple.com/?daddr=${r.lat},${r.lon}&dirflg=w">Walking directions →</a>
       </div>
       <div class="rest-dist">${r.dist < 1000 ? Math.round(r.dist) + ' m' : (r.dist/1000).toFixed(1) + ' km'}</div>
@@ -1056,6 +1099,7 @@ async function findNearby(){
             name: el.tags.name,
             amenity: el.tags.amenity,
             cuisine: el.tags.cuisine,
+            opening_hours: el.tags.opening_hours,
             lat: elat, lon: elon,
             dist: haversine(lat, lon, elat, elon)
           };
@@ -1079,6 +1123,264 @@ async function findNearby(){
 }
 document.getElementById('findNearbyBtn').addEventListener('click', findNearby);
 
+// ---- Weather: live forecast when close enough, else historical averages ----
+const TOKYO_LAT = 35.6895, TOKYO_LON = 139.6917;
+const TRIP_START = new Date('2026-11-02T00:00:00');
+const TRIP_DAYS_N = 10;
+const WEATHER_CACHE_KEY = 'tokyo-trip-weather-v1';
+const WMO_EMOJI = {
+  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
+  51:'🌦️',53:'🌦️',55:'🌦️',56:'🌧️',57:'🌧️',
+  61:'🌧️',63:'🌧️',65:'🌧️',66:'🌧️',67:'🌧️',
+  71:'🌨️',73:'🌨️',75:'🌨️',77:'🌨️',
+  80:'🌦️',81:'🌧️',82:'⛈️',85:'🌨️',86:'🌨️',
+  95:'⛈️',96:'⛈️',99:'⛈️'
+};
+
+function tripDates(){
+  return Array.from({length: TRIP_DAYS_N}, (_, i) => {
+    const d = new Date(TRIP_START); d.setDate(d.getDate() + i);
+    return d;
+  });
+}
+function isoDate(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+
+async function fetchLiveForecast(dates){
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${TOKYO_LAT}&longitude=${TOKYO_LON}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&start_date=${isoDate(dates[0])}&end_date=${isoDate(dates[dates.length-1])}`;
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('forecast fetch failed');
+  const data = await res.json();
+  return dates.map((d,i)=>({
+    date: d, mode:'forecast',
+    code: data.daily.weathercode[i],
+    hi: Math.round(data.daily.temperature_2m_max[i]),
+    lo: Math.round(data.daily.temperature_2m_min[i]),
+    rainPct: data.daily.precipitation_probability_max[i]
+  }));
+}
+
+async function fetchHistoricalAverages(dates){
+  const years = [2021,2022,2023,2024,2025];
+  const perYear = await Promise.all(years.map(async (y)=>{
+    const start = `${y}-${String(dates[0].getMonth()+1).padStart(2,'0')}-${String(dates[0].getDate()).padStart(2,'0')}`;
+    const end = `${y}-${String(dates[dates.length-1].getMonth()+1).padStart(2,'0')}-${String(dates[dates.length-1].getDate()).padStart(2,'0')}`;
+    try{
+      const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${TOKYO_LAT}&longitude=${TOKYO_LON}&start_date=${start}&end_date=${end}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Asia%2FTokyo`;
+      const res = await fetch(url);
+      if(!res.ok) return null;
+      return await res.json();
+    }catch(e){ return null; }
+  }));
+  const valid = perYear.filter(Boolean);
+  if(valid.length === 0) throw new Error('no historical data');
+  return dates.map((d,i)=>{
+    const his = valid.map(v=>v.daily.temperature_2m_max[i]).filter(x=>x!=null);
+    const los = valid.map(v=>v.daily.temperature_2m_min[i]).filter(x=>x!=null);
+    const rains = valid.map(v=>v.daily.precipitation_sum[i]).filter(x=>x!=null);
+    const avg = arr => arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : null;
+    const rainYears = rains.filter(r=>r > 1).length;
+    return {
+      date: d, mode:'historical',
+      hi: Math.round(avg(his)), lo: Math.round(avg(los)),
+      rainYears, totalYears: rains.length
+    };
+  });
+}
+
+function renderWeatherStrip(days){
+  const strip = document.getElementById('weatherStrip');
+  strip.innerHTML = '';
+  days.forEach(w=>{
+    const chip = document.createElement('div');
+    chip.className = 'weather-chip';
+    const label = w.date.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+    const emoji = w.mode === 'forecast' ? (WMO_EMOJI[w.code] || '🌡️') : (w.rainYears >= w.totalYears/2 ? '🌦️' : '🌤️');
+    chip.innerHTML = `
+      <div class="wd-date">${label}</div>
+      <div class="wd-emoji">${emoji}</div>
+      <div class="wd-temp">${w.hi}° <span class="lo">${w.lo}°</span></div>
+    `;
+    strip.appendChild(chip);
+  });
+  const note = document.getElementById('weatherNote');
+  if(days[0] && days[0].mode === 'forecast'){
+    note.textContent = 'Live forecast (open-meteo.com), °C';
+  } else {
+    note.textContent = `Typical for these dates, 2021–2025 average (open-meteo.com) — real forecast opens ~16 days out`;
+  }
+}
+
+async function loadWeather(){
+  const dates = tripDates();
+  const daysUntilTrip = Math.floor((dates[0] - new Date()) / 86400000);
+  const mode = daysUntilTrip <= 15 ? 'forecast' : 'historical';
+
+  try{
+    const cached = JSON.parse(localStorage.getItem(WEATHER_CACHE_KEY) || 'null');
+    const maxAge = mode === 'forecast' ? 3*3600*1000 : 30*24*3600*1000;
+    if(cached && cached.mode === mode && (Date.now() - cached.at) < maxAge){
+      renderWeatherStrip(cached.days.map(d=>({...d, date:new Date(d.date)})));
+      return;
+    }
+  }catch(e){}
+
+  try{
+    const days = mode === 'forecast' ? await fetchLiveForecast(dates) : await fetchHistoricalAverages(dates);
+    renderWeatherStrip(days);
+    try{ localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({ mode, at: Date.now(), days })); }catch(e){}
+  }catch(e){
+    document.getElementById('weatherNote').textContent = "Couldn't reach open-meteo.com for weather right now.";
+  }
+}
+
+// ---- Yen calculator ----
+const calcUsd = document.getElementById('calcUsd');
+const calcJpy = document.getElementById('calcJpy');
+calcUsd.addEventListener('input', ()=>{
+  const usd = Number(calcUsd.value);
+  calcJpy.value = usd ? Math.round(usd * (state.fxRate || 150)).toLocaleString() : '';
+});
+calcJpy.addEventListener('input', ()=>{
+  const jpy = Number(String(calcJpy.value).replace(/,/g,''));
+  calcUsd.value = jpy ? (jpy / (state.fxRate || 150)).toFixed(2) : '';
+});
+
+// ---- Simplified OSM opening_hours check (common patterns only) ----
+const OSM_DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+function isOpenNow(spec){
+  if(!spec) return null;
+  const s = spec.trim();
+  if(/^24\/7$/i.test(s)) return true;
+
+  let nowDay, nowMin;
+  try{
+    const parts = new Intl.DateTimeFormat('en-US', { timeZone:'Asia/Tokyo', weekday:'short', hour:'2-digit', minute:'2-digit', hour12:false }).formatToParts(new Date());
+    const wd = parts.find(p=>p.type==='weekday').value.slice(0,2);
+    nowDay = OSM_DAYS.indexOf(wd);
+    let hh = parseInt(parts.find(p=>p.type==='hour').value, 10);
+    const mm = parseInt(parts.find(p=>p.type==='minute').value, 10);
+    if(hh === 24) hh = 0;
+    nowMin = hh*60 + mm;
+  }catch(e){ return null; }
+  if(nowDay < 0) return null;
+
+  const rules = s.split(';').map(r=>r.trim()).filter(Boolean);
+  let matched = null;
+  for(const rule of rules){
+    const m = rule.match(/^((?:[A-Za-z]{2}(?:-[A-Za-z]{2})?)(?:,\s*[A-Za-z]{2}(?:-[A-Za-z]{2})?)*)?\s*(.*)$/);
+    if(!m) continue;
+    const daySel = m[1];
+    const rest = m[2].trim();
+    let daysCovered;
+    if(!daySel){
+      daysCovered = [0,1,2,3,4,5,6];
+    }else{
+      daysCovered = [];
+      daySel.split(',').forEach(seg=>{
+        seg = seg.trim();
+        const range = seg.match(/^([A-Za-z]{2})-([A-Za-z]{2})$/);
+        if(range){
+          let a = OSM_DAYS.indexOf(range[1]), b = OSM_DAYS.indexOf(range[2]);
+          if(a<0||b<0) return;
+          let d = a;
+          while(true){ daysCovered.push(d); if(d===b) break; d=(d+1)%7; }
+        }else{
+          const d = OSM_DAYS.indexOf(seg);
+          if(d>=0) daysCovered.push(d);
+        }
+      });
+    }
+    if(!daysCovered.includes(nowDay)) continue;
+
+    if(/^off$|^closed$/i.test(rest)){ matched = false; continue; }
+    if(!rest) continue;
+
+    const timeRanges = rest.split(',').map(t=>t.trim());
+    for(const tr of timeRanges){
+      const tm = tr.match(/^(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})$/);
+      if(!tm) continue;
+      const start = (+tm[1])*60 + (+tm[2]);
+      let end = (+tm[3])*60 + (+tm[4]);
+      if(end <= start){
+        if(nowMin >= start || nowMin < end){ matched = true; }
+      }else{
+        if(nowMin >= start && nowMin < end){ matched = true; }
+      }
+    }
+    if(matched === null) matched = false;
+  }
+  return matched;
+}
+
+// ---- Calendar export ----
+function escapeICS(s){
+  return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+}
+function icsDate(d){ return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z'; }
+function icsDateOnly(d){ return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`; }
+
+function buildICS(){
+  const now = new Date();
+  const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Tokyo Trip Planner//tokyo-trip//EN','CALSCALE:GREGORIAN'];
+  const addEvent = ({ uid, allDayStart, allDayEnd, dtStart, dtEnd, summary, description }) => {
+    lines.push('BEGIN:VEVENT');
+    lines.push('UID:' + uid + '@tokyo-trip-planner');
+    lines.push('DTSTAMP:' + icsDate(now));
+    if(allDayStart){
+      lines.push('DTSTART;VALUE=DATE:' + icsDateOnly(allDayStart));
+      lines.push('DTEND;VALUE=DATE:' + icsDateOnly(allDayEnd));
+    } else {
+      lines.push('DTSTART:' + icsDate(dtStart));
+      lines.push('DTEND:' + icsDate(dtEnd));
+    }
+    lines.push('SUMMARY:' + escapeICS(summary));
+    if(description) lines.push('DESCRIPTION:' + escapeICS(description));
+    lines.push('END:VEVENT');
+  };
+
+  state.days.forEach((day, i)=>{
+    const start = new Date(TRIP_START); start.setDate(start.getDate() + i);
+    const end = new Date(start); end.setDate(end.getDate() + 1);
+    const desc = day.stops.map(s => [s.time, s.name, s.note].filter(Boolean).join(' — ')).join('\n');
+    addEvent({
+      uid: day.id,
+      allDayStart: start, allDayEnd: end,
+      summary: `Day ${i+1}: ${day.tag || day.date}`,
+      description: desc
+    });
+  });
+
+  addEvent({
+    uid: 'flight-arrival',
+    dtStart: new Date('2026-11-02T04:45:00Z'), dtEnd: new Date('2026-11-02T05:15:00Z'),
+    summary: 'Land at Haneda (HND) — Cathay Pacific',
+    description: 'Transfer to Hotel Gracery Shinjuku (~40–50 min)'
+  });
+  addEvent({
+    uid: 'flight-departure',
+    dtStart: new Date('2026-11-11T01:10:00Z'), dtEnd: new Date('2026-11-11T01:40:00Z'),
+    summary: 'Flight departs — Cathay Pacific',
+    description: 'CX543+CX840, 10:10 AM JST, 2h HKG layover'
+  });
+  addEvent({
+    uid: 'disneysea-tickets',
+    dtStart: new Date('2026-09-04T05:00:00Z'), dtEnd: new Date('2026-09-04T05:30:00Z'),
+    summary: 'DisneySea tickets go on sale (2:00 PM JST)',
+    description: 'Exactly 2 months before Nov 4 — official site can reject foreign cards; Klook is a fallback'
+  });
+
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n');
+}
+
+document.getElementById('icsBtn').addEventListener('click', ()=>{
+  const ics = buildICS();
+  const blob = new Blob([ics], {type:'text/calendar;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  window.location.href = url;
+  setTimeout(()=>URL.revokeObjectURL(url), 30000);
+});
+
 function render(){
   renderDays();
   renderClusters();
@@ -1090,6 +1392,7 @@ function render(){
 
 loadState();
 fetchFxRate(false);
+loadWeather();
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
