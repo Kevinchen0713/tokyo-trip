@@ -1221,7 +1221,7 @@ function renderNearbyResults(results){
           <div class="rest-tags">${tagsParts.join(' · ')}</div>
           <span class="rest-badge ${badgeClass}">${badgeText}</span>
         </div>
-        <a class="rest-go" target="_blank" rel="noopener" href="https://maps.apple.com/?daddr=${r.lat},${r.lon}&dirflg=w">Walking directions →</a>
+        <a class="rest-go" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${r.lat},${r.lon}&travelmode=walking">Walking directions →</a>
       </div>
       <div class="rest-dist">${r.dist < 1000 ? Math.round(r.dist) + ' m' : (r.dist/1000).toFixed(1) + ' km'}</div>
     `;
@@ -1643,6 +1643,29 @@ async function getWalkingRoute(a, b){
 
 let dayMapInstance = null;
 let currentDetailDayId = null;
+const HOTEL_STOP = { name:'Hotel Gracery Shinjuku', lat:35.6952, lon:139.7028, isHotel:true };
+
+// Builds the map/route sequence for a day: the day's own located stops,
+// bookended with the hotel as start/end (since Shinjuku is home base for
+// the whole trip) — except the arrival day (starts at the airport) and
+// the departure day (ends at the airport), and skipped on either end when
+// the real first/last stop is already effectively at the hotel.
+function buildRouteSequence(day, dayIndex, totalDays){
+  const seq = day.stops.map(s => ({...s}));
+  const nearHotel = s => haversine(s.lat, s.lon, HOTEL_STOP.lat, HOTEL_STOP.lon) < 300;
+  const located = seq.filter(s => s.lat != null && s.lon != null);
+  if(located.length > 0){
+    const isArrivalDay = dayIndex === 0;
+    const isDepartureDay = dayIndex === totalDays - 1;
+    if(!isArrivalDay && !nearHotel(located[0])){
+      seq.unshift({ ...HOTEL_STOP, id:'__hotel_start__', time:'', note:'Start from hotel' });
+    }
+    if(!isDepartureDay && !nearHotel(located[located.length-1])){
+      seq.push({ ...HOTEL_STOP, id:'__hotel_end__', time:'', note:'Back to hotel' });
+    }
+  }
+  return seq;
+}
 
 function closeDayDetail(){
   document.getElementById('dayDetailOverlay').classList.remove('open');
@@ -1677,16 +1700,20 @@ async function openDayDetail(dayId){
     attribution: '© OpenStreetMap contributors'
   }).addTo(dayMapInstance);
 
-  const located = day.stops.filter(s => s.lat != null && s.lon != null);
+  const dayIndex = state.days.findIndex(d => d.id === dayId);
+  const seq = buildRouteSequence(day, dayIndex, state.days.length);
+  const located = seq.filter(s => s.lat != null && s.lon != null);
   if(located.length === 0){
     dayMapInstance.setView([35.6895, 139.6917], 12);
     document.getElementById('ddNote').textContent = 'No located stops yet on this day — add ones with a specific place name to see them on the map.';
-    renderDayStopsList(day, []);
+    renderDayStopsList(seq, []);
     return;
   }
 
   located.forEach((s, i)=>{
-    const icon = L.divIcon({ className:'', html:`<div class="dd-marker"><span>${i+1}</span></div>`, iconSize:[22,22], iconAnchor:[11,20] });
+    const icon = s.isHotel
+      ? L.divIcon({ className:'', html:`<div class="dd-marker" style="background:var(--teal);"><span>🏨</span></div>`, iconSize:[22,22], iconAnchor:[11,20] })
+      : L.divIcon({ className:'', html:`<div class="dd-marker"><span>${i+1}</span></div>`, iconSize:[22,22], iconAnchor:[11,20] });
     L.marker([s.lat, s.lon], { icon }).addTo(dayMapInstance).bindPopup(s.name);
   });
   dayMapInstance.fitBounds(located.map(s=>[s.lat,s.lon]), { padding:[30,30] });
@@ -1701,22 +1728,22 @@ async function openDayDetail(dayId){
     L.polyline(route.coords, { color: route.estimated ? '#8B8A9E' : '#E8543E', weight: 4, opacity: 0.85, dashArray: route.estimated ? '6 6' : null }).addTo(dayMapInstance);
   }
 
-  document.getElementById('ddNote').textContent = 'Solid lines are real street routes; dashed = a straight-line walking-pace estimate (used when a route can\'t be trusted or the stops are too far apart to walk).';
-  renderDayStopsList(day, legs, located);
+  document.getElementById('ddNote').textContent = 'Solid lines are real street routes; dashed = a straight-line walking-pace estimate (used when a route can\'t be trusted or the stops are too far apart to walk). 🏨 pins are the hotel, added as your day\'s start/end point.';
+  renderDayStopsList(seq, legs, located);
 }
 
-function renderDayStopsList(day, legs, located){
+function renderDayStopsList(seq, legs, located){
   located = located || [];
   const wrap = document.getElementById('ddStops');
   wrap.innerHTML = '';
   let locIdx = 0;
-  day.stops.forEach((s)=>{
+  seq.forEach((s)=>{
     const hasLoc = s.lat != null && s.lon != null;
     const num = hasLoc ? ++locIdx : null;
     const row = document.createElement('div');
     row.className = 'dd-stop';
     row.innerHTML = `
-      ${hasLoc ? `<div class="dd-num">${num}</div>` : `<div class="dd-num" style="background:var(--grey);opacity:.5;">?</div>`}
+      ${hasLoc ? (s.isHotel ? `<div class="dd-num" style="background:var(--teal);">🏨</div>` : `<div class="dd-num">${num}</div>`) : `<div class="dd-num" style="background:var(--grey);opacity:.5;">?</div>`}
       <div class="dd-stop-main">
         ${s.time ? `<div class="dd-stop-time">${s.time}</div>` : ''}
         <div class="dd-stop-name">${s.name}</div>
@@ -1737,7 +1764,7 @@ function renderDayStopsList(day, legs, located){
         : `🚶 ${leg.estimated ? '≈' : ''}${leg.durationMin} min · ${distText}${leg.estimated ? ' (estimate)' : ''}`;
       legRow.innerHTML = `
         <span>${label}</span>
-        <a target="_blank" rel="noopener" href="https://maps.apple.com/?saddr=${from.lat},${from.lon}&daddr=${to.lat},${to.lon}&dirflg=r">Transit directions →</a>
+        <a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&origin=${from.lat},${from.lon}&destination=${to.lat},${to.lon}&travelmode=transit">Transit directions →</a>
       `;
       wrap.appendChild(legRow);
     }
