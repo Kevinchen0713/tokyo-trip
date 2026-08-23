@@ -15,6 +15,7 @@
 <meta name="theme-color" content="#1A1B2E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://unpkg.com">
 <style>
   :root{
     --ink:#1A1B2E;
@@ -190,6 +191,31 @@
   .spinner{ display:inline-block; width:14px; height:14px; border:2px solid var(--line); border-top-color:var(--gold); border-radius:50%; animation:spin .8s linear infinite; vertical-align:-2px; margin-right:8px; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
   @media (prefers-reduced-motion: reduce){ .spinner{ animation:none; } }
+
+  /* Day detail / map */
+  .day-map-btn{ background: var(--ink); border:1px solid var(--line); color:var(--teal); font-size:11.5px; font-weight:700; padding:5px 10px; border-radius:20px; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .day-map-btn:hover{ border-color: var(--teal); }
+  .day-detail-overlay{ position:fixed; inset:0; background: var(--ink); z-index:1000; overflow-y:auto; display:none; -webkit-overflow-scrolling:touch; }
+  .day-detail-overlay.open{ display:block; }
+  .dd-header{ position:sticky; top:0; background: var(--ink); border-bottom:1px solid var(--line); padding: calc(14px + env(safe-area-inset-top)) 18px 14px; display:flex; align-items:center; gap:12px; z-index:2; }
+  .dd-back{ background:none; border:none; color: var(--paper); font-size:22px; cursor:pointer; padding:2px 8px 2px 0; line-height:1; }
+  .dd-title{ font-family:'Shippori Mincho', serif; font-weight:700; font-size:17px; }
+  .dd-sub{ color: var(--grey); font-size:12px; margin-top:2px; }
+  .dd-map{ height:42vh; min-height:260px; width:100%; background: var(--ink-soft); }
+  .dd-body{ padding:18px 20px 60px; max-width:880px; margin:0 auto; }
+  .dd-note{ color: var(--grey); font-size:11.5px; margin: 14px 0 16px; }
+  .dd-stop{ display:flex; gap:12px; padding:10px 0; }
+  .dd-num{ width:24px; height:24px; border-radius:50%; background: var(--vermilion); color: var(--paper); font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .dd-stop-main{ flex:1; }
+  .dd-stop-time{ font-family:'JetBrains Mono', monospace; font-size:11px; color: var(--gold); }
+  .dd-stop-name{ font-weight:700; font-size:14.5px; }
+  .dd-stop-note{ color: var(--grey); font-size:12.5px; margin-top:2px; }
+  .dd-no-loc{ font-size:11px; color: var(--grey); font-style:italic; margin-top:2px; }
+  .dd-leg{ display:flex; align-items:center; gap:10px; padding: 6px 0 6px 36px; color: var(--grey); font-size:12px; font-family:'JetBrains Mono', monospace; }
+  .dd-leg a{ color: var(--teal); text-decoration:none; margin-left:auto; font-family:'Zen Kaku Gothic New', sans-serif; font-size:12px; }
+  .dd-marker{ width:22px; height:22px; border-radius:50% 50% 50% 0; background: var(--vermilion); border:2px solid var(--paper); transform: rotate(-45deg); display:flex; align-items:center; justify-content:center; }
+  .dd-marker span{ transform: rotate(45deg); color:var(--paper); font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:700; }
+  .leaflet-container{ background: var(--ink-soft) !important; font-family:'Zen Kaku Gothic New', sans-serif !important; }
 
   /* Weather */
   .weather-strip{ display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; margin-bottom:6px; -webkit-overflow-scrolling:touch; }
@@ -448,6 +474,21 @@
 
 </div>
 
+<div class="day-detail-overlay" id="dayDetailOverlay">
+  <div class="dd-header">
+    <button class="dd-back" id="ddBack" aria-label="Back">←</button>
+    <div>
+      <div class="dd-title" id="ddTitle"></div>
+      <div class="dd-sub" id="ddSub"></div>
+    </div>
+  </div>
+  <div class="dd-map" id="dayMap"></div>
+  <div class="dd-body">
+    <p class="dd-note" id="ddNote">Loading route…</p>
+    <div id="ddStops"></div>
+  </div>
+</div>
+
 <script>
 const CATEGORY_COLORS = {
   "Food": "#E8543E",
@@ -478,59 +519,59 @@ function defaultDays(){
   ];
   const seeds = [
     [
-      {time:"1:45 PM", name:"Land at Haneda", note:"Transfer to Shinjuku (~40–50 min)"},
-      {time:"~3:00 PM", name:"Check in — Hotel Gracery Shinjuku", note:""},
-      {time:"Evening", name:"Omoide Yokocho", note:"Yakitori alley — first food crawl stop"},
-      {time:"Night", name:"Kabukicho walk", note:""}
+      {time:"1:45 PM", name:"Land at Haneda", note:"Transfer to Shinjuku (~40–50 min)", lat:35.5494, lon:139.7798},
+      {time:"~3:00 PM", name:"Check in — Hotel Gracery Shinjuku", note:"", lat:35.6952, lon:139.7028},
+      {time:"Evening", name:"Omoide Yokocho", note:"Yakitori alley — first food crawl stop", lat:35.6938, lon:139.6997},
+      {time:"Night", name:"Kabukicho walk", note:"", lat:35.6950, lon:139.7020}
     ],
     [
       {time:"", name:"Culture Day (national holiday)", note:"Nakano fits better than Akihabara on a holiday crowd"},
-      {time:"Morning–early PM", name:"Nakano Broadway", note:"Manga/anime collector mecca, Mandarake flagship"},
-      {time:"Afternoon", name:"Shimokitazawa", note:"Vintage clothing, indie shops"},
-      {time:"Evening", name:"Shimokitazawa food crawl", note:"Small izakayas"}
+      {time:"Morning–early PM", name:"Nakano Broadway", note:"Manga/anime collector mecca, Mandarake flagship", lat:35.7080, lon:139.6655},
+      {time:"Afternoon", name:"Shimokitazawa", note:"Vintage clothing, indie shops", lat:35.6613, lon:139.6683},
+      {time:"Evening", name:"Shimokitazawa food crawl", note:"Small izakayas", lat:35.6620, lon:139.6690}
     ],
     [
-      {time:"", name:"Tokyo DisneySea — full day", note:"Off-peak weekday. Buy tickets exactly 2 months before, 2:00 PM JST (Sept 4)"}
+      {time:"", name:"Tokyo DisneySea — full day", note:"Off-peak weekday. Buy tickets exactly 2 months before, 2:00 PM JST (Sept 4)", lat:35.6267, lon:139.8853}
     ],
     [
-      {time:"Morning", name:"Takeshita Street, Harajuku", note:"Crepes, fashion shopping"},
-      {time:"Midday", name:"Shibuya Scramble", note:"Walk through, no observation deck"},
-      {time:"Afternoon", name:"Shibuya109", note:"Clothes shopping"},
-      {time:"Afternoon", name:"Nintendo TOKYO", note:"Shibuya PARCO — Mario/Zelda merch"},
-      {time:"Aft.–Evening", name:"Shibuya food crawl", note:"Depachika food halls, Nonbei Yokocho"}
+      {time:"Morning", name:"Takeshita Street, Harajuku", note:"Crepes, fashion shopping", lat:35.6702, lon:139.7026},
+      {time:"Midday", name:"Shibuya Scramble", note:"Walk through, no observation deck", lat:35.6595, lon:139.7005},
+      {time:"Afternoon", name:"Shibuya109", note:"Clothes shopping", lat:35.6590, lon:139.6982},
+      {time:"Afternoon", name:"Nintendo TOKYO", note:"Shibuya PARCO — Mario/Zelda merch", lat:35.6615, lon:139.6982},
+      {time:"Aft.–Evening", name:"Shibuya food crawl", note:"Depachika food halls, Nonbei Yokocho", lat:35.6595, lon:139.7025}
     ],
     [
-      {time:"Morning", name:"Akihabara Electric Town", note:"Mandarake, Animate, Radio Kaikan"},
-      {time:"Lunch", name:"Akiba food crawl", note:"Curry, gyoza alley"},
-      {time:"Afternoon", name:"Suehirocho backstreets", note:"Cheaper used shops"},
-      {time:"Afternoon", name:"Gachapon Kaikan", note:"Hundreds of gatcha machines"},
-      {time:"Afternoon", name:"GiGO Akihabara", note:"Arcade, claw machines, rhythm games"},
-      {time:"Evening", name:"Izakaya crawl back in Shinjuku", note:""}
+      {time:"Morning", name:"Akihabara Electric Town", note:"Mandarake, Animate, Radio Kaikan", lat:35.6984, lon:139.7731},
+      {time:"Lunch", name:"Akiba food crawl", note:"Curry, gyoza alley", lat:35.6989, lon:139.7720},
+      {time:"Afternoon", name:"Suehirocho backstreets", note:"Cheaper used shops", lat:35.7020, lon:139.7716},
+      {time:"Afternoon", name:"Gachapon Kaikan", note:"Hundreds of gatcha machines", lat:35.7013, lon:139.7714},
+      {time:"Afternoon", name:"GiGO Akihabara", note:"Arcade, claw machines, rhythm games", lat:35.6989, lon:139.7726},
+      {time:"Evening", name:"Izakaya crawl back in Shinjuku", note:"", lat:35.6938, lon:139.6997}
     ],
     [
-      {time:"Morning", name:"Tsukiji Outer Market", note:"Seafood, tamagoyaki, sushi breakfast"},
-      {time:"Midday", name:"Ginza shopping", note:"Uniqlo, Mitsukoshi, Apple"},
-      {time:"Evening", name:"Ginza splurge dinner", note:""}
+      {time:"Morning", name:"Tsukiji Outer Market", note:"Seafood, tamagoyaki, sushi breakfast", lat:35.6654, lon:139.7707},
+      {time:"Midday", name:"Ginza shopping", note:"Uniqlo, Mitsukoshi, Apple", lat:35.6717, lon:139.7650},
+      {time:"Evening", name:"Ginza splurge dinner", note:"", lat:35.6712, lon:139.7660}
     ],
     [
-      {time:"", name:"Otome Road", note:""},
-      {time:"", name:"Sunshine City", note:"Animate main store"},
-      {time:"", name:"Pokémon Center Mega Tokyo", note:"Sunshine City — give it real browsing time"},
-      {time:"", name:"Second gatcha round", note:"Near Sunshine City, if you want more"},
-      {time:"", name:"Snack shopping", note:"Don Quijote / depachika basement for souvenirs"}
+      {time:"", name:"Otome Road", note:"", lat:35.7301, lon:139.7168},
+      {time:"", name:"Sunshine City", note:"Animate main store", lat:35.7295, lon:139.7189},
+      {time:"", name:"Pokémon Center Mega Tokyo", note:"Sunshine City — give it real browsing time", lat:35.7295, lon:139.7189},
+      {time:"", name:"Second gatcha round", note:"Near Sunshine City, if you want more", lat:35.7295, lon:139.7185},
+      {time:"", name:"Snack shopping", note:"Don Quijote / depachika basement for souvenirs", lat:35.7295, lon:139.7100}
     ],
     [
-      {time:"Morning", name:"Toyosu Market", note:"Sushi breakfast — succeeded Tsukiji's wholesale trade"},
-      {time:"Late AM–early PM", name:"teamLab Planets TOKYO", note:"Barefoot, water rooms — book ahead, closes end of 2027"},
+      {time:"Morning", name:"Toyosu Market", note:"Sushi breakfast — succeeded Tsukiji's wholesale trade", lat:35.6455, lon:139.7828},
+      {time:"Late AM–early PM", name:"teamLab Planets TOKYO", note:"Barefoot, water rooms — book ahead, closes end of 2027", lat:35.6465, lon:139.7930},
       {time:"Afternoon", name:"Open", note:"More shopping or food if energy allows"}
     ],
     [
-      {time:"Morning–Aft.", name:"teamLab Borderless", note:"Azabudai Hills — dry, maze-like, 50+ art spaces, ~2 hrs, book separately from Planets"},
-      {time:"Afternoon", name:"Azabudai Hills shopping/dining", note:"Modern development with restaurants"},
-      {time:"Evening", name:"Final food crawl", note:"Last-minute clothes + snack shopping, pack"}
+      {time:"Morning–Aft.", name:"teamLab Borderless", note:"Azabudai Hills — dry, maze-like, 50+ art spaces, ~2 hrs, book separately from Planets", lat:35.6636, lon:139.7420},
+      {time:"Afternoon", name:"Azabudai Hills shopping/dining", note:"Modern development with restaurants", lat:35.6636, lon:139.7423},
+      {time:"Evening", name:"Final food crawl", note:"Last-minute clothes + snack shopping, pack", lat:35.6938, lon:139.6997}
     ],
     [
-      {time:"10:10 AM", name:"Flight departs", note:"Checkout at 11 AM isn't a factor — you'll leave earlier"}
+      {time:"10:10 AM", name:"Flight departs", note:"Checkout at 11 AM isn't a factor — you'll leave earlier", lat:35.5494, lon:139.7798}
     ]
   ];
   return meta.map((m,i)=>({ id: uid(), label:`Day ${i+1}`, date:m.date, tag:m.tag, open: i===0, stops: seeds[i].map(s=>({id:uid(),...s})) }));
@@ -709,6 +750,7 @@ function renderDays(){
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
           <span class="day-count">${day.stops.length} stop${day.stops.length!==1?'s':''}</span>
+          <button class="day-map-btn map-btn" type="button">🗺 Map</button>
           <span class="chevron">▶</span>
         </div>
       </div>
@@ -752,6 +794,11 @@ function renderDays(){
       card.classList.toggle('open');
     });
 
+    card.querySelector('.map-btn').addEventListener('click', (e)=>{
+      e.stopPropagation();
+      openDayDetail(day.id);
+    });
+
     const addBtn = card.querySelector('.add-stop-btn');
     addBtn.addEventListener('click', (e)=>{
       e.stopPropagation();
@@ -759,9 +806,15 @@ function renderDays(){
       const nameInp = card.querySelector('.add-row .name');
       const noteInp = card.querySelector('.add-row .note');
       if(!nameInp.value.trim()) return;
-      day.stops.push({ id: uid(), time: timeInp.value.trim(), name: nameInp.value.trim(), note: noteInp.value.trim() });
+      const newStop = { id: uid(), time: timeInp.value.trim(), name: nameInp.value.trim(), note: noteInp.value.trim() };
+      day.stops.push(newStop);
       day.open = true;
       scheduleSave(); renderDays();
+      geocodeStop(newStop.name).then(loc=>{
+        if(!loc) return;
+        newStop.lat = loc.lat; newStop.lon = loc.lon;
+        scheduleSave();
+      });
     });
     card.querySelector('.add-row').addEventListener('click', e=>e.stopPropagation());
 
@@ -1380,6 +1433,199 @@ document.getElementById('icsBtn').addEventListener('click', ()=>{
   window.location.href = url;
   setTimeout(()=>URL.revokeObjectURL(url), 30000);
 });
+
+// ---- Day detail: map + walking routes ----
+let leafletLoading = null;
+function ensureLeafletLoaded(){
+  if(window.L) return Promise.resolve();
+  if(leafletLoading) return leafletLoading;
+  leafletLoading = new Promise((resolve, reject)=>{
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+    document.head.appendChild(link);
+    const script = document.createElement('script');
+    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('Leaflet failed to load'));
+    document.head.appendChild(script);
+  });
+  return leafletLoading;
+}
+
+const GEOCODE_CACHE_KEY = 'tokyo-trip-geocode-v1';
+async function geocodeStop(name){
+  let cache = {};
+  try{ cache = JSON.parse(localStorage.getItem(GEOCODE_CACHE_KEY) || '{}'); }catch(e){}
+  if(cache[name] !== undefined) return cache[name];
+  try{
+    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(name + ', Tokyo, Japan')}`;
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('geocode failed');
+    const data = await res.json();
+    const loc = data[0] ? { lat: Number(data[0].lat), lon: Number(data[0].lon) } : null;
+    cache[name] = loc;
+    try{ localStorage.setItem(GEOCODE_CACHE_KEY, JSON.stringify(cache)); }catch(e){}
+    return loc;
+  }catch(e){ return null; }
+}
+
+const ROUTE_CACHE_KEY = 'tokyo-trip-routes-v1';
+function routeCacheGet(key){
+  try{ const c = JSON.parse(localStorage.getItem(ROUTE_CACHE_KEY) || '{}'); return c[key]; }catch(e){ return undefined; }
+}
+function routeCacheSet(key, val){
+  try{
+    const c = JSON.parse(localStorage.getItem(ROUTE_CACHE_KEY) || '{}');
+    c[key] = val;
+    localStorage.setItem(ROUTE_CACHE_KEY, JSON.stringify(c));
+  }catch(e){}
+}
+
+const MAX_WALK_M = 3000; // beyond this, treat as a transit leg rather than a walk
+
+function straightLineEstimate(a, b, tooFar){
+  const dist = haversine(a.lat, a.lon, b.lat, b.lon);
+  return { coords: [[a.lat,a.lon],[b.lat,b.lon]], durationMin: Math.round(dist/80), distanceM: Math.round(dist), estimated: true, tooFar: !!tooFar };
+}
+
+async function getWalkingRoute(a, b){
+  const straightDist = haversine(a.lat, a.lon, b.lat, b.lon);
+  if(straightDist > MAX_WALK_M) return straightLineEstimate(a, b, true);
+
+  const key = `${a.lat.toFixed(5)},${a.lon.toFixed(5)}-${b.lat.toFixed(5)},${b.lon.toFixed(5)}`;
+  const cached = routeCacheGet(key);
+  if(cached !== undefined) return cached;
+  try{
+    const url = `https://router.project-osrm.org/route/v1/foot/${a.lon},${a.lat};${b.lon},${b.lat}?overview=full&geometries=geojson`;
+    const ctrl = new AbortController();
+    const t = setTimeout(()=>ctrl.abort(), 10000);
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(t);
+    if(!res.ok) throw new Error('route failed');
+    const data = await res.json();
+    const route = data.routes && data.routes[0];
+    if(!route) throw new Error('no route');
+    // The public OSRM demo doesn't reliably serve a pedestrian profile — a
+    // returned speed faster than a brisk walk (>2.3 m/s) means it silently
+    // fell back to car timing, so distrust the duration in that case.
+    const impliedSpeed = route.distance / route.duration;
+    const result = {
+      coords: route.geometry.coordinates.map(c => [c[1], c[0]]),
+      durationMin: impliedSpeed > 2.3 ? Math.round(route.distance/80) : Math.round(route.duration/60),
+      distanceM: Math.round(route.distance),
+      estimated: impliedSpeed > 2.3,
+      tooFar: false
+    };
+    routeCacheSet(key, result);
+    return result;
+  }catch(e){
+    return straightLineEstimate(a, b, false);
+  }
+}
+
+let dayMapInstance = null;
+let currentDetailDayId = null;
+
+function closeDayDetail(){
+  document.getElementById('dayDetailOverlay').classList.remove('open');
+  if(dayMapInstance){ dayMapInstance.remove(); dayMapInstance = null; }
+  currentDetailDayId = null;
+}
+document.getElementById('ddBack').addEventListener('click', closeDayDetail);
+
+async function openDayDetail(dayId){
+  const day = state.days.find(d=>d.id === dayId);
+  if(!day) return;
+  currentDetailDayId = dayId;
+  document.getElementById('dayDetailOverlay').classList.add('open');
+  document.getElementById('ddTitle').textContent = `${day.label} — ${day.date}`;
+  document.getElementById('ddSub').textContent = day.tag || '';
+  document.getElementById('ddNote').textContent = 'Loading route…';
+  document.getElementById('ddStops').innerHTML = '';
+
+  try{
+    await ensureLeafletLoaded();
+  }catch(e){
+    document.getElementById('ddNote').textContent = "Couldn't load the map (no connection?) — stop list is still below.";
+    renderDayStopsList(day, []);
+    return;
+  }
+  if(currentDetailDayId !== dayId) return;
+
+  if(dayMapInstance){ dayMapInstance.remove(); dayMapInstance = null; }
+  dayMapInstance = L.map('dayMap', { attributionControl: true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(dayMapInstance);
+
+  const located = day.stops.filter(s => s.lat != null && s.lon != null);
+  if(located.length === 0){
+    dayMapInstance.setView([35.6895, 139.6917], 12);
+    document.getElementById('ddNote').textContent = 'No located stops yet on this day — add ones with a specific place name to see them on the map.';
+    renderDayStopsList(day, []);
+    return;
+  }
+
+  located.forEach((s, i)=>{
+    const icon = L.divIcon({ className:'', html:`<div class="dd-marker"><span>${i+1}</span></div>`, iconSize:[22,22], iconAnchor:[11,20] });
+    L.marker([s.lat, s.lon], { icon }).addTo(dayMapInstance).bindPopup(s.name);
+  });
+  dayMapInstance.fitBounds(located.map(s=>[s.lat,s.lon]), { padding:[30,30] });
+
+  document.getElementById('ddNote').textContent = located.length > 1 ? 'Fetching walking routes…' : 'One located stop — no route to show.';
+
+  const legs = [];
+  for(let i=0; i<located.length-1; i++){
+    const route = await getWalkingRoute(located[i], located[i+1]);
+    if(currentDetailDayId !== dayId) return;
+    legs.push(route);
+    L.polyline(route.coords, { color: route.estimated ? '#8B8A9E' : '#E8543E', weight: 4, opacity: 0.85, dashArray: route.estimated ? '6 6' : null }).addTo(dayMapInstance);
+  }
+
+  document.getElementById('ddNote').textContent = 'Solid lines are real street routes; dashed = a straight-line walking-pace estimate (used when a route can\'t be trusted or the stops are too far apart to walk).';
+  renderDayStopsList(day, legs, located);
+}
+
+function renderDayStopsList(day, legs, located){
+  located = located || [];
+  const wrap = document.getElementById('ddStops');
+  wrap.innerHTML = '';
+  let locIdx = 0;
+  day.stops.forEach((s)=>{
+    const hasLoc = s.lat != null && s.lon != null;
+    const num = hasLoc ? ++locIdx : null;
+    const row = document.createElement('div');
+    row.className = 'dd-stop';
+    row.innerHTML = `
+      ${hasLoc ? `<div class="dd-num">${num}</div>` : `<div class="dd-num" style="background:var(--grey);opacity:.5;">?</div>`}
+      <div class="dd-stop-main">
+        ${s.time ? `<div class="dd-stop-time">${s.time}</div>` : ''}
+        <div class="dd-stop-name">${s.name}</div>
+        ${s.note ? `<div class="dd-stop-note">${s.note}</div>` : ''}
+        ${!hasLoc ? `<div class="dd-no-loc">No location set — not shown on map</div>` : ''}
+      </div>
+    `;
+    wrap.appendChild(row);
+
+    if(hasLoc && num <= located.length - 1 && legs[num-1]){
+      const leg = legs[num-1];
+      const from = located[num-1], to = located[num];
+      const legRow = document.createElement('div');
+      legRow.className = 'dd-leg';
+      const distText = leg.distanceM < 1000 ? `${leg.distanceM} m` : `${(leg.distanceM/1000).toFixed(1)} km`;
+      const label = leg.tooFar
+        ? `🚇 ${distText} — too far to walk`
+        : `🚶 ${leg.estimated ? '≈' : ''}${leg.durationMin} min · ${distText}${leg.estimated ? ' (estimate)' : ''}`;
+      legRow.innerHTML = `
+        <span>${label}</span>
+        <a target="_blank" rel="noopener" href="https://maps.apple.com/?saddr=${from.lat},${from.lon}&daddr=${to.lat},${to.lon}&dirflg=r">Transit directions →</a>
+      `;
+      wrap.appendChild(legRow);
+    }
+  });
+}
 
 function render(){
   renderDays();
