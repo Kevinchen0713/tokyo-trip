@@ -175,6 +175,8 @@
   .nearby-controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:4px; }
   .nearby-controls select{ background: var(--ink); border:1px solid var(--line); color:var(--paper); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:13px; }
   .chip-row{ display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
+  #categoryChips{ margin-top:0; margin-bottom:14px; }
+  #categoryChips .chip.active{ border-color: var(--gold); background: rgba(227,178,60,0.14); color: var(--paper); }
   .chip{ background: var(--ink); border:1px solid var(--line); color:var(--grey); font-size:12px; padding:6px 12px; border-radius:20px; cursor:pointer; font-family:inherit; }
   .chip.active{ color: var(--paper); border-color: var(--vermilion); background: rgba(232,84,62,0.12); }
   .nearby-meta{ font-size:11.5px; color:var(--grey); margin-top:10px; font-family:'JetBrains Mono', monospace; }
@@ -359,21 +361,20 @@
       <span class="calc-eq">JPY</span>
     </div>
     <div class="nearby-card">
+      <div class="chip-row" id="categoryChips">
+        <button class="chip active" data-cat="food">🍜 Food</button>
+        <button class="chip" data-cat="entertainment">🎮 Entertainment</button>
+        <button class="chip" data-cat="shops">🛍 Shops</button>
+      </div>
       <div class="nearby-controls">
-        <button class="btn" id="findNearbyBtn">Find restaurants near me</button>
+        <button class="btn" id="findNearbyBtn">Find food near me</button>
         <select id="radiusSelect">
           <option value="400">400 m</option>
           <option value="800" selected>800 m</option>
           <option value="1500">1.5 km</option>
         </select>
       </div>
-      <div class="chip-row" id="typeChips">
-        <button class="chip active" data-type="all">All</button>
-        <button class="chip" data-type="restaurant">Restaurants</button>
-        <button class="chip" data-type="cafe">Cafés</button>
-        <button class="chip" data-type="fast_food">Fast food</button>
-        <button class="chip" data-type="bar,pub">Bars</button>
-      </div>
+      <div class="chip-row" id="typeChips"></div>
       <div class="nearby-meta" id="nearbyMeta"></div>
       <div id="nearbyResults"></div>
     </div>
@@ -1071,8 +1072,83 @@ const OVERPASS_ENDPOINTS = [
   'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter'
 ];
+
+const NEARBY_CATEGORIES = {
+  food: {
+    label: 'food',
+    clauses: [{ key:'amenity', values:['restaurant','cafe','fast_food','bar','pub','food_court','ice_cream'] }],
+    chips: [
+      { label:'All', match:'all' },
+      { label:'Restaurants', match:'restaurant' },
+      { label:'Cafés', match:'cafe' },
+      { label:'Fast food', match:'fast_food' },
+      { label:'Bars', match:'bar,pub' }
+    ]
+  },
+  entertainment: {
+    label: 'entertainment',
+    clauses: [
+      { key:'amenity', values:['cinema','theatre','nightclub','karaoke_box'] },
+      { key:'leisure', values:['amusement_arcade','escape_game','bowling_alley'] },
+      { key:'tourism', values:['museum','gallery','attraction'] }
+    ],
+    chips: [
+      { label:'All', match:'all' },
+      { label:'Arcades', match:'amusement_arcade' },
+      { label:'Karaoke', match:'karaoke_box' },
+      { label:'Cinema', match:'cinema' },
+      { label:'Museums', match:'museum,gallery' },
+      { label:'Attractions', match:'attraction' }
+    ]
+  },
+  shops: {
+    label: 'shops',
+    clauses: [
+      { key:'shop', values:['clothes','shoes','boutique','department_store','variety_store','anime','games','toys','books','electronics','mall','gift'] }
+    ],
+    chips: [
+      { label:'All', match:'all' },
+      { label:'Clothes', match:'clothes,boutique,shoes' },
+      { label:'Anime & games', match:'anime,games,toys' },
+      { label:'Books & electronics', match:'books,electronics' },
+      { label:'Dept. stores', match:'department_store,variety_store,mall' }
+    ]
+  }
+};
+
+let nearbyCategory = 'food';
 let nearbyType = 'all';
-let lastNearby = null; // { lat, lon, radius, results, at }
+let lastNearby = null; // { lat, lon, radius, category, results, at }
+
+function renderTypeChips(){
+  const wrap = document.getElementById('typeChips');
+  wrap.innerHTML = '';
+  NEARBY_CATEGORIES[nearbyCategory].chips.forEach((c, i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'chip' + (i===0 ? ' active' : '');
+    btn.dataset.type = c.match;
+    btn.textContent = c.label;
+    wrap.appendChild(btn);
+  });
+}
+renderTypeChips();
+
+document.getElementById('categoryChips').addEventListener('click', (e)=>{
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  document.querySelectorAll('#categoryChips .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  nearbyCategory = chip.dataset.cat;
+  nearbyType = 'all';
+  renderTypeChips();
+  document.getElementById('findNearbyBtn').textContent = `Find ${NEARBY_CATEGORIES[nearbyCategory].label} near me`;
+  if(lastNearby){
+    findNearby(true);
+  } else {
+    document.getElementById('nearbyResults').innerHTML = '';
+    document.getElementById('nearbyMeta').textContent = '';
+  }
+});
 
 document.getElementById('typeChips').addEventListener('click', (e)=>{
   const chip = e.target.closest('.chip');
@@ -1091,12 +1167,20 @@ function haversine(lat1, lon1, lat2, lon2){
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
-function overpassQuery(lat, lon, radius){
-  return `[out:json][timeout:20];(node["amenity"~"^(restaurant|cafe|fast_food|bar|pub|food_court|ice_cream)$"](around:${radius},${lat},${lon});way["amenity"~"^(restaurant|cafe|fast_food|bar|pub|food_court|ice_cream)$"](around:${radius},${lat},${lon}););out center 60;`;
+function overpassQuery(category, lat, lon, radius){
+  const clauses = NEARBY_CATEGORIES[category].clauses;
+  const parts = clauses.flatMap(c => {
+    const pattern = `^(${c.values.join('|')})$`;
+    return [
+      `node["${c.key}"~"${pattern}"](around:${radius},${lat},${lon});`,
+      `way["${c.key}"~"${pattern}"](around:${radius},${lat},${lon});`
+    ];
+  });
+  return `[out:json][timeout:20];(${parts.join('')});out center 60;`;
 }
 
-async function queryOverpass(lat, lon, radius){
-  const body = 'data=' + encodeURIComponent(overpassQuery(lat, lon, radius));
+async function queryOverpass(category, lat, lon, radius){
+  const body = 'data=' + encodeURIComponent(overpassQuery(category, lat, lon, radius));
   let lastErr;
   for(const endpoint of OVERPASS_ENDPOINTS){
     try{
@@ -1116,7 +1200,7 @@ function renderNearbyResults(results){
   const wrap = document.getElementById('nearbyResults');
   const filtered = nearbyType === 'all'
     ? results
-    : results.filter(r => nearbyType.split(',').includes(r.amenity));
+    : results.filter(r => nearbyType.split(',').includes(r.kind));
   if(filtered.length === 0){
     wrap.innerHTML = '<div class="state-msg">Nothing matching that filter nearby — try a wider radius or a different category.</div>';
     return;
@@ -1126,7 +1210,7 @@ function renderNearbyResults(results){
   filtered.forEach(r=>{
     const row = document.createElement('div');
     row.className = 'rest-card';
-    const tagsParts = [r.cuisine ? r.cuisine.replace(/_/g,' ') : r.amenity.replace(/_/g,' ')];
+    const tagsParts = [r.cuisine ? r.cuisine.replace(/_/g,' ') : (r.kind || '').replace(/_/g,' ')];
     const open = isOpenNow(r.opening_hours);
     const badgeClass = open === true ? 'open' : open === false ? 'closed' : 'unknown';
     const badgeText = open === true ? 'Open now' : open === false ? 'Closed now' : 'Hours unknown';
@@ -1145,47 +1229,59 @@ function renderNearbyResults(results){
   });
 }
 
-async function findNearby(){
-  const btn = document.getElementById('findNearbyBtn');
-  const meta = document.getElementById('nearbyMeta');
+async function runSearch(lat, lon, radius){
   const results = document.getElementById('nearbyResults');
+  const meta = document.getElementById('nearbyMeta');
+  results.innerHTML = '<div class="state-msg"><span class="spinner"></span>Searching OpenStreetMap…</div>';
+  try{
+    const elements = await queryOverpass(nearbyCategory, lat, lon, radius);
+    const named = elements
+      .filter(el => el.tags && el.tags.name)
+      .map(el => {
+        const elat = el.type === 'node' ? el.lat : el.center.lat;
+        const elon = el.type === 'node' ? el.lon : el.center.lon;
+        return {
+          name: el.tags.name,
+          kind: el.tags.amenity || el.tags.leisure || el.tags.shop || el.tags.tourism,
+          cuisine: el.tags.cuisine,
+          opening_hours: el.tags.opening_hours,
+          lat: elat, lon: elon,
+          dist: haversine(lat, lon, elat, elon)
+        };
+      })
+      .sort((a,b)=>a.dist-b.dist);
+    lastNearby = { lat, lon, radius, category: nearbyCategory, results: named, at: new Date() };
+    meta.textContent = `${named.length} spot${named.length!==1?'s':''} within ${radius < 1000 ? radius+' m' : (radius/1000)+' km'} · just now`;
+    renderNearbyResults(named);
+  }catch(e){
+    results.innerHTML = '<div class="state-msg err">Couldn\'t reach OpenStreetMap right now — check your connection and try again.</div>';
+  }
+}
+
+async function findNearby(reuseLocation){
+  const btn = document.getElementById('findNearbyBtn');
+  const results = document.getElementById('nearbyResults');
+  const radius = Number(document.getElementById('radiusSelect').value);
+
+  if(reuseLocation && lastNearby){
+    btn.disabled = true;
+    await runSearch(lastNearby.lat, lastNearby.lon, radius);
+    btn.disabled = false;
+    return;
+  }
+
   if(!('geolocation' in navigator)){
     results.innerHTML = '<div class="state-msg err">This browser doesn\'t support location lookup.</div>';
     return;
   }
   btn.disabled = true;
   results.innerHTML = '<div class="state-msg"><span class="spinner"></span>Getting your location…</div>';
-  meta.textContent = '';
+  document.getElementById('nearbyMeta').textContent = '';
 
   navigator.geolocation.getCurrentPosition(async (pos)=>{
     const { latitude: lat, longitude: lon } = pos.coords;
-    const radius = Number(document.getElementById('radiusSelect').value);
-    results.innerHTML = '<div class="state-msg"><span class="spinner"></span>Searching OpenStreetMap…</div>';
-    try{
-      const elements = await queryOverpass(lat, lon, radius);
-      const named = elements
-        .filter(el => el.tags && el.tags.name)
-        .map(el => {
-          const elat = el.type === 'node' ? el.lat : el.center.lat;
-          const elon = el.type === 'node' ? el.lon : el.center.lon;
-          return {
-            name: el.tags.name,
-            amenity: el.tags.amenity,
-            cuisine: el.tags.cuisine,
-            opening_hours: el.tags.opening_hours,
-            lat: elat, lon: elon,
-            dist: haversine(lat, lon, elat, elon)
-          };
-        })
-        .sort((a,b)=>a.dist-b.dist);
-      lastNearby = { lat, lon, radius, results: named, at: new Date() };
-      meta.textContent = `${named.length} spot${named.length!==1?'s':''} within ${radius < 1000 ? radius+' m' : (radius/1000)+' km'} · just now`;
-      renderNearbyResults(named);
-    }catch(e){
-      results.innerHTML = '<div class="state-msg err">Couldn\'t reach OpenStreetMap right now — check your connection and try again.</div>';
-    }finally{
-      btn.disabled = false;
-    }
+    await runSearch(lat, lon, radius);
+    btn.disabled = false;
   }, (err)=>{
     btn.disabled = false;
     const msg = err.code === err.PERMISSION_DENIED
@@ -1194,7 +1290,8 @@ async function findNearby(){
     results.innerHTML = `<div class="state-msg err">${msg}</div>`;
   }, { enableHighAccuracy:true, timeout:15000, maximumAge:60000 });
 }
-document.getElementById('findNearbyBtn').addEventListener('click', findNearby);
+document.getElementById('findNearbyBtn').addEventListener('click', ()=>findNearby(false));
+document.getElementById('radiusSelect').addEventListener('change', ()=>{ if(lastNearby) findNearby(true); });
 
 // ---- Weather: live forecast when close enough, else historical averages ----
 const TOKYO_LAT = 35.6895, TOKYO_LON = 139.6917;
