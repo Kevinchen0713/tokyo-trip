@@ -651,10 +651,30 @@ function defaultState(){
 // on whichever device/browser has it open. Export/Import covers backup. ----
 const LOCAL_KEY = 'tokyo-trip-state-v2';
 
+function backfillStopCoords(days){
+  const coordByName = {};
+  defaultDays().forEach(day => day.stops.forEach(s => {
+    if(s.lat != null) coordByName[s.name] = { lat: s.lat, lon: s.lon };
+  }));
+  let changed = false;
+  days.forEach(day => day.stops.forEach(s => {
+    if((s.lat == null || s.lon == null) && coordByName[s.name]){
+      s.lat = coordByName[s.name].lat;
+      s.lon = coordByName[s.name].lon;
+      changed = true;
+    }
+  }));
+  return changed;
+}
+
 function loadState(){
   let loaded = null;
   try{ const raw = localStorage.getItem(LOCAL_KEY); if(raw) loaded = JSON.parse(raw); }catch(e){}
   state = loaded ? Object.assign(defaultState(), loaded) : defaultState();
+  // Anyone who used the app before stop coordinates were added has old,
+  // coordinate-less stops saved in localStorage — that saved copy otherwise
+  // wins wholesale over the (now-richer) default seed data.
+  if(backfillStopCoords(state.days)) scheduleSave();
   render();
 }
 
