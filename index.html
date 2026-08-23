@@ -239,6 +239,10 @@
   .rest-badge.closed{ color: var(--vermilion); background: rgba(232,84,62,0.14); }
   .rest-badge.unknown{ color: var(--grey); background: rgba(139,138,158,0.14); }
   .rest-tags-row{ display:flex; align-items:center; gap:8px; margin-top:2px; }
+  .rest-side{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+  .rest-add-btn{ background: var(--ink); border:1px solid var(--line); color: var(--teal); font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .rest-add-btn:hover{ border-color: var(--teal); }
+  .rest-add-btn.added{ color: var(--gold); border-color: var(--gold); }
 
   /* Budget */
   .budget-top{ background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:16px; }
@@ -373,6 +377,10 @@
           <option value="800" selected>800 m</option>
           <option value="1500">1.5 km</option>
         </select>
+      </div>
+      <div class="nearby-controls" style="margin-top:10px;">
+        <span class="calc-lbl">Add finds to</span>
+        <select id="nearbyDaySelect"></select>
       </div>
       <div class="chip-row" id="typeChips"></div>
       <div class="nearby-meta" id="nearbyMeta"></div>
@@ -1223,10 +1231,37 @@ function renderNearbyResults(results){
         </div>
         <a class="rest-go" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${r.lat},${r.lon}&travelmode=walking">Walking directions →</a>
       </div>
-      <div class="rest-dist">${r.dist < 1000 ? Math.round(r.dist) + ' m' : (r.dist/1000).toFixed(1) + ' km'}</div>
+      <div class="rest-side">
+        <div class="rest-dist">${r.dist < 1000 ? Math.round(r.dist) + ' m' : (r.dist/1000).toFixed(1) + ' km'}</div>
+        <button class="rest-add-btn" type="button">+ Add</button>
+      </div>
     `;
+    row.querySelector('.rest-add-btn').addEventListener('click', (e)=>{
+      addNearbyStopToDay(r, e.target);
+    });
     list.appendChild(row);
   });
+}
+
+function populateNearbyDaySelect(){
+  const sel = document.getElementById('nearbyDaySelect');
+  const prev = sel.value;
+  sel.innerHTML = state.days.map(d => `<option value="${d.id}">${d.label} — ${d.date}</option>`).join('');
+  if(prev && state.days.some(d=>d.id===prev)) sel.value = prev;
+}
+
+function addNearbyStopToDay(r, btnEl){
+  const dayId = document.getElementById('nearbyDaySelect').value;
+  const day = state.days.find(d => d.id === dayId);
+  if(!day) return;
+  const kindText = (r.cuisine ? r.cuisine.replace(/_/g,' ') : (r.kind || '').replace(/_/g,' ')) || 'Found via Nearby';
+  day.stops.push({ id: uid(), time:'', name: r.name, note: kindText, lat: r.lat, lon: r.lon });
+  day.open = true;
+  scheduleSave();
+  renderDays();
+  btnEl.textContent = '✓ Added';
+  btnEl.classList.add('added');
+  btnEl.disabled = true;
 }
 
 async function runSearch(lat, lon, radius){
@@ -1778,6 +1813,7 @@ function render(){
   renderFx();
   renderBudget();
   updateCountdown();
+  populateNearbyDaySelect();
 }
 
 loadState();
