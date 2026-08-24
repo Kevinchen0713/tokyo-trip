@@ -591,34 +591,43 @@ function defaultClusters(){
     { name:"Shinjuku", tag:"home base", spots:[
       {name:"Omoide Yokocho", note:"Yakitori alley, go early evening", done:false},
       {name:"Golden Gai", note:"Tiny bars, mixed crowd", done:false},
-      {name:"Kabukicho", note:"Night walk", done:false}
+      {name:"Kabukicho", note:"Night walk", done:false},
+      {name:"Fuunji", note:"Iconic tsukemen (dipping ramen), walkable from the hotel — casual counter seating, no dress code, expect a short line", done:false},
+      {name:"Konbini run — 7-Eleven / Lawson / FamilyMart", note:"Egg salad sando, Karaage-kun / Famichiki fried chicken, onigiri, seasonal snacks — easy anytime, zero dress code", done:false},
+      {name:"Depachika pudding & cheesecake", note:"Isetan/Odakyu basement food halls near the hotel — grab a Kimuraya or R.L. pudding, or a cheesecake slice", done:false}
     ]},
     { name:"Nakano", tag:"manga & collectibles", spots:[
       {name:"Nakano Broadway", note:"Mandarake flagship, 8 floors", done:false}
     ]},
     { name:"Shimokitazawa", tag:"vintage clothing", spots:[
-      {name:"Vintage shops", note:"Indie clothing stores", done:false}
+      {name:"Vintage shops", note:"Indie clothing stores", done:false},
+      {name:"Izakaya karaage & yakitori", note:"Small izakayas here serve casual karaage (fried chicken) and yakitori plates — good non-alcohol order, no dress code", done:false}
     ]},
     { name:"Shibuya / Harajuku", tag:"clothes + food", spots:[
       {name:"Takeshita Street crepes", note:"", done:false},
       {name:"Shibuya109", note:"Clothes shopping", done:false},
       {name:"Nintendo TOKYO", note:"Shibuya PARCO", done:false},
-      {name:"Nonbei Yokocho", note:"Depachika food halls nearby", done:false}
+      {name:"Nonbei Yokocho", note:"Depachika food halls nearby", done:false},
+      {name:"Flipper's (Harajuku)", note:"Legendary jiggly soufflé pancakes — casual café, no dress code, expect a wait", done:false},
+      {name:"Steak Land Kobe-tei (Shibuya)", note:"Casual teppan-grilled wagyu steak, no dress code, great value course — line up for dinner", done:false}
     ]},
     { name:"Akihabara", tag:"anime + arcade", spots:[
       {name:"Mandarake Complex", note:"8 floors of everything", done:false},
       {name:"Radio Kaikan", note:"Manga/figures", done:false},
       {name:"Gachapon Kaikan", note:"Hundreds of gatcha machines", done:false},
-      {name:"GiGO Akihabara", note:"Arcade, claw machines", done:false}
+      {name:"GiGO Akihabara", note:"Arcade, claw machines", done:false},
+      {name:"Kanda Yabu Soba", note:"Historic soba house near Akihabara/Kanda since 1880 — casual, no dress code", done:false}
     ]},
     { name:"Tsukiji / Ginza", tag:"seafood + shopping", spots:[
       {name:"Tsukiji Outer Market", note:"Sushi breakfast", done:false},
-      {name:"Ginza — Uniqlo, Mitsukoshi, Apple", note:"", done:false}
+      {name:"Ginza — Uniqlo, Mitsukoshi, Apple", note:"", done:false},
+      {name:"Torigin Honten", note:"Famous yakitori-don lunch sets since 1949 — casual daytime spot, not a night izakaya, no dress code", done:false}
     ]},
     { name:"Ikebukuro", tag:"Pokémon + anime", spots:[
       {name:"Otome Road", note:"", done:false},
       {name:"Pokémon Center Mega Tokyo", note:"Sunshine City", done:false},
-      {name:"Animate main store", note:"", done:false}
+      {name:"Animate main store", note:"", done:false},
+      {name:"Rikuro Ojisan's Cheesecake", note:"Famous jiggly baked cheesecake near Sunshine City — best fresh out of the oven, casual walk-up", done:false}
     ]},
     { name:"Toyosu", tag:"market + teamLab", spots:[
       {name:"Toyosu Market", note:"Sushi breakfast", done:false},
@@ -676,6 +685,24 @@ function backfillStopCoords(days){
   return changed;
 }
 
+function backfillClusterSpots(clusters){
+  const defaultsByCluster = {};
+  defaultClusters().forEach(c => { defaultsByCluster[c.name] = c.spots; });
+  let changed = false;
+  clusters.forEach(cluster => {
+    const defaults = defaultsByCluster[cluster.name];
+    if(!defaults) return;
+    const haveNames = new Set(cluster.spots.map(s => s.name));
+    defaults.forEach(s => {
+      if(!haveNames.has(s.name)){
+        cluster.spots.push({ id: uid(), name: s.name, note: s.note, done: false });
+        changed = true;
+      }
+    });
+  });
+  return changed;
+}
+
 function loadState(){
   let loaded = null;
   try{ const raw = localStorage.getItem(LOCAL_KEY); if(raw) loaded = JSON.parse(raw); }catch(e){}
@@ -683,7 +710,12 @@ function loadState(){
   // Anyone who used the app before stop coordinates were added has old,
   // coordinate-less stops saved in localStorage — that saved copy otherwise
   // wins wholesale over the (now-richer) default seed data.
-  if(backfillStopCoords(state.days)) scheduleSave();
+  let needsSave = backfillStopCoords(state.days);
+  // Same problem for cluster food/shopping spots: new picks added to
+  // defaultClusters() are invisible to anyone with a saved cluster list,
+  // since the saved array shadows the default wholesale.
+  if(backfillClusterSpots(state.clusters)) needsSave = true;
+  if(needsSave) scheduleSave();
   render();
 }
 
