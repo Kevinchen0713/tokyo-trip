@@ -136,6 +136,8 @@
   .stop-main{ flex:1; }
   .stop-name{ font-weight:700; font-size:14px; }
   .stop-note{ color: var(--grey); font-size:12.5px; margin-top:2px; }
+  .stop-link{ display:inline-block; font-size:11px; color:var(--teal); text-decoration:none; margin-top:3px; }
+  .stop-link:hover{ text-decoration:underline; }
   .stop-del{ background:none; border:none; color: var(--grey); cursor:pointer; font-size:16px; padding: 2px 6px; opacity:.6; }
   .stop-del:hover{ opacity:1; color: var(--vermilion); }
 
@@ -163,6 +165,8 @@
   .spot-main.done .spot-name{ text-decoration: line-through; color: var(--grey); }
   .spot-name{ font-weight:600; font-size:13.5px; }
   .spot-note{ color: var(--grey); font-size:12px; margin-top:1px; }
+  .spot-link{ display:inline-block; font-size:11px; color:var(--teal); text-decoration:none; margin-top:2px; }
+  .spot-link:hover{ text-decoration:underline; }
   .spot-del{ background:none;border:none;color:var(--grey);cursor:pointer;opacity:.6;font-size:15px;}
   .spot-del:hover{ opacity:1; color:var(--vermilion); }
   .cluster-add{ display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
@@ -212,6 +216,8 @@
   .dd-stop-time{ font-family:'JetBrains Mono', monospace; font-size:11px; color: var(--gold); }
   .dd-stop-name{ font-weight:700; font-size:14.5px; }
   .dd-stop-note{ color: var(--grey); font-size:12.5px; margin-top:2px; }
+  .dd-stop-link{ display:inline-block; font-size:11px; color:var(--teal); text-decoration:none; margin-top:2px; }
+  .dd-stop-link:hover{ text-decoration:underline; }
   .dd-no-loc{ font-size:11px; color: var(--grey); font-style:italic; margin-top:2px; }
   .dd-leg{ display:flex; align-items:center; gap:10px; padding: 6px 0 6px 36px; color: var(--grey); font-size:12px; font-family:'JetBrains Mono', monospace; }
   .dd-leg a{ color: var(--teal); text-decoration:none; margin-left:auto; font-family:'Zen Kaku Gothic New', sans-serif; font-size:12px; }
@@ -531,27 +537,34 @@ function defaultDays(){
       {time:"1:45 PM", name:"Land at Haneda", note:"Transfer to Shinjuku (~40–50 min)", lat:35.5494, lon:139.7798},
       {time:"~3:00 PM", name:"Check in — Hotel Gracery Shinjuku", note:"", lat:35.6952, lon:139.7028},
       {time:"Evening", name:"Omoide Yokocho", note:"Yakitori alley — first food crawl stop", lat:35.6938, lon:139.6997},
-      {time:"Night", name:"Kabukicho walk", note:"", lat:35.6950, lon:139.7020}
+      {time:"Night", name:"Kabukicho walk", note:"", lat:35.6950, lon:139.7020},
+      {time:"Late Night", name:"Fuunji", note:"Iconic tsukemen (dipping ramen), walkable from the hotel — casual counter seating, no dress code, expect a short line", lat:35.6866, lon:139.6924, link:"https://www.google.com/maps/search/?api=1&query=Fuunji+Ramen+Yoyogi+Tokyo"},
+      {time:"Late Night", name:"Konbini run", note:"7-Eleven / Lawson / FamilyMart — egg salad sando, Karaage-kun / Famichiki fried chicken, onigiri, seasonal snacks", lat:35.6945, lon:139.7015, link:"https://www.google.com/maps/search/?api=1&query=7-Eleven+Kabukicho+Shinjuku+Tokyo"}
     ],
     [
       {time:"", name:"Culture Day (national holiday)", note:"Nakano fits better than Akihabara on a holiday crowd"},
       {time:"Morning–early PM", name:"Nakano Broadway", note:"Manga/anime collector mecca, Mandarake flagship", lat:35.7080, lon:139.6655},
       {time:"Afternoon", name:"Shimokitazawa", note:"Vintage clothing, indie shops", lat:35.6613, lon:139.6683},
-      {time:"Evening", name:"Shimokitazawa food crawl", note:"Small izakayas", lat:35.6620, lon:139.6690}
+      {time:"Evening", name:"Shimokitazawa food crawl", note:"Small izakayas", lat:35.6620, lon:139.6690},
+      {time:"Evening", name:"Izakaya karaage & yakitori", note:"Small izakayas here serve casual karaage (fried chicken) and yakitori — good non-alcohol order, no dress code", lat:35.6620, lon:139.6690, link:"https://www.google.com/maps/search/?api=1&query=Izakaya+Shimokitazawa+Tokyo"}
     ],
     [
       {time:"", name:"Tokyo DisneySea — full day", note:"Off-peak weekday. Buy tickets exactly 2 months before, 2:00 PM JST (Sept 4)", lat:35.6267, lon:139.8853}
     ],
     [
       {time:"Morning", name:"Takeshita Street, Harajuku", note:"Crepes, fashion shopping", lat:35.6702, lon:139.7026},
+      {time:"Morning", name:"Flipper's (Harajuku)", note:"Legendary jiggly soufflé pancakes — casual café, no dress code, expect a wait", lat:35.6699, lon:139.7042, link:"https://www.google.com/maps/search/?api=1&query=Flipper%27s+Harajuku+Tokyo"},
       {time:"Midday", name:"Shibuya Scramble", note:"Walk through, no observation deck", lat:35.6595, lon:139.7005},
       {time:"Afternoon", name:"Shibuya109", note:"Clothes shopping", lat:35.6590, lon:139.6982},
       {time:"Afternoon", name:"Nintendo TOKYO", note:"Shibuya PARCO — Mario/Zelda merch", lat:35.6615, lon:139.6982},
-      {time:"Aft.–Evening", name:"Shibuya food crawl", note:"Depachika food halls, Nonbei Yokocho", lat:35.6595, lon:139.7025}
+      {time:"Afternoon", name:"Shibuya Hikarie ShinQs", note:"Depachika food hall — try Kimuraya or R.L. pudding, or a cheesecake slice", lat:35.6590, lon:139.7016, link:"https://www.google.com/maps/search/?api=1&query=Shibuya+Hikarie+ShinQs+Tokyo"},
+      {time:"Aft.–Evening", name:"Shibuya food crawl", note:"Depachika food halls, Nonbei Yokocho", lat:35.6595, lon:139.7025},
+      {time:"Evening", name:"Steak Land Kobe-tei", note:"Casual teppan-grilled wagyu steak, no dress code, great value course — line up for dinner", lat:35.6580, lon:139.6975, link:"https://www.google.com/maps/search/?api=1&query=Steak+Land+Kobe-tei+Shibuya+Tokyo"}
     ],
     [
       {time:"Morning", name:"Akihabara Electric Town", note:"Mandarake, Animate, Radio Kaikan", lat:35.6984, lon:139.7731},
       {time:"Lunch", name:"Akiba food crawl", note:"Curry, gyoza alley", lat:35.6989, lon:139.7720},
+      {time:"Early PM", name:"Kanda Yabu Soba", note:"Historic soba house near Akihabara/Kanda since 1880 — casual, no dress code", lat:35.6958, lon:139.7661, link:"https://www.google.com/maps/search/?api=1&query=Kanda+Yabu+Soba+Tokyo"},
       {time:"Afternoon", name:"Suehirocho backstreets", note:"Cheaper used shops", lat:35.7020, lon:139.7716},
       {time:"Afternoon", name:"Gachapon Kaikan", note:"Hundreds of gatcha machines", lat:35.7013, lon:139.7714},
       {time:"Afternoon", name:"GiGO Akihabara", note:"Arcade, claw machines, rhythm games", lat:35.6989, lon:139.7726},
@@ -559,6 +572,7 @@ function defaultDays(){
     ],
     [
       {time:"Morning", name:"Tsukiji Outer Market", note:"Seafood, tamagoyaki, sushi breakfast", lat:35.6654, lon:139.7707},
+      {time:"Lunch", name:"Torigin Honten", note:"Famous yakitori-don lunch sets since 1949 — casual daytime spot, not a night izakaya, no dress code", lat:35.6710, lon:139.7639, link:"https://www.google.com/maps/search/?api=1&query=Torigin+Honten+Ginza+Tokyo"},
       {time:"Midday", name:"Ginza shopping", note:"Uniqlo, Mitsukoshi, Apple", lat:35.6717, lon:139.7650},
       {time:"Evening", name:"Ginza splurge dinner", note:"", lat:35.6712, lon:139.7660}
     ],
@@ -567,6 +581,7 @@ function defaultDays(){
       {time:"", name:"Sunshine City", note:"Animate main store", lat:35.7295, lon:139.7189},
       {time:"", name:"Pokémon Center Mega Tokyo", note:"Sunshine City — give it real browsing time", lat:35.7295, lon:139.7189},
       {time:"", name:"Second gatcha round", note:"Near Sunshine City, if you want more", lat:35.7295, lon:139.7185},
+      {time:"Afternoon", name:"Rikuro Ojisan's Cheesecake", note:"Famous jiggly baked cheesecake near Sunshine City — best fresh out of the oven, casual walk-up", lat:35.7291, lon:139.7183, link:"https://www.google.com/maps/search/?api=1&query=Rikuro+Ojisan%27s+Cheesecake+Ikebukuro+Tokyo"},
       {time:"", name:"Snack shopping", note:"Don Quijote / depachika basement for souvenirs", lat:35.7295, lon:139.7100}
     ],
     [
@@ -592,42 +607,42 @@ function defaultClusters(){
       {name:"Omoide Yokocho", note:"Yakitori alley, go early evening", done:false},
       {name:"Golden Gai", note:"Tiny bars, mixed crowd", done:false},
       {name:"Kabukicho", note:"Night walk", done:false},
-      {name:"Fuunji", note:"Iconic tsukemen (dipping ramen), walkable from the hotel — casual counter seating, no dress code, expect a short line", done:false},
-      {name:"Konbini run — 7-Eleven / Lawson / FamilyMart", note:"Egg salad sando, Karaage-kun / Famichiki fried chicken, onigiri, seasonal snacks — easy anytime, zero dress code", done:false},
-      {name:"Depachika pudding & cheesecake", note:"Isetan/Odakyu basement food halls near the hotel — grab a Kimuraya or R.L. pudding, or a cheesecake slice", done:false}
+      {name:"Fuunji", note:"Iconic tsukemen (dipping ramen), walkable from the hotel — casual counter seating, no dress code, expect a short line", done:false, link:"https://www.google.com/maps/search/?api=1&query=Fuunji+Ramen+Yoyogi+Tokyo"},
+      {name:"Konbini run — 7-Eleven / Lawson / FamilyMart", note:"Egg salad sando, Karaage-kun / Famichiki fried chicken, onigiri, seasonal snacks — easy anytime, zero dress code", done:false, link:"https://www.google.com/maps/search/?api=1&query=7-Eleven+Kabukicho+Shinjuku+Tokyo"},
+      {name:"Depachika pudding & cheesecake", note:"Isetan/Odakyu basement food halls near the hotel — grab a Kimuraya or R.L. pudding, or a cheesecake slice", done:false, link:"https://www.google.com/maps/search/?api=1&query=Isetan+Shinjuku+Depachika+Tokyo"}
     ]},
     { name:"Nakano", tag:"manga & collectibles", spots:[
       {name:"Nakano Broadway", note:"Mandarake flagship, 8 floors", done:false}
     ]},
     { name:"Shimokitazawa", tag:"vintage clothing", spots:[
       {name:"Vintage shops", note:"Indie clothing stores", done:false},
-      {name:"Izakaya karaage & yakitori", note:"Small izakayas here serve casual karaage (fried chicken) and yakitori plates — good non-alcohol order, no dress code", done:false}
+      {name:"Izakaya karaage & yakitori", note:"Small izakayas here serve casual karaage (fried chicken) and yakitori plates — good non-alcohol order, no dress code", done:false, link:"https://www.google.com/maps/search/?api=1&query=Izakaya+Shimokitazawa+Tokyo"}
     ]},
     { name:"Shibuya / Harajuku", tag:"clothes + food", spots:[
       {name:"Takeshita Street crepes", note:"", done:false},
       {name:"Shibuya109", note:"Clothes shopping", done:false},
       {name:"Nintendo TOKYO", note:"Shibuya PARCO", done:false},
       {name:"Nonbei Yokocho", note:"Depachika food halls nearby", done:false},
-      {name:"Flipper's (Harajuku)", note:"Legendary jiggly soufflé pancakes — casual café, no dress code, expect a wait", done:false},
-      {name:"Steak Land Kobe-tei (Shibuya)", note:"Casual teppan-grilled wagyu steak, no dress code, great value course — line up for dinner", done:false}
+      {name:"Flipper's (Harajuku)", note:"Legendary jiggly soufflé pancakes — casual café, no dress code, expect a wait", done:false, link:"https://www.google.com/maps/search/?api=1&query=Flipper%27s+Harajuku+Tokyo"},
+      {name:"Steak Land Kobe-tei (Shibuya)", note:"Casual teppan-grilled wagyu steak, no dress code, great value course — line up for dinner", done:false, link:"https://www.google.com/maps/search/?api=1&query=Steak+Land+Kobe-tei+Shibuya+Tokyo"}
     ]},
     { name:"Akihabara", tag:"anime + arcade", spots:[
       {name:"Mandarake Complex", note:"8 floors of everything", done:false},
       {name:"Radio Kaikan", note:"Manga/figures", done:false},
       {name:"Gachapon Kaikan", note:"Hundreds of gatcha machines", done:false},
       {name:"GiGO Akihabara", note:"Arcade, claw machines", done:false},
-      {name:"Kanda Yabu Soba", note:"Historic soba house near Akihabara/Kanda since 1880 — casual, no dress code", done:false}
+      {name:"Kanda Yabu Soba", note:"Historic soba house near Akihabara/Kanda since 1880 — casual, no dress code", done:false, link:"https://www.google.com/maps/search/?api=1&query=Kanda+Yabu+Soba+Tokyo"}
     ]},
     { name:"Tsukiji / Ginza", tag:"seafood + shopping", spots:[
       {name:"Tsukiji Outer Market", note:"Sushi breakfast", done:false},
       {name:"Ginza — Uniqlo, Mitsukoshi, Apple", note:"", done:false},
-      {name:"Torigin Honten", note:"Famous yakitori-don lunch sets since 1949 — casual daytime spot, not a night izakaya, no dress code", done:false}
+      {name:"Torigin Honten", note:"Famous yakitori-don lunch sets since 1949 — casual daytime spot, not a night izakaya, no dress code", done:false, link:"https://www.google.com/maps/search/?api=1&query=Torigin+Honten+Ginza+Tokyo"}
     ]},
     { name:"Ikebukuro", tag:"Pokémon + anime", spots:[
       {name:"Otome Road", note:"", done:false},
       {name:"Pokémon Center Mega Tokyo", note:"Sunshine City", done:false},
       {name:"Animate main store", note:"", done:false},
-      {name:"Rikuro Ojisan's Cheesecake", note:"Famous jiggly baked cheesecake near Sunshine City — best fresh out of the oven, casual walk-up", done:false}
+      {name:"Rikuro Ojisan's Cheesecake", note:"Famous jiggly baked cheesecake near Sunshine City — best fresh out of the oven, casual walk-up", done:false, link:"https://www.google.com/maps/search/?api=1&query=Rikuro+Ojisan%27s+Cheesecake+Ikebukuro+Tokyo"}
     ]},
     { name:"Toyosu", tag:"market + teamLab", spots:[
       {name:"Toyosu Market", note:"Sushi breakfast", done:false},
@@ -670,18 +685,41 @@ function defaultState(){
 const LOCAL_KEY = 'tokyo-trip-state-v2';
 
 function backfillStopCoords(days){
-  const coordByName = {};
+  const byName = {};
   defaultDays().forEach(day => day.stops.forEach(s => {
-    if(s.lat != null) coordByName[s.name] = { lat: s.lat, lon: s.lon };
+    if(s.lat != null) byName[s.name] = { lat: s.lat, lon: s.lon, link: s.link };
   }));
   let changed = false;
   days.forEach(day => day.stops.forEach(s => {
-    if((s.lat == null || s.lon == null) && coordByName[s.name]){
-      s.lat = coordByName[s.name].lat;
-      s.lon = coordByName[s.name].lon;
-      changed = true;
-    }
+    const def = byName[s.name];
+    if(!def) return;
+    if(s.lat == null || s.lon == null){ s.lat = def.lat; s.lon = def.lon; changed = true; }
+    if(s.link == null && def.link != null){ s.link = def.link; changed = true; }
   }));
+  return changed;
+}
+
+function backfillNewDayStops(days){
+  const defaults = defaultDays();
+  let changed = false;
+  days.forEach((day, i) => {
+    const def = defaults[i];
+    if(!def) return;
+    const haveNames = new Set(day.stops.map(s => s.name));
+    if(def.stops.every(s => haveNames.has(s.name))) return;
+    // Rebuild in default order so newly-inserted food stops land in the right
+    // spot in the day's timeline instead of just tacking on to the end;
+    // saved stops (with any user edits) are kept, only missing ones are added.
+    const merged = [];
+    def.stops.forEach(ds => {
+      const saved = day.stops.find(s => s.name === ds.name);
+      merged.push(saved || { ...ds, id: uid() });
+    });
+    // Append any stop the user added themselves that isn't part of the default seed at all.
+    day.stops.forEach(s => { if(!def.stops.some(ds => ds.name === s.name)) merged.push(s); });
+    day.stops = merged;
+    changed = true;
+  });
   return changed;
 }
 
@@ -692,10 +730,15 @@ function backfillClusterSpots(clusters){
   clusters.forEach(cluster => {
     const defaults = defaultsByCluster[cluster.name];
     if(!defaults) return;
-    const haveNames = new Set(cluster.spots.map(s => s.name));
+    const byName = {};
+    cluster.spots.forEach(s => { byName[s.name] = s; });
     defaults.forEach(s => {
-      if(!haveNames.has(s.name)){
-        cluster.spots.push({ id: uid(), name: s.name, note: s.note, done: false });
+      const existing = byName[s.name];
+      if(!existing){
+        cluster.spots.push({ id: uid(), name: s.name, note: s.note, done: false, link: s.link });
+        changed = true;
+      } else if(existing.link == null && s.link != null){
+        existing.link = s.link;
         changed = true;
       }
     });
@@ -707,13 +750,13 @@ function loadState(){
   let loaded = null;
   try{ const raw = localStorage.getItem(LOCAL_KEY); if(raw) loaded = JSON.parse(raw); }catch(e){}
   state = loaded ? Object.assign(defaultState(), loaded) : defaultState();
-  // Anyone who used the app before stop coordinates were added has old,
-  // coordinate-less stops saved in localStorage — that saved copy otherwise
-  // wins wholesale over the (now-richer) default seed data.
+  // Anyone who used the app before stop coordinates (or, later, food-spot
+  // Google Maps links) were added has an older, thinner stop list saved in
+  // localStorage — that saved copy otherwise wins wholesale over the
+  // (now-richer) default seed data, so every new default field/stop needs
+  // an explicit backfill pass here.
   let needsSave = backfillStopCoords(state.days);
-  // Same problem for cluster food/shopping spots: new picks added to
-  // defaultClusters() are invisible to anyone with a saved cluster list,
-  // since the saved array shadows the default wholesale.
+  if(backfillNewDayStops(state.days)) needsSave = true;
   if(backfillClusterSpots(state.clusters)) needsSave = true;
   if(needsSave) scheduleSave();
   render();
@@ -837,6 +880,7 @@ function renderDays(){
           <div class="stop-main">
             <div class="stop-name">${stop.name}</div>
             ${stop.note ? `<div class="stop-note">${stop.note}</div>` : ''}
+            ${stop.link ? `<a class="stop-link" href="${stop.link}" target="_blank" rel="noopener">📍 Google Maps</a>` : ''}
           </div>
           <button class="stop-del">×</button>
         `;
@@ -917,6 +961,7 @@ function renderClusters(){
           <div class="spot-main ${spot.done?'done':''}" style="flex:1;">
             <div class="spot-name">${spot.name}</div>
             ${spot.note ? `<div class="spot-note">${spot.note}</div>` : ''}
+            ${spot.link ? `<a class="spot-link" href="${spot.link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📍 Google Maps</a>` : ''}
           </div>
           <button class="spot-del">×</button>
         `;
@@ -1815,6 +1860,7 @@ function renderDayStopsList(seq, legs, located){
         ${s.time ? `<div class="dd-stop-time">${s.time}</div>` : ''}
         <div class="dd-stop-name">${s.name}</div>
         ${s.note ? `<div class="dd-stop-note">${s.note}</div>` : ''}
+        ${s.link ? `<a class="dd-stop-link" href="${s.link}" target="_blank" rel="noopener">📍 Google Maps</a>` : ''}
         ${!hasLoc ? `<div class="dd-no-loc">No location set — not shown on map</div>` : ''}
       </div>
     `;
