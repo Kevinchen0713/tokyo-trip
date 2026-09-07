@@ -527,9 +527,9 @@ function defaultDays(){
     { date:"Nov 5 (Thu)", tag:"Shibuya & Harajuku" },
     { date:"Nov 6 (Fri)", tag:"Akihabara" },
     { date:"Nov 7 (Sat)", tag:"Tsukiji & Ginza" },
-    { date:"Nov 8 (Sun)", tag:"Ikebukuro" },
-    { date:"Nov 9 (Mon)", tag:"Toyosu" },
-    { date:"Nov 10 (Tue)", tag:"Azabudai Hills + Borderless" },
+    { date:"Nov 8 (Sun)", tag:"Ikebukuro + Yomiuriland" },
+    { date:"Nov 9 (Mon)", tag:"Toyosu + Odaiba" },
+    { date:"Nov 10 (Tue)", tag:"Shopping & Wind Down" },
     { date:"Nov 11 (Wed)", tag:"Departure" }
   ];
   const seeds = [
@@ -577,22 +577,21 @@ function defaultDays(){
       {time:"Evening", name:"Ginza splurge dinner", note:"", lat:35.6712, lon:139.7660}
     ],
     [
-      {time:"", name:"Otome Road", note:"", lat:35.7301, lon:139.7168},
-      {time:"", name:"Sunshine City", note:"Animate main store", lat:35.7295, lon:139.7189},
-      {time:"", name:"Pokémon Center Mega Tokyo", note:"Sunshine City — give it real browsing time", lat:35.7295, lon:139.7189},
-      {time:"", name:"Second gatcha round", note:"Near Sunshine City, if you want more", lat:35.7295, lon:139.7185},
-      {time:"Afternoon", name:"Rikuro Ojisan's Cheesecake", note:"Famous jiggly baked cheesecake near Sunshine City — best fresh out of the oven, casual walk-up", lat:35.7291, lon:139.7183, link:"https://www.google.com/maps/search/?api=1&query=Rikuro+Ojisan%27s+Cheesecake+Ikebukuro+Tokyo"},
-      {time:"", name:"Snack shopping", note:"Don Quijote / depachika basement for souvenirs", lat:35.7295, lon:139.7100}
+      {time:"Morning", name:"Otome Road", note:"", lat:35.7301, lon:139.7168},
+      {time:"Morning", name:"Sunshine City", note:"Animate main store", lat:35.7295, lon:139.7189},
+      {time:"Late Morning", name:"Pokémon Center Mega Tokyo", note:"Sunshine City — give it real browsing time", lat:35.7295, lon:139.7189},
+      {time:"Early PM", name:"Rikuro Ojisan's Cheesecake", note:"Famous jiggly baked cheesecake near Sunshine City — best fresh out of the oven, casual walk-up", lat:35.7291, lon:139.7183, link:"https://www.google.com/maps/search/?api=1&query=Rikuro+Ojisan%27s+Cheesecake+Ikebukuro+Tokyo"},
+      {time:"Late PM–Evening", name:"Yomiuriland — Jewellumination", note:"~40 min via Shinjuku + Keio Line + Sky Shuttle gondola. Skip Bandit (the wooden coaster) — Ferris wheel, carousel, the gondola ride itself, and the illumination are the chill highlights. Lights run ~4:00–8:30 PM in season; confirm 2026–27 exact dates/hours closer to the trip", lat:35.6197, lon:139.5136, link:"https://www.google.com/maps/search/?api=1&query=Yomiuriland+Tokyo"}
     ],
     [
       {time:"Morning", name:"Toyosu Market", note:"Sushi breakfast — succeeded Tsukiji's wholesale trade", lat:35.6455, lon:139.7828},
-      {time:"Late AM–early PM", name:"teamLab Planets TOKYO", note:"Barefoot, water rooms — book ahead, closes end of 2027", lat:35.6465, lon:139.7930},
-      {time:"Afternoon", name:"Open", note:"More shopping or food if energy allows"}
+      {time:"11:00 AM", name:"teamLab Planets TOKYO", note:"Booked — barefoot, water rooms. Entry window 11:00–11:30 AM, stay as long as you like after", lat:35.6465, lon:139.7930, link:"https://www.google.com/maps/search/?api=1&query=teamLab+Planets+TOKYO"},
+      {time:"Afternoon", name:"Tokyo Joypolis", note:"SEGA indoor park in Odaiba — quick Yurikamome ride from Toyosu. Stick to the arcade floor, claw machines, and the Ace Attorney mystery walkthrough for something chill; skip the VR drop/motion rides", lat:35.6296, lon:139.7754, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Joypolis+Odaiba"}
     ],
     [
-      {time:"Morning–Aft.", name:"teamLab Borderless", note:"Azabudai Hills — dry, maze-like, 50+ art spaces, ~2 hrs, book separately from Planets", lat:35.6636, lon:139.7420},
-      {time:"Afternoon", name:"Azabudai Hills shopping/dining", note:"Modern development with restaurants", lat:35.6636, lon:139.7423},
-      {time:"Evening", name:"Final food crawl", note:"Last-minute clothes + snack shopping, pack", lat:35.6938, lon:139.6997}
+      {time:"Morning–Aft.", name:"Shopping wind-down", note:"Revisit your favorite area (Ginza/Shibuya) for anything you didn't finish — no fixed plan, kept deliberately low-key", lat:35.6938, lon:139.6997},
+      {time:"Afternoon", name:"Snack shopping", note:"Don Quijote / depachika basement for souvenir snacks to bring home", lat:35.6938, lon:139.6997},
+      {time:"Evening", name:"Final food crawl", note:"Last casual meal near the hotel, pack for tomorrow's flight", lat:35.6938, lon:139.6997}
     ],
     [
       {time:"10:10 AM", name:"Flight departs", note:"Checkout at 11 AM isn't a factor — you'll leave earlier", lat:35.5494, lon:139.7798}
@@ -644,12 +643,14 @@ function defaultClusters(){
       {name:"Animate main store", note:"", done:false},
       {name:"Rikuro Ojisan's Cheesecake", note:"Famous jiggly baked cheesecake near Sunshine City — best fresh out of the oven, casual walk-up", done:false, link:"https://www.google.com/maps/search/?api=1&query=Rikuro+Ojisan%27s+Cheesecake+Ikebukuro+Tokyo"}
     ]},
-    { name:"Toyosu", tag:"market + teamLab", spots:[
-      {name:"Toyosu Market", note:"Sushi breakfast", done:false},
-      {name:"teamLab Planets TOKYO", note:"Book ahead", done:false}
+    { name:"Yomiuriland", tag:"illumination + gentle rides", spots:[
+      {name:"Jewellumination", note:"Kanto's largest illumination event, nightly ~4:00–8:30 PM in season — confirm 2026–27 dates/hours closer to the trip", done:false, link:"https://www.google.com/maps/search/?api=1&query=Yomiuriland+Tokyo"},
+      {name:"Sky Shuttle gondola + Ferris wheel", note:"Scenic, chill rides — skip Bandit (the wooden coaster) if not into thrill rides", done:false}
     ]},
-    { name:"Azabudai Hills", tag:"teamLab + dining", spots:[
-      {name:"teamLab Borderless", note:"Book separately from Planets", done:false}
+    { name:"Toyosu", tag:"market + teamLab + arcade", spots:[
+      {name:"Toyosu Market", note:"Sushi breakfast", done:false},
+      {name:"teamLab Planets TOKYO", note:"Booked — Nov 9, 11:00–11:30 AM entry", done:false},
+      {name:"Tokyo Joypolis (Odaiba)", note:"Quick Yurikamome ride from Toyosu — stick to the arcade floor / Ace Attorney walkthrough for something chill", done:false, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Joypolis+Odaiba"}
     ]}
   ];
   return seed.map(c=>({ id: uid(), name:c.name, tag:c.tag, spots: c.spots.map(s=>({id:uid(),...s})) }));
@@ -657,11 +658,8 @@ function defaultClusters(){
 
 function defaultDecisions(){
   return [
-    "Buy DisneySea ticket for Nov 4 — opens Sept 4, 2:00 PM Japan time",
-    "Book teamLab Planets (Nov 9) — Nov tickets just opened, book soon",
-    "Book teamLab Borderless (Nov 10) — book separately from Planets",
-    "Nov 9: confirm Toyosu (current plan) or swap for Kamakura/Nikko day trip",
-    "Book Nozomi/Tobu tickets in advance if doing a day trip",
+    "Buy DisneySea ticket for Nov 4 — on sale now, ¥9,900/adult. Direct on the official site is ~$14 cheaper than Klook for two, unless your card fails 3-D Secure",
+    "Confirm 2026–27 Yomiuriland Jewellumination exact dates/hours before Nov 8 (expected ~4:00–8:30 PM nightly, not yet officially announced)",
     "Grab an IC card (Suica/Pasmo) at Haneda on arrival",
     "Decide if Samurai Restaurant Time or a cooking class gets a fixed evening slot"
   ].map(text=>({ id: uid(), text, done:false }));
@@ -723,10 +721,73 @@ function backfillNewDayStops(days){
   return changed;
 }
 
-function backfillClusterSpots(clusters){
-  const defaultsByCluster = {};
-  defaultClusters().forEach(c => { defaultsByCluster[c.name] = c.spots; });
+function backfillNovemberReshuffle(state){
+  // Nov 10 dropped Borderless/Azabudai Hills in favor of a low-key shopping/
+  // wind-down day, and Yomiuriland + Joypolis got slotted into Nov 8 / Nov 9
+  // instead — remove the stale stops/cluster by name so they don't linger
+  // alongside the new ones once backfillNewDayStops runs.
   let changed = false;
+  const day8 = state.days[6];
+  if(day8){
+    if(day8.tag === "Ikebukuro"){ day8.tag = "Ikebukuro + Yomiuriland"; changed = true; }
+    const before = day8.stops.length;
+    day8.stops = day8.stops.filter(s => s.name !== "Second gatcha round" && s.name !== "Snack shopping");
+    if(day8.stops.length !== before) changed = true;
+  }
+  const day9 = state.days[7];
+  if(day9){
+    if(day9.tag === "Toyosu"){ day9.tag = "Toyosu + Odaiba"; changed = true; }
+    const before = day9.stops.length;
+    day9.stops = day9.stops.filter(s => s.name !== "Open");
+    if(day9.stops.length !== before) changed = true;
+  }
+  const day10 = state.days[8];
+  if(day10){
+    if(day10.tag === "Azabudai Hills + Borderless"){ day10.tag = "Shopping & Wind Down"; changed = true; }
+    const before = day10.stops.length;
+    day10.stops = day10.stops.filter(s => s.name !== "teamLab Borderless" && s.name !== "Azabudai Hills shopping/dining");
+    if(day10.stops.length !== before) changed = true;
+  }
+  const beforeClusters = state.clusters.length;
+  state.clusters = state.clusters.filter(c => c.name !== "Azabudai Hills");
+  if(state.clusters.length !== beforeClusters) changed = true;
+  return changed;
+}
+
+function backfillDecisionsRefresh(decisions){
+  const staleTexts = [
+    "Book teamLab Planets (Nov 9) — Nov tickets just opened, book soon",
+    "Book teamLab Borderless (Nov 10) — book separately from Planets",
+    "Nov 9: confirm Toyosu (current plan) or swap for Kamakura/Nikko day trip",
+    "Book Nozomi/Tobu tickets in advance if doing a day trip",
+    "Buy DisneySea ticket for Nov 4 — opens Sept 4, 2:00 PM Japan time"
+  ];
+  let changed = false;
+  for(let i = decisions.length - 1; i >= 0; i--){
+    if(staleTexts.includes(decisions[i].text)){ decisions.splice(i, 1); changed = true; }
+  }
+  const newTexts = [
+    "Buy DisneySea ticket for Nov 4 — on sale now, ¥9,900/adult. Direct on the official site is ~$14 cheaper than Klook for two, unless your card fails 3-D Secure",
+    "Confirm 2026–27 Yomiuriland Jewellumination exact dates/hours before Nov 8 (expected ~4:00–8:30 PM nightly, not yet officially announced)"
+  ];
+  newTexts.forEach(text => {
+    if(!decisions.some(d => d.text === text)){ decisions.push({ id: uid(), text, done:false }); changed = true; }
+  });
+  return changed;
+}
+
+function backfillClusterSpots(clusters){
+  const defaultClustersList = defaultClusters();
+  const defaultsByCluster = {};
+  defaultClustersList.forEach(c => { defaultsByCluster[c.name] = c.spots; });
+  let changed = false;
+  const haveClusterNames = new Set(clusters.map(c => c.name));
+  defaultClustersList.forEach(c => {
+    if(!haveClusterNames.has(c.name)){
+      clusters.push({ id: uid(), name: c.name, tag: c.tag, spots: c.spots.map(s => ({ id: uid(), ...s })) });
+      changed = true;
+    }
+  });
   clusters.forEach(cluster => {
     const defaults = defaultsByCluster[cluster.name];
     if(!defaults) return;
@@ -756,8 +817,10 @@ function loadState(){
   // (now-richer) default seed data, so every new default field/stop needs
   // an explicit backfill pass here.
   let needsSave = backfillStopCoords(state.days);
+  if(backfillNovemberReshuffle(state)) needsSave = true;
   if(backfillNewDayStops(state.days)) needsSave = true;
   if(backfillClusterSpots(state.clusters)) needsSave = true;
+  if(backfillDecisionsRefresh(state.decisions)) needsSave = true;
   if(needsSave) scheduleSave();
   render();
 }
