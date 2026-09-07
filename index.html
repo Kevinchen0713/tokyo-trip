@@ -522,11 +522,11 @@ function uid(){ return Math.random().toString(36).slice(2,9); }
 function defaultDays(){
   const meta = [
     { date:"Nov 2 (Mon)", tag:"Arrival" },
-    { date:"Nov 3 (Tue)", tag:"Nakano & Shimokitazawa" },
+    { date:"Nov 3 (Tue)", tag:"Nakano & Shinjuku" },
     { date:"Nov 4 (Wed)", tag:"Tokyo DisneySea" },
     { date:"Nov 5 (Thu)", tag:"Shibuya & Harajuku" },
     { date:"Nov 6 (Fri)", tag:"Akihabara" },
-    { date:"Nov 7 (Sat)", tag:"Tsukiji & Ginza" },
+    { date:"Nov 7 (Sat)", tag:"Tsukiji & Tokyo Station" },
     { date:"Nov 8 (Sun)", tag:"Ikebukuro + Yomiuriland" },
     { date:"Nov 9 (Mon)", tag:"Toyosu + Odaiba" },
     { date:"Nov 10 (Tue)", tag:"Shopping & Wind Down" },
@@ -544,9 +544,10 @@ function defaultDays(){
     [
       {time:"", name:"Culture Day (national holiday)", note:"Nakano fits better than Akihabara on a holiday crowd"},
       {time:"Morning–early PM", name:"Nakano Broadway", note:"Manga/anime collector mecca, Mandarake flagship", lat:35.7080, lon:139.6655},
-      {time:"Afternoon", name:"Shimokitazawa", note:"Vintage clothing, indie shops", lat:35.6613, lon:139.6683},
-      {time:"Evening", name:"Shimokitazawa food crawl", note:"Small izakayas", lat:35.6620, lon:139.6690},
-      {time:"Evening", name:"Izakaya karaage & yakitori", note:"Small izakayas here serve casual karaage (fried chicken) and yakitori — good non-alcohol order, no dress code", lat:35.6620, lon:139.6690, link:"https://www.google.com/maps/search/?api=1&query=Izakaya+Shimokitazawa+Tokyo"}
+      {time:"Midday", name:"Shinjuku Gyoen", note:"Early autumn colors, relaxed garden walk — no advance reservation needed outside cherry-blossom season", lat:35.6852, lon:139.7100, link:"https://www.google.com/maps/search/?api=1&query=Shinjuku+Gyoen+National+Garden+Tokyo"},
+      {time:"Afternoon", name:"Shinjuku mall shopping", note:"Takashimaya Times Square, Lumine, NEWoMan — all attached to Shinjuku Station, steps from the hotel", lat:35.6896, lon:139.7006, link:"https://www.google.com/maps/search/?api=1&query=Takashimaya+Times+Square+Shinjuku+Tokyo"},
+      {time:"Evening", name:"Tokyo Metropolitan Government Building observation deck", note:"Free night skyline view, no booking needed", lat:35.6896, lon:139.6917, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Metropolitan+Government+Building+Observation+Deck"},
+      {time:"Evening", name:"Round1 Kabukicho", note:"Arcade, bowling, karaoke — walk-in, no advance planning needed", lat:35.6950, lon:139.7020, link:"https://www.google.com/maps/search/?api=1&query=Round1+Kabukicho+Tokyo"}
     ],
     [
       {time:"", name:"Tokyo DisneySea — full day", note:"Off-peak weekday. Buy tickets exactly 2 months before, 2:00 PM JST (Sept 4)", lat:35.6267, lon:139.8853}
@@ -573,8 +574,9 @@ function defaultDays(){
     [
       {time:"Morning", name:"Tsukiji Outer Market", note:"Seafood, tamagoyaki, sushi breakfast", lat:35.6654, lon:139.7707},
       {time:"Lunch", name:"Torigin Honten", note:"Famous yakitori-don lunch sets since 1949 — casual daytime spot, not a night izakaya, no dress code", lat:35.6710, lon:139.7639, link:"https://www.google.com/maps/search/?api=1&query=Torigin+Honten+Ginza+Tokyo"},
-      {time:"Midday", name:"Ginza shopping", note:"Uniqlo, Mitsukoshi, Apple", lat:35.6717, lon:139.7650},
-      {time:"Evening", name:"Ginza splurge dinner", note:"", lat:35.6712, lon:139.7660}
+      {time:"Afternoon", name:"KITTE + Tokyo Character Street", note:"Mall shopping at KITTE plus an indoor arcade of Pokémon/Ghibli/Jump character shops at Tokyo Station — short hop from Tsukiji", lat:35.6796, lon:139.7638, link:"https://www.google.com/maps/search/?api=1&query=KITTE+Marunouchi+Tokyo"},
+      {time:"Afternoon", name:"Intermediatheque", note:"Free quirky museum inside KITTE — University of Tokyo's old academic specimen collection, zero extra travel", lat:35.6796, lon:139.7638, link:"https://www.google.com/maps/search/?api=1&query=Intermediatheque+Tokyo"},
+      {time:"Evening", name:"Dinner near Tokyo Station / Nihonbashi", note:"Swapped out for the Ginza dinner. If the Marunouchi Illumination is already up (usually starts mid-Nov, not officially confirmed for 2026 yet), it's a nice walk-by along Naka-dori afterward", lat:35.6812, lon:139.7671}
     ],
     [
       {time:"Morning", name:"Otome Road", note:"", lat:35.7301, lon:139.7168},
@@ -608,14 +610,14 @@ function defaultClusters(){
       {name:"Kabukicho", note:"Night walk", done:false},
       {name:"Fuunji", note:"Iconic tsukemen (dipping ramen), walkable from the hotel — casual counter seating, no dress code, expect a short line", done:false, link:"https://www.google.com/maps/search/?api=1&query=Fuunji+Ramen+Yoyogi+Tokyo"},
       {name:"Konbini run — 7-Eleven / Lawson / FamilyMart", note:"Egg salad sando, Karaage-kun / Famichiki fried chicken, onigiri, seasonal snacks — easy anytime, zero dress code", done:false, link:"https://www.google.com/maps/search/?api=1&query=7-Eleven+Kabukicho+Shinjuku+Tokyo"},
-      {name:"Depachika pudding & cheesecake", note:"Isetan/Odakyu basement food halls near the hotel — grab a Kimuraya or R.L. pudding, or a cheesecake slice", done:false, link:"https://www.google.com/maps/search/?api=1&query=Isetan+Shinjuku+Depachika+Tokyo"}
+      {name:"Depachika pudding & cheesecake", note:"Isetan/Odakyu basement food halls near the hotel — grab a Kimuraya or R.L. pudding, or a cheesecake slice", done:false, link:"https://www.google.com/maps/search/?api=1&query=Isetan+Shinjuku+Depachika+Tokyo"},
+      {name:"Shinjuku Gyoen", note:"Early autumn colors, relaxed garden walk — no advance reservation needed outside cherry-blossom season", done:false, link:"https://www.google.com/maps/search/?api=1&query=Shinjuku+Gyoen+National+Garden+Tokyo"},
+      {name:"Shinjuku mall shopping", note:"Takashimaya Times Square, Lumine, NEWoMan — all attached to Shinjuku Station, steps from the hotel", done:false, link:"https://www.google.com/maps/search/?api=1&query=Takashimaya+Times+Square+Shinjuku+Tokyo"},
+      {name:"Tokyo Metropolitan Government Building observation deck", note:"Free night skyline view, no booking needed", done:false, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Metropolitan+Government+Building+Observation+Deck"},
+      {name:"Round1 Kabukicho", note:"Arcade, bowling, karaoke — walk-in, no advance planning needed", done:false, link:"https://www.google.com/maps/search/?api=1&query=Round1+Kabukicho+Tokyo"}
     ]},
     { name:"Nakano", tag:"manga & collectibles", spots:[
       {name:"Nakano Broadway", note:"Mandarake flagship, 8 floors", done:false}
-    ]},
-    { name:"Shimokitazawa", tag:"vintage clothing", spots:[
-      {name:"Vintage shops", note:"Indie clothing stores", done:false},
-      {name:"Izakaya karaage & yakitori", note:"Small izakayas here serve casual karaage (fried chicken) and yakitori plates — good non-alcohol order, no dress code", done:false, link:"https://www.google.com/maps/search/?api=1&query=Izakaya+Shimokitazawa+Tokyo"}
     ]},
     { name:"Shibuya / Harajuku", tag:"clothes + food", spots:[
       {name:"Takeshita Street crepes", note:"", done:false},
@@ -632,10 +634,11 @@ function defaultClusters(){
       {name:"GiGO Akihabara", note:"Arcade, claw machines", done:false},
       {name:"Kanda Yabu Soba", note:"Historic soba house near Akihabara/Kanda since 1880 — casual, no dress code", done:false, link:"https://www.google.com/maps/search/?api=1&query=Kanda+Yabu+Soba+Tokyo"}
     ]},
-    { name:"Tsukiji / Ginza", tag:"seafood + shopping", spots:[
+    { name:"Tsukiji / Tokyo Station", tag:"seafood + shopping", spots:[
       {name:"Tsukiji Outer Market", note:"Sushi breakfast", done:false},
-      {name:"Ginza — Uniqlo, Mitsukoshi, Apple", note:"", done:false},
-      {name:"Torigin Honten", note:"Famous yakitori-don lunch sets since 1949 — casual daytime spot, not a night izakaya, no dress code", done:false, link:"https://www.google.com/maps/search/?api=1&query=Torigin+Honten+Ginza+Tokyo"}
+      {name:"Torigin Honten", note:"Famous yakitori-don lunch sets since 1949 — casual daytime spot, not a night izakaya, no dress code", done:false, link:"https://www.google.com/maps/search/?api=1&query=Torigin+Honten+Ginza+Tokyo"},
+      {name:"KITTE + Tokyo Character Street", note:"Mall shopping at KITTE plus an indoor arcade of Pokémon/Ghibli/Jump character shops at Tokyo Station", done:false, link:"https://www.google.com/maps/search/?api=1&query=KITTE+Marunouchi+Tokyo"},
+      {name:"Intermediatheque", note:"Free quirky museum inside KITTE — University of Tokyo's old academic specimen collection", done:false, link:"https://www.google.com/maps/search/?api=1&query=Intermediatheque+Tokyo"}
     ]},
     { name:"Ikebukuro", tag:"Pokémon + anime", spots:[
       {name:"Otome Road", note:"", done:false},
@@ -754,6 +757,41 @@ function backfillNovemberReshuffle(state){
   return changed;
 }
 
+function backfillTokyoStationShinjukuReshuffle(state){
+  // Ginza (shopping/dinner) got dropped in favor of Tokyo Station (KITTE,
+  // Character Street, Intermediatheque), and Shimokitazawa's vintage/indie
+  // shopping got swapped for Shinjuku Gyoen + mall shopping right by the
+  // hotel — same stale-stop-removal pattern as backfillNovemberReshuffle.
+  let changed = false;
+  const day2 = state.days[1];
+  if(day2){
+    if(day2.tag === "Nakano & Shimokitazawa"){ day2.tag = "Nakano & Shinjuku"; changed = true; }
+    const before = day2.stops.length;
+    day2.stops = day2.stops.filter(s => !["Shimokitazawa","Shimokitazawa food crawl","Izakaya karaage & yakitori"].includes(s.name));
+    if(day2.stops.length !== before) changed = true;
+  }
+  const day6 = state.days[5];
+  if(day6){
+    if(day6.tag === "Tsukiji & Ginza"){ day6.tag = "Tsukiji & Tokyo Station"; changed = true; }
+    const before = day6.stops.length;
+    day6.stops = day6.stops.filter(s => !["Ginza shopping","Ginza splurge dinner"].includes(s.name));
+    if(day6.stops.length !== before) changed = true;
+  }
+  const beforeClusters = state.clusters.length;
+  state.clusters = state.clusters.filter(c => c.name !== "Shimokitazawa");
+  if(state.clusters.length !== beforeClusters) changed = true;
+  const tsukiji = state.clusters.find(c => c.name === "Tsukiji / Ginza");
+  if(tsukiji){
+    tsukiji.name = "Tsukiji / Tokyo Station";
+    tsukiji.tag = "seafood + shopping";
+    const before = tsukiji.spots.length;
+    tsukiji.spots = tsukiji.spots.filter(s => s.name !== "Ginza — Uniqlo, Mitsukoshi, Apple");
+    if(tsukiji.spots.length !== before) changed = true;
+    changed = true;
+  }
+  return changed;
+}
+
 function backfillDecisionsRefresh(decisions){
   const staleTexts = [
     "Book teamLab Planets (Nov 9) — Nov tickets just opened, book soon",
@@ -818,6 +856,7 @@ function loadState(){
   // an explicit backfill pass here.
   let needsSave = backfillStopCoords(state.days);
   if(backfillNovemberReshuffle(state)) needsSave = true;
+  if(backfillTokyoStationShinjukuReshuffle(state)) needsSave = true;
   if(backfillNewDayStops(state.days)) needsSave = true;
   if(backfillClusterSpots(state.clusters)) needsSave = true;
   if(backfillDecisionsRefresh(state.decisions)) needsSave = true;
