@@ -534,135 +534,188 @@ function defaultDays(){
   ];
   const seeds = [
     [
-      {time:"1:45 PM", name:"Land at Haneda Terminal 3", note:"Immigration, bags, customs — have Visit Japan Web QR codes ready. Allow ~1 hr", lat:35.5494, lon:139.7798},
-      {time:"2:45 PM", name:"Set up Suica in Apple Wallet", note:"Grab cash from a 7-Eleven ATM", lat:35.5494, lon:139.7798},
-      {time:"3:00 PM", name:"Airport Limousine Bus to Busta Shinjuku", note:"~50–75 min", lat:35.6902, lon:139.7003},
-      {time:"4:15 PM", name:"Check in — Hotel Gracery Shinjuku", note:"Shower, recharge", lat:35.6952, lon:139.7028},
-      {time:"5:00 PM", name:"Godzilla head terrace", note:"Hotel's 8th floor — neon comes on right after sunset", lat:35.6952, lon:139.7028},
-      {time:"6:30 PM", name:"Omoide Yokocho", note:"Yakitori dinner — order oolong tea or soda", lat:35.6938, lon:139.6997},
-      {time:"8:00 PM", name:"Tokyo Metropolitan Government Building observatory", note:"10 min walk — free", lat:35.6896, lon:139.6917, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Metropolitan+Government+Building+Observation+Deck"},
-      {time:"9:30 PM", name:"Back at the hotel", note:"Early night for jet lag", lat:35.6952, lon:139.7028}
+      {time:"1:45 PM", name:"Land at Haneda Terminal 3", note:"Immigration, bags, customs. Allow ~1 hr", lat:35.5494, lon:139.7798},
+      {time:"2:45 PM", name:"Set up Suica", note:"Grab cash at a 7-Eleven ATM", lat:35.5494, lon:139.7798},
+      {time:"3:00 PM", name:"Head to the hotel", note:""},
+      {time:"Transit", name:"Airport Limousine Bus to Busta Shinjuku", note:"~50–75 min. Backup: Keikyu Line to Shinagawa → JR Yamanote Line to Shinjuku (~50 min)"},
+      {time:"4:15 PM", name:"Check in — Hotel Gracery Shinjuku", note:"Recharge", lat:35.6952, lon:139.7028},
+      {time:"5:00 PM", name:"Godzilla head terrace", note:"Hotel's 8th floor", lat:35.6952, lon:139.7028},
+      {time:"6:30 PM", name:"Yakitori at Omoide Yokocho", note:"", lat:35.6938, lon:139.6997},
+      {time:"Transit", name:"Walk under the tracks to Shinjuku's west side", note:"~10 min"},
+      {time:"8:00 PM", name:"Metropolitan Government Building observatory", note:"Free", lat:35.6896, lon:139.6917, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Metropolitan+Government+Building+Observation+Deck"},
+      {time:"Transit", name:"Walk", note:"~10 min"},
+      {time:"9:30 PM", name:"Back to the hotel", note:"", lat:35.6952, lon:139.7028},
+      {time:"Transit", name:"Walk (~20 min) or taxi (~5 min)", note:""}
     ],
     [
-      {time:"7:00 AM", name:"Leave for Asakusa", note:"~35 min", lat:35.6952, lon:139.7028},
-      {time:"7:30 AM", name:"Senso-ji", note:"Before the Culture Day holiday crowds build", lat:35.7148, lon:139.7967, link:"https://www.google.com/maps/search/?api=1&query=Sensoji+Temple+Asakusa+Tokyo"},
-      {time:"9:00 AM", name:"Nakamise-dori", note:"Snacks as shops open — melon pan, ningyo-yaki", lat:35.7139, lon:139.7966, link:"https://www.google.com/maps/search/?api=1&query=Nakamise+Shopping+Street+Asakusa+Tokyo"},
-      {time:"10:30 AM", name:"Kappabashi kitchen street", note:"10 min walk — knives, plastic food replicas", lat:35.7118, lon:139.7889, link:"https://www.google.com/maps/search/?api=1&query=Kappabashi+Kitchen+Street+Tokyo"},
-      {time:"12:30 PM", name:"Lunch in Asakusa", note:"Tempura or unagi", lat:35.7128, lon:139.7960},
-      {time:"2:00 PM", name:"Tokyo Skytree + Solamachi", note:"20 min walk — Pokémon Center Skytree Town is inside", lat:35.7101, lon:139.8107, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Skytree"},
-      {time:"5:00 PM", name:"Skytree observation deck at sunset", note:"", lat:35.7101, lon:139.8107},
-      {time:"7:00 PM", name:"Monjayaki dinner", note:"Tsukishima's Monja Street, 30 min", lat:35.6648, lon:139.7838, link:"https://www.google.com/maps/search/?api=1&query=Tsukishima+Monja+Street+Tokyo"},
-      {time:"9:00 PM", name:"Back to Shinjuku", note:"30 min", lat:35.6952, lon:139.7028}
+      {time:"7:00 AM", name:"Leave for Asakusa", note:""},
+      {time:"Transit", name:"JR Chuo Line (Rapid) to Kanda → Tokyo Metro Ginza Line to Asakusa", note:"~35 min"},
+      {time:"7:30 AM", name:"Senso-ji", note:"", lat:35.7148, lon:139.7967, link:"https://www.google.com/maps/search/?api=1&query=Sensoji+Temple+Asakusa+Tokyo"},
+      {time:"9:00 AM", name:"Nakamise-dori snacks", note:"", lat:35.7139, lon:139.7966, link:"https://www.google.com/maps/search/?api=1&query=Nakamise+Shopping+Street+Asakusa+Tokyo"},
+      {time:"10:30 AM", name:"Kappabashi kitchen street", note:"", lat:35.7118, lon:139.7889, link:"https://www.google.com/maps/search/?api=1&query=Kappabashi+Kitchen+Street+Tokyo"},
+      {time:"Transit", name:"Walk", note:"~10 min"},
+      {time:"12:30 PM", name:"Tempura or unagi lunch in Asakusa", note:""},
+      {time:"2:00 PM", name:"Solamachi shopping + Pokémon Center Skytree Town", note:"", lat:35.7101, lon:139.8107, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Skytree"},
+      {time:"Transit", name:"Walk across the Sumida River", note:"~20 min. Or Tobu Skytree Line from Asakusa, 1 stop to Tokyo Skytree Station (~3 min)"},
+      {time:"3:45 PM", name:"Head to the Skytree entrance", note:""},
+      {time:"4:00 PM", name:"Tembo Deck for sunset", note:"Add the Galleria on site if the sky is clear", lat:35.7101, lon:139.8107},
+      {time:"5:30 PM", name:"More Solamachi", note:"If you want"},
+      {time:"7:00 PM", name:"Monjayaki dinner on Tsukishima's Monja Street", note:"", lat:35.6648, lon:139.7838, link:"https://www.google.com/maps/search/?api=1&query=Tsukishima+Monja+Street+Tokyo"},
+      {time:"Transit", name:"Hanzomon Line from Oshiage to Kiyosumi-shirakawa → Toei Oedo Line to Tsukishima", note:"~25 min"},
+      {time:"9:00 PM", name:"Back to Shinjuku", note:""},
+      {time:"Transit", name:"Toei Oedo Line direct from Tsukishima to Shinjuku", note:"~30 min"}
     ],
     [
-      {time:"6:45 AM", name:"Leave for Maihama", note:"~50 min", lat:35.6952, lon:139.7028},
-      {time:"7:45 AM", name:"Line up at the gate", note:"Opens ~8–9 AM", lat:35.6267, lon:139.8853},
-      {time:"Gate opening", name:"Buy Fantasy Springs Premier Access", note:"Do this immediately, in the app", lat:35.6267, lon:139.8853},
-      {time:"Morning", name:"Headline rides", note:"Lines are shortest early", lat:35.6267, lon:139.8853},
-      {time:"12:00 PM", name:"Lunch inside the park", note:"", lat:35.6267, lon:139.8853},
-      {time:"Afternoon", name:"Fantasy Springs return time", note:"Shows, snacks", lat:35.6267, lon:139.8853},
-      {time:"~7:00 PM", name:"Evening harbor show", note:"Check the day's schedule", lat:35.6267, lon:139.8853},
-      {time:"9:00 PM", name:"Park closes", note:"Back at the hotel ~10:15 PM", lat:35.6952, lon:139.7028}
+      {time:"6:45 AM", name:"Leave for DisneySea", note:""},
+      {time:"Transit", name:"JR Chuo Line (Rapid) to Tokyo → JR Keiyo Line to Maihama → Disney Resort Line monorail to Tokyo DisneySea Station", note:"~45 min + ~10 min. The Keiyo platform at Tokyo Station is a ~10 min walk underground — follow the red Keiyo signs"},
+      {time:"7:45 AM", name:"Line up at the gate", note:"", lat:35.6267, lon:139.8853},
+      {time:"Gate opening", name:"Buy Fantasy Springs Premier Access", note:"In the app", lat:35.6267, lon:139.8853},
+      {time:"Morning", name:"Headline rides", note:"", lat:35.6267, lon:139.8853},
+      {time:"12:00 PM", name:"Lunch in the park", note:"", lat:35.6267, lon:139.8853},
+      {time:"Afternoon", name:"Fantasy Springs", note:"Shows, snacks", lat:35.6267, lon:139.8853},
+      {time:"~7:00 PM", name:"Evening harbor show", note:"", lat:35.6267, lon:139.8853},
+      {time:"9:00 PM", name:"Park closes", note:"", lat:35.6267, lon:139.8853},
+      {time:"Transit", name:"Same route in reverse", note:"~1 hr. Hotel by ~10:15 PM"}
     ],
     [
-      {time:"9:30 AM", name:"Leave for Ikebukuro", note:"15 min", lat:35.6952, lon:139.7028},
-      {time:"10:00 AM", name:"Pokémon Center Mega Tokyo", note:"Sunshine City — arrive at opening", lat:35.7295, lon:139.7189},
-      {time:"11:15 AM", name:"Pikachu Sweets", note:"Same floor — Pikachu waffles + drinks. Your Pokémon café fix if the real one falls through", lat:35.7295, lon:139.7189},
-      {time:"11:45 AM", name:"Animate flagship store", note:"Anime merch", lat:35.7301, lon:139.7168},
-      {time:"12:45 PM", name:"Ramen lunch in Ikebukuro", note:"", lat:35.7295, lon:139.7189},
-      {time:"1:30 PM", name:"Train to Akihabara", note:"25 min", lat:35.6984, lon:139.7731},
-      {time:"2:00 PM", name:"Card shops for Pokémon singles", note:"Cardrush + the Radio Kaikan card floors", lat:35.7013, lon:139.7714, link:"https://www.google.com/maps/search/?api=1&query=Radio+Kaikan+Akihabara+Tokyo"},
-      {time:"3:30 PM", name:"Mandarake Complex", note:"Anime merch", lat:35.6996, lon:139.7714},
-      {time:"4:30 PM", name:"Super Potato", note:"Retro games", lat:35.6989, lon:139.7731, link:"https://www.google.com/maps/search/?api=1&query=Super+Potato+Akihabara+Tokyo"},
-      {time:"5:30 PM", name:"GiGO arcades", note:"Claw machines, rhythm games", lat:35.6989, lon:139.7726},
-      {time:"7:00 PM", name:"Ueno Ameyoko street food", note:"5 min — skip the kaisendon seafood bowls, they're raw", lat:35.7080, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Ameyoko+Market+Ueno+Tokyo"},
-      {time:"9:00 PM", name:"Back to Shinjuku", note:"30 min", lat:35.6952, lon:139.7028}
+      {time:"9:30 AM", name:"Leave for Ikebukuro", note:""},
+      {time:"Transit", name:"JR Yamanote or Saikyo Line to Ikebukuro", note:"~8 min, then walk to Sunshine City (~10 min)"},
+      {time:"10:00 AM", name:"Pokémon Center Mega Tokyo", note:"Sunshine City", lat:35.7295, lon:139.7189},
+      {time:"11:15 AM", name:"Pikachu Sweets", note:"Same floor", lat:35.7295, lon:139.7189},
+      {time:"11:45 AM", name:"Animate flagship", note:"", lat:35.7301, lon:139.7168},
+      {time:"Transit", name:"Walk", note:"~5 min"},
+      {time:"12:45 PM", name:"Ramen lunch in Ikebukuro", note:""},
+      {time:"1:30 PM", name:"Head to Akihabara", note:""},
+      {time:"Transit", name:"JR Yamanote Line from Ikebukuro to Akihabara", note:"~20 min"},
+      {time:"2:00 PM", name:"Card shops for Pokémon singles", note:"Cardrush + Radio Kaikan card floors", lat:35.7013, lon:139.7714, link:"https://www.google.com/maps/search/?api=1&query=Radio+Kaikan+Akihabara+Tokyo"},
+      {time:"3:30 PM", name:"Mandarake Complex", note:"", lat:35.6996, lon:139.7714},
+      {time:"4:30 PM", name:"Super Potato", note:"", lat:35.6989, lon:139.7731, link:"https://www.google.com/maps/search/?api=1&query=Super+Potato+Akihabara+Tokyo"},
+      {time:"5:30 PM", name:"GiGO arcades", note:"", lat:35.6989, lon:139.7726},
+      {time:"Transit", name:"All walkable within Akihabara", note:"~5 min between stops"},
+      {time:"7:00 PM", name:"Ueno Ameyoko street food", note:"Skip the raw seafood bowls", lat:35.7080, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Ameyoko+Market+Ueno+Tokyo"},
+      {time:"Transit", name:"JR Yamanote Line, 2 stops to Ueno", note:"~4 min. Or walk (~15 min)"},
+      {time:"9:00 PM", name:"Back to Shinjuku", note:""},
+      {time:"Transit", name:"JR Yamanote Line from Ueno to Shinjuku", note:"~25 min"}
     ],
     [
-      {time:"9:30 AM", name:"Leave for Toyosu", note:"40 min", lat:35.6952, lon:139.7028},
-      {time:"11:00 AM", name:"teamLab Planets TOKYO", note:"Booked — entry window 11:00–11:30 AM. Allow ~1.5–2 hrs. Wear shorts or rollable pants, the water is only knee-deep. (A later draft said 10:15 AM — 11:00 AM is the confirmed booking, verify if that changed)", lat:35.6465, lon:139.7930, link:"https://www.google.com/maps/search/?api=1&query=teamLab+Planets+TOKYO"},
-      {time:"~1:00 PM", name:"Lunch at Senkyaku Banrai", note:"Grilled stalls only — wagyu skewers, yakisoba", lat:35.6459, lon:139.7825, link:"https://www.google.com/maps/search/?api=1&query=Senkyaku+Banrai+Toyosu+Tokyo"},
-      {time:"2:00 PM", name:"Yurikamome to Odaiba", note:"15 min", lat:35.6296, lon:139.7754},
-      {time:"2:30 PM", name:"Unicorn Gundam — DiverCity", note:"Shop inside", lat:35.6296, lon:139.7754, link:"https://www.google.com/maps/search/?api=1&query=DiverCity+Tokyo+Plaza+Unicorn+Gundam"},
-      {time:"4:45 PM", name:"Odaiba Seaside Park at sunset", note:"Sunset ~4:40 PM in early November", lat:35.6280, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Odaiba+Seaside+Park+Tokyo"},
-      {time:"6:30 PM", name:"Dinner in Odaiba", note:"Rainbow Bridge lights up at night", lat:35.6270, lon:139.7770},
-      {time:"8:30 PM", name:"Back to Shinjuku", note:"50 min", lat:35.6952, lon:139.7028}
+      {time:"9:30 AM", name:"Leave for Toyosu", note:""},
+      {time:"Transit", name:"Toei Oedo Line to Tsukishima → Tokyo Metro Yurakucho Line, 1 stop to Toyosu → walk to teamLab Planets", note:"~40 min total (walk ~10 min)"},
+      {time:"10:15 AM", name:"teamLab Planets TOKYO", note:"Wear shorts or rollable pants. (Confirmed booking was 11:00 AM — this is the second draft in a row saying 10:15 AM, worth double-checking which is correct)", lat:35.6465, lon:139.7930, link:"https://www.google.com/maps/search/?api=1&query=teamLab+Planets+TOKYO"},
+      {time:"12:30 PM", name:"Lunch at Senkyaku Banrai", note:"Grilled stalls only", lat:35.6459, lon:139.7825, link:"https://www.google.com/maps/search/?api=1&query=Senkyaku+Banrai+Toyosu+Tokyo"},
+      {time:"Transit", name:"Yurikamome Line from Shin-Toyosu, 1 stop to Shijo-mae", note:"~2 min"},
+      {time:"2:00 PM", name:"Head to Odaiba", note:""},
+      {time:"Transit", name:"Yurikamome Line from Shijo-mae to Daiba", note:"~15 min"},
+      {time:"2:30 PM", name:"Unicorn Gundam at DiverCity", note:"", lat:35.6296, lon:139.7754, link:"https://www.google.com/maps/search/?api=1&query=DiverCity+Tokyo+Plaza+Unicorn+Gundam"},
+      {time:"Transit", name:"Walk from Daiba Station", note:"~5 min"},
+      {time:"4:45 PM", name:"Odaiba Seaside Park sunset", note:"", lat:35.6280, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Odaiba+Seaside+Park+Tokyo"},
+      {time:"Transit", name:"Walk", note:"~10 min"},
+      {time:"6:30 PM", name:"Dinner in Odaiba", note:""},
+      {time:"8:30 PM", name:"Back to Shinjuku", note:""},
+      {time:"Transit", name:"Rinkai Line from Tokyo Teleport", note:"Many trains run straight through to Shinjuku (~30 min); if not, transfer at Osaki to the JR Saikyo Line"}
     ],
     [
-      {time:"8:00 AM", name:"Leave for Harajuku", note:"5 min", lat:35.6952, lon:139.7028},
-      {time:"8:15 AM", name:"Meiji Jingu forest walk", note:"Calm before 9 AM", lat:35.6764, lon:139.6993, link:"https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Tokyo"},
-      {time:"10:00 AM", name:"Takeshita Street", note:"Crepes", lat:35.6702, lon:139.7026},
-      {time:"11:30 AM", name:"Omotesando", note:"Shops + architecture", lat:35.6690, lon:139.7123},
-      {time:"12:30 PM", name:"Maisen (Omotesando)", note:"Tonkatsu — expect a short wait", lat:35.6663, lon:139.7127, link:"https://www.google.com/maps/search/?api=1&query=Maisen+Tonkatsu+Omotesando+Tokyo"},
-      {time:"2:00 PM", name:"Shibuya PARCO", note:"Walk to Shibuya, 15 min — Nintendo Tokyo, Pokémon Center Shibuya, Capcom Store", lat:35.6615, lon:139.6982},
-      {time:"4:00 PM", name:"Shibuya Sky", note:"Target this slot for sunset + night view — book Oct 24, midnight JST (14 days out)", lat:35.6580, lon:139.7016, link:"https://www.google.com/maps/search/?api=1&query=Shibuya+Sky+Tokyo"},
+      {time:"8:00 AM", name:"Leave for Harajuku", note:""},
+      {time:"Transit", name:"JR Yamanote Line, 2 stops to Harajuku", note:"~5 min"},
+      {time:"8:15 AM", name:"Meiji Jingu", note:"Entrance is next to the station", lat:35.6764, lon:139.6993, link:"https://www.google.com/maps/search/?api=1&query=Meiji+Jingu+Tokyo"},
+      {time:"10:00 AM", name:"Takeshita Street", note:"", lat:35.6702, lon:139.7026},
+      {time:"Transit", name:"Walk across from Harajuku Station", note:"~2 min"},
+      {time:"11:30 AM", name:"Omotesando", note:"", lat:35.6690, lon:139.7123},
+      {time:"Transit", name:"Walk", note:"~5 min"},
+      {time:"12:30 PM", name:"Tonkatsu at Maisen", note:"", lat:35.6663, lon:139.7127, link:"https://www.google.com/maps/search/?api=1&query=Maisen+Tonkatsu+Omotesando+Tokyo"},
+      {time:"Transit", name:"Walk", note:"~5 min"},
+      {time:"2:00 PM", name:"Shibuya PARCO", note:"Nintendo Tokyo, Pokémon Center Shibuya, Capcom Store", lat:35.6615, lon:139.6982},
+      {time:"Transit", name:"Walk down Meiji-dori", note:"~20 min. Or Tokyo Metro Fukutoshin Line from Meiji-jingumae, 1 stop to Shibuya (~3 min)"},
+      {time:"4:00 PM", name:"Shibuya Sky", note:"At Shibuya Scramble Square", lat:35.6580, lon:139.7016, link:"https://www.google.com/maps/search/?api=1&query=Shibuya+Sky+Tokyo"},
+      {time:"Transit", name:"Walk", note:"~10 min — sits directly above Shibuya Station"},
       {time:"6:00 PM", name:"Shibuya Scramble after dark", note:"", lat:35.6595, lon:139.7005},
-      {time:"7:00 PM", name:"Dinner in Shibuya", note:"Steak Land Kobe-tei — casual teppan wagyu, no dress code, line up for dinner", lat:35.6580, lon:139.6975, link:"https://www.google.com/maps/search/?api=1&query=Steak+Land+Kobe-tei+Shibuya+Tokyo"},
-      {time:"9:00 PM", name:"Back to Shinjuku", note:"5 min", lat:35.6952, lon:139.7028},
-      {time:"Backup", name:"Shibuya PARCO rooftop", note:"If Shibuya Sky sells out — free, lower view, still works at sunset", lat:35.6615, lon:139.6982}
+      {time:"7:00 PM", name:"Dinner in Shibuya", note:""},
+      {time:"9:00 PM", name:"Back to Shinjuku", note:""},
+      {time:"Transit", name:"JR Yamanote Line", note:"~7 min"},
+      {time:"Backup", name:"Shibuya PARCO rooftop", note:"If Shibuya Sky sells out — free, at sunset", lat:35.6615, lon:139.6982}
     ],
     [
       {time:"", name:"Plan A — Ghibli tickets secured", note:""},
-      {time:"9:30 AM", name:"Leave for Mitaka", note:"20 min", lat:35.6952, lon:139.7028},
-      {time:"10:00 AM", name:"Ghibli Museum", note:"Entry time is set by your ticket, allow ~2 hrs. Book Fri Oct 9, 9:00 PM ET / Oct 10, 10:00 AM JST", lat:35.6962, lon:139.5703, link:"https://www.google.com/maps/search/?api=1&query=Ghibli+Museum+Mitaka"},
-      {time:"12:00 PM", name:"Inokashira Park to Kichijoji", note:"20 min walk", lat:35.7008, lon:139.5744, link:"https://www.google.com/maps/search/?api=1&query=Inokashira+Park+Tokyo"},
+      {time:"9:30 AM", name:"Leave for Mitaka", note:""},
+      {time:"Transit", name:"JR Chuo Line (Rapid) to Mitaka", note:"~20 min, then walk along the canal (~15 min) or Ghibli community bus from the south exit (~5 min)"},
+      {time:"10:00 AM", name:"Ghibli Museum", note:"", lat:35.6962, lon:139.5703, link:"https://www.google.com/maps/search/?api=1&query=Ghibli+Museum+Mitaka"},
+      {time:"12:00 PM", name:"Walk through Inokashira Park to Kichijoji", note:"", lat:35.7008, lon:139.5744, link:"https://www.google.com/maps/search/?api=1&query=Inokashira+Park+Tokyo"},
+      {time:"Transit", name:"Walk", note:"~20 min"},
       {time:"12:30 PM", name:"Lunch in Kichijoji", note:"", lat:35.7031, lon:139.5798},
-      {time:"2:00 PM", name:"Train to Nakano", note:"15 min — same line back toward Shinjuku", lat:35.7080, lon:139.6655},
-      {time:"2:30 PM", name:"Nakano Broadway", note:"Mandarake shops — cards, figures, vintage anime goods. Shops open ~noon", lat:35.7080, lon:139.6655},
-      {time:"6:00 PM", name:"Back to Shinjuku", note:"5 min", lat:35.6952, lon:139.7028},
-      {time:"7:00 PM", name:"Fuunji tsukemen", note:"Near Shinjuku Station — expect a line", lat:35.6866, lon:139.6924, link:"https://www.google.com/maps/search/?api=1&query=Fuunji+Ramen+Yoyogi+Tokyo"},
+      {time:"2:00 PM", name:"Nakano Broadway", note:"", lat:35.7080, lon:139.6655},
+      {time:"Transit", name:"JR Chuo Line from Kichijoji to Nakano", note:"~10 min, then walk from the north exit (~5 min)"},
+      {time:"6:00 PM", name:"Back to Shinjuku", note:""},
+      {time:"Transit", name:"JR Chuo Line", note:"~5 min"},
+      {time:"7:00 PM", name:"Fuunji tsukemen", note:"", lat:35.6866, lon:139.6924, link:"https://www.google.com/maps/search/?api=1&query=Fuunji+Ramen+Yoyogi+Tokyo"},
+      {time:"Transit", name:"Walk from Shinjuku Station's south exit", note:"~7 min"},
       {time:"", name:"Plan B — no Ghibli tickets", note:""},
-      {time:"9:30 AM", name:"Leave for Kichijoji", note:"15 min", lat:35.6952, lon:139.7028},
-      {time:"10:00 AM", name:"Inokashira Park loop", note:"Fall leaves turning — stop at the small Benzaiten shrine by the pond", lat:35.7008, lon:139.5744, link:"https://www.google.com/maps/search/?api=1&query=Inokashira+Park+Tokyo"},
+      {time:"9:30 AM", name:"Leave for Kichijoji", note:""},
+      {time:"Transit", name:"JR Chuo Line (Rapid) to Kichijoji", note:"~15 min"},
+      {time:"10:00 AM", name:"Inokashira Park loop", note:"Visit the small Benzaiten shrine", lat:35.7008, lon:139.5744, link:"https://www.google.com/maps/search/?api=1&query=Inokashira+Park+Tokyo"},
+      {time:"Transit", name:"Walk from the station's south exit", note:"~5 min"},
       {time:"11:30 AM", name:"Kichijoji shopping streets + Harmonica Yokocho", note:"", lat:35.7031, lon:139.5798},
-      {time:"12:30 PM", name:"Lunch in Kichijoji", note:"Try menchi-katsu, the area's fried meat cutlet specialty", lat:35.7031, lon:139.5798},
-      {time:"2:00 PM", name:"Nakano Broadway", note:"Train to Nakano, 10 min", lat:35.7080, lon:139.6655},
-      {time:"5:00 PM", name:"Tokyo Station Character Street", note:"25 min — Donguri Kyowakoku (official Ghibli shop) plus dozens of character stores in the same strip", lat:35.6812, lon:139.7671, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Character+Street+Tokyo+Station"},
-      {time:"7:00 PM", name:"Dinner at Tokyo Ramen Street", note:"Same station", lat:35.6812, lon:139.7671, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Ramen+Street+Tokyo+Station"},
-      {time:"8:30 PM", name:"Back to Shinjuku", note:"15 min", lat:35.6952, lon:139.7028},
-      {time:"Tip", name:"Check Klook for resale Ghibli tickets", note:"Costs more, sometimes has slots after Lawson sells out", lat:35.6952, lon:139.7028}
+      {time:"12:30 PM", name:"Menchi-katsu lunch", note:"", lat:35.7031, lon:139.5798},
+      {time:"2:00 PM", name:"Nakano Broadway", note:"", lat:35.7080, lon:139.6655},
+      {time:"Transit", name:"JR Chuo Line to Nakano", note:"~10 min"},
+      {time:"5:00 PM", name:"Tokyo Station Character Street", note:"Ghibli shop + character stores", lat:35.6812, lon:139.7671, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Character+Street+Tokyo+Station"},
+      {time:"Transit", name:"JR Chuo Line (Rapid) from Nakano to Tokyo", note:"~25 min"},
+      {time:"7:00 PM", name:"Tokyo Ramen Street", note:"Same station", lat:35.6812, lon:139.7671, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Ramen+Street+Tokyo+Station"},
+      {time:"8:30 PM", name:"Back to Shinjuku", note:""},
+      {time:"Transit", name:"JR Chuo Line (Rapid)", note:"~15 min"}
     ],
     [
-      {time:"7:30 AM", name:"Walk to Shinjuku Station or Busta Shinjuku", note:"", lat:35.6902, lon:139.7003, link:"https://www.google.com/maps/search/?api=1&query=Busta+Shinjuku+Tokyo"},
-      {time:"7:45 AM", name:"Fuji Excursion train or highway bus", note:"~2 hrs. Train reserved seats open Thu Oct 8, 9:00 PM ET / Oct 9, 10:00 AM JST", lat:35.5170, lon:138.7527},
-      {time:"9:45 AM", name:"Arrive Kawaguchiko", note:"Fuji views are clearest in the morning", lat:35.5170, lon:138.7527},
-      {time:"10:30 AM", name:"Chureito Pagoda", note:"~400 steps to the photo spot", lat:35.4931, lon:138.8006, link:"https://www.google.com/maps/search/?api=1&query=Chureito+Pagoda+Fujiyoshida"},
-      {time:"12:30 PM", name:"Hoto noodle lunch", note:"The local specialty", lat:35.5019, lon:138.7473},
-      {time:"2:00 PM", name:"Lake Kawaguchi shoreline", note:"Autumn leaves near peak", lat:35.5019, lon:138.7473, link:"https://www.google.com/maps/search/?api=1&query=Lake+Kawaguchiko+Japan"},
-      {time:"4:00 PM", name:"Sunset over the lake", note:"", lat:35.5019, lon:138.7473},
-      {time:"5:00 PM", name:"Head back", note:"~2 hrs — traffic can add time", lat:35.6902, lon:139.7003},
-      {time:"7:30 PM", name:"Easy dinner near the hotel", note:"", lat:35.6952, lon:139.7028},
-      {time:"Evening, if missed", name:"Pokémon Café backup check", note:"Free cancellations close 10 PM the day before — seats often reappear right before then", lat:35.6835, lon:139.7745},
-      {time:"Backup", name:"Check Fuji live cams the night before", note:"If clouded over, swap Day 8 with Day 9 — Fuji clouds often clear within a day", lat:35.5019, lon:138.7473}
+      {time:"7:30 AM", name:"Head to Shinjuku Station", note:""},
+      {time:"7:45 AM", name:"Ride to Kawaguchiko", note:""},
+      {time:"Transit", name:"Fuji Excursion limited express from JR Shinjuku direct to Kawaguchiko", note:"~2 hrs. Backup: Keio highway bus from Busta Shinjuku (~2 hrs)"},
+      {time:"9:45 AM", name:"Arrive at Kawaguchiko", note:""},
+      {time:"10:30 AM", name:"Chureito Pagoda", note:"~400 steps", lat:35.4931, lon:138.8006, link:"https://www.google.com/maps/search/?api=1&query=Chureito+Pagoda+Fujiyoshida"},
+      {time:"Transit", name:"Fujikyu Line from Kawaguchiko to Shimoyoshida", note:"~15 min, then walk (~10 min)"},
+      {time:"12:30 PM", name:"Hoto noodle lunch", note:""},
+      {time:"Transit", name:"Fujikyu Line back to Kawaguchiko", note:"~15 min"},
+      {time:"2:00 PM", name:"Lake Kawaguchi shoreline + autumn leaves", note:"", lat:35.5019, lon:138.7473, link:"https://www.google.com/maps/search/?api=1&query=Lake+Kawaguchiko+Japan"},
+      {time:"Transit", name:"Kawaguchiko sightseeing bus (Red Line) from the station", note:"Or walk (~15 min) to the lake"},
+      {time:"4:00 PM", name:"Sunset over the lake", note:""},
+      {time:"5:00 PM", name:"Head back", note:""},
+      {time:"Transit", name:"Fuji Excursion or highway bus to Shinjuku", note:"~2 hrs"},
+      {time:"7:30 PM", name:"Easy dinner near the hotel", note:""},
+      {time:"Evening, if missed", name:"Pokémon Café", note:"Check for cancellations before 10 PM"},
+      {time:"Backup", name:"Check Fuji live cams the night before", note:"Swap Day 8 + Day 9 if needed"}
     ],
     [
       {time:"", name:"Plan A — Pokémon Café reservation secured", note:""},
-      {time:"9:00 AM", name:"Leave for Azabudai Hills", note:"25 min", lat:35.6952, lon:139.7028},
-      {time:"9:30 AM", name:"teamLab Borderless", note:"Allow ~2–3 hrs", lat:35.6627, lon:139.7418, link:"https://www.google.com/maps/search/?api=1&query=teamLab+Borderless+Azabudai+Hills+Tokyo"},
+      {time:"9:00 AM", name:"Leave for Azabudai Hills", note:""},
+      {time:"Transit", name:"Toei Oedo Line to Roppongi → Tokyo Metro Hibiya Line, 1 stop to Kamiyacho", note:"~25 min. Azabudai Hills connects to the station"},
+      {time:"9:30 AM", name:"teamLab Borderless", note:"", lat:35.6627, lon:139.7418, link:"https://www.google.com/maps/search/?api=1&query=teamLab+Borderless+Azabudai+Hills+Tokyo"},
       {time:"12:30 PM", name:"Lunch at Azabudai Hills", note:"", lat:35.6627, lon:139.7418},
-      {time:"1:30 PM", name:"Walk to Tokyo Tower", note:"10 min", lat:35.6586, lon:139.7454, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Tower"},
-      {time:"3:00 PM", name:"Ginza shopping", note:"15 min", lat:35.6717, lon:139.7650},
-      {time:"5:00 PM", name:"Nihonbashi: Pokémon Center DX", note:"10 min", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Center+DX+Nihonbashi+Tokyo"},
-      {time:"Reserved slot", name:"Pokémon Café", note:"Right next door — arrive 15 min early, adjust surrounding times to fit", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Nihonbashi+Tokyo"},
+      {time:"1:30 PM", name:"Tokyo Tower", note:"", lat:35.6586, lon:139.7454, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Tower"},
+      {time:"Transit", name:"Walk", note:"~10 min"},
+      {time:"3:00 PM", name:"Ginza shopping", note:"", lat:35.6717, lon:139.7650},
+      {time:"Transit", name:"Walk back to Kamiyacho → Hibiya Line to Ginza", note:"~10 min"},
+      {time:"5:00 PM", name:"Pokémon Center Tokyo DX", note:"Nihonbashi Takashimaya", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Center+DX+Nihonbashi+Tokyo"},
+      {time:"Transit", name:"Ginza Line, 2 stops to Nihonbashi", note:"~4 min. Or walk (~15 min)"},
+      {time:"Reserved slot", name:"Pokémon Café", note:"Right next door — arrive 15 minutes early", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Nihonbashi+Tokyo"},
       {time:"7:30 PM", name:"Farewell wagyu dinner", note:"", lat:35.6717, lon:139.7650},
-      {time:"9:30 PM", name:"Don Quijote Shinjuku", note:"Snacks + souvenirs", lat:35.6944, lon:139.7036, link:"https://www.google.com/maps/search/?api=1&query=Don+Quijote+Shinjuku+Tokyo"},
-      {time:"10:30 PM", name:"Pack", note:"Set two alarms", lat:35.6952, lon:139.7028},
+      {time:"Transit", name:"Depends on the restaurant", note:"Book near Ginza or Shinjuku to keep it easy"},
+      {time:"9:30 PM", name:"Don Quijote Shinjuku", note:"Souvenirs", lat:35.6944, lon:139.7036, link:"https://www.google.com/maps/search/?api=1&query=Don+Quijote+Shinjuku+Tokyo"},
+      {time:"Transit", name:"Walk to Tokyo Station → JR Chuo Line (Rapid) to Shinjuku", note:"~15 min. Don Quijote is a short walk from the hotel"},
+      {time:"10:30 PM", name:"Pack", note:"Set two alarms"},
       {time:"", name:"Plan B — no café reservation", note:""},
-      {time:"9:00 AM – 3:00 PM", name:"Same as Plan A", note:"Borderless, lunch, Tokyo Tower", lat:35.6627, lon:139.7418},
-      {time:"3:00 PM", name:"Ginza — Itoya + Ginza Six rooftop", note:"Itoya is the 12-floor stationery store; Ginza Six rooftop garden is free", lat:35.6717, lon:139.7650, link:"https://www.google.com/maps/search/?api=1&query=Itoya+Ginza+Tokyo"},
-      {time:"5:00 PM", name:"Pokémon Center Tokyo DX", note:"Café merch counter needs no reservation — café-exclusive plush + tableware still available", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Center+DX+Nihonbashi+Tokyo"},
-      {time:"6:00 PM", name:"Nihonbashi depachika", note:"Dessert", lat:35.6835, lon:139.7745},
+      {time:"9:00 AM – 3:00 PM", name:"Same as Plan A", note:"", lat:35.6627, lon:139.7418},
+      {time:"3:00 PM", name:"Ginza — Itoya + Ginza Six rooftop", note:"Itoya stationery, free Ginza Six rooftop garden", lat:35.6717, lon:139.7650, link:"https://www.google.com/maps/search/?api=1&query=Itoya+Ginza+Tokyo"},
+      {time:"Transit", name:"Same as Plan A", note:""},
+      {time:"5:00 PM", name:"Pokémon Center Tokyo DX", note:"Café merch counter needs no reservation", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Center+DX+Nihonbashi+Tokyo"},
+      {time:"Transit", name:"Ginza Line to Nihonbashi", note:"~4 min"},
+      {time:"6:00 PM", name:"Depachika dessert", note:"Takashimaya food hall", lat:35.6835, lon:139.7745},
       {time:"7:30 PM", name:"Farewell wagyu dinner", note:"", lat:35.6717, lon:139.7650},
-      {time:"9:30 PM", name:"Don Quijote Shinjuku", note:"Snacks + souvenirs", lat:35.6944, lon:139.7036, link:"https://www.google.com/maps/search/?api=1&query=Don+Quijote+Shinjuku+Tokyo"},
-      {time:"10:30 PM", name:"Pack", note:"Set two alarms", lat:35.6952, lon:139.7028},
-      {time:"Note", name:"Farewell dinner options (all cooked)", note:"Wagyu yakiniku, sukiyaki/shabu-shabu, or teppanyaki — skip the raw egg dip at sukiyaki spots", lat:35.6717, lon:139.7650}
+      {time:"9:30 PM", name:"Don Quijote Shinjuku", note:"", lat:35.6944, lon:139.7036, link:"https://www.google.com/maps/search/?api=1&query=Don+Quijote+Shinjuku+Tokyo"},
+      {time:"10:30 PM", name:"Pack", note:""}
     ],
     [
-      {time:"5:30 AM", name:"Wake up", note:"Final bag check", lat:35.6952, lon:139.7028},
-      {time:"6:00 AM", name:"Check out", note:"", lat:35.6952, lon:139.7028},
-      {time:"6:15 AM", name:"Airport Limousine Bus from Busta Shinjuku", note:"Rush hour can push the ride past an hour — reserve seats ahead", lat:35.6902, lon:139.7003},
-      {time:"7:30 AM", name:"Arrive Haneda Terminal 3", note:"Check in with Cathay, clear security", lat:35.5494, lon:139.7798},
-      {time:"8:15 AM", name:"Breakfast + last shopping", note:"Past security", lat:35.5494, lon:139.7798},
+      {time:"5:30 AM", name:"Wake up", note:""},
+      {time:"6:00 AM", name:"Check out", note:""},
+      {time:"6:15 AM", name:"Head to Haneda", note:""},
+      {time:"Transit", name:"Airport Limousine Bus from Busta Shinjuku to Terminal 3", note:"~50–75 min in rush hour, reserve ahead. Backup: taxi (~30–45 min, pricey)"},
+      {time:"7:30 AM", name:"Check in with Cathay", note:"Clear security", lat:35.5494, lon:139.7798},
+      {time:"8:15 AM", name:"Breakfast + last shopping", note:"", lat:35.5494, lon:139.7798},
       {time:"9:30 AM", name:"At the gate", note:"", lat:35.5494, lon:139.7798},
       {time:"10:10 AM", name:"Depart", note:"", lat:35.5494, lon:139.7798}
     ]
@@ -751,11 +804,17 @@ function defaultClusters(){
       {name:"Pokémon Café (Nihonbashi)", note:"Reservations open Thu Oct 1, 5:00 AM ET / 6:00 PM JST. Free cancellations close 10 PM the day before — seats often reappear then", done:false, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Nihonbashi+Tokyo"}
     ]},
     { name:"Rainy-Day Backup", tag:"any day", spots:[
-      {name:"Sunshine City, Ikebukuro", note:"Aquarium + Pokémon floor — all indoors", done:false},
-      {name:"Akihabara", note:"Arcades, card shops + Mandarake — nearly all indoors", done:false},
-      {name:"Round1 Stadium", note:"Bowling, arcade, karaoke + sports games under one roof", done:false, link:"https://www.google.com/maps/search/?api=1&query=Round1+Stadium+Tokyo"},
-      {name:"Tokyo National Museum (Ueno)", note:"Samurai armor, swords + art", done:false, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+National+Museum+Ueno"},
-      {name:"Depachika food halls", note:"Mitsukoshi, Takashimaya or Isetan Shinjuku", done:false}
+      {name:"Sunshine City, Ikebukuro", note:"Aquarium + Pokémon floor — JR Yamanote to Ikebukuro", done:false},
+      {name:"Akihabara", note:"Arcades, card shops, Mandarake — JR Chuo (Rapid) to Ochanomizu → JR Sobu Line, 1 stop", done:false},
+      {name:"Round1 Stadium", note:"Bowling, arcade, karaoke — branches in Shinjuku + Ikebukuro", done:false, link:"https://www.google.com/maps/search/?api=1&query=Round1+Stadium+Tokyo"},
+      {name:"Tokyo National Museum", note:"Samurai armor + swords — JR Yamanote to Ueno", done:false, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+National+Museum+Ueno"},
+      {name:"Isetan Shinjuku depachika", note:"Walk from the hotel", done:false}
+    ]},
+    { name:"Transit Tips", tag:"how to get around", spots:[
+      {name:"Use Google Maps for live routes", note:"Shows platform numbers + which car to board", done:false},
+      {name:"Chuo Line (Rapid) is orange", note:"Skips stops — fastest west to Mitaka/Kichijoji/Nakano, fastest east to Tokyo Station", done:false},
+      {name:"Avoid 8–9:30 AM weekday trains if you can", note:"Packed — Day 3 and Day 10's early starts beat the worst of it", done:false},
+      {name:"Last trains run around midnight", note:"Taxis are easy after that", done:false}
     ]}
   ];
   return seed.map(c=>({ id: uid(), name:c.name, tag:c.tag, spots: c.spots.map(s=>({id:uid(),...s})) }));
@@ -763,13 +822,12 @@ function defaultClusters(){
 
 function defaultDecisions(){
   return [
-    "Book now: DisneySea ticket, teamLab Borderless (if not done), wagyu farewell dinner reservation, Airport Limousine Bus for Nov 11",
-    "Pokémon Café (Nihonbashi, Nov 10 Plan A) — reservations open Thu Oct 1, 5:00 AM ET / 6:00 PM JST",
-    "Fuji Excursion train reserved seats (Nov 9) — open Thu Oct 8, 9:00 PM ET / Oct 9, 10:00 AM JST (or book the highway bus instead)",
-    "Ghibli Museum tickets (Nov 8) — on sale Fri Oct 9, 9:00 PM ET / Oct 10, 10:00 AM JST. One shot per calendar month, max 6 tickets, cannot be changed/transferred/refunded",
-    "Shibuya Sky sunset slot (Nov 7, ~4:00 PM) — a recent draft said ~Oct 10 onward, but sourced research says it opens exactly 14 days ahead (Oct 24, midnight JST). Verify on Shibuya Sky's site closer to the date",
-    "Complete Visit Japan Web for both passengers before Nov 1",
-    "Grab an IC card (Suica/Pasmo) at Haneda, or set up Suica in Apple Wallet on arrival",
+    "Book now: DisneySea ticket, Skytree Tembo Deck slot (Nov 3, 4:00 PM), and general trip setup",
+    "Pokémon Café — opens Thu Oct 1, 5:00 AM ET, then book teamLab Borderless + the wagyu farewell dinner reservation right after",
+    "Fuji Excursion train reserved seats — open Thu Oct 8, 9:00 PM ET",
+    "Ghibli Museum tickets — on sale Fri Oct 9, 9:00 PM ET, then re-check teamLab Planets (this draft lists it here, but it's already booked — verify what this refers to)",
+    "Shibuya Sky — this draft says opens ~Oct 10, but sourced research says exactly 14 days ahead (Oct 24, midnight JST). Verify on Shibuya Sky's site closer to the date",
+    "Airport Limousine Bus (Nov 11) — book late October",
     "Check Fuji live cams the night of Nov 8 — if clouded over, swap Day 8 (Fuji) with Day 9 (Borderless/farewell)"
   ].map(text=>({ id: uid(), text, done:false }));
 }
@@ -799,7 +857,7 @@ const LOCAL_KEY = 'tokyo-trip-state-v2';
 // whenever defaultDays()/defaultClusters() change in a way that should
 // overwrite a saved plan, and migrateItineraryVersion does a clean wholesale
 // replace, carrying over "done" flags for any stop/spot name that survives.
-const ITINERARY_VERSION = 3;
+const ITINERARY_VERSION = 4;
 
 function migrateItineraryVersion(state){
   if(state.itineraryVersion === ITINERARY_VERSION) return false;
@@ -820,6 +878,13 @@ function migrateItineraryVersion(state){
     id: uid(), name: c.name, tag: c.tag,
     spots: c.spots.map(s => ({ id: uid(), ...s, done: !!doneBySpot[c.name + '|' + s.name] }))
   }));
+  // Decisions get the same wholesale refresh, preserving "done" by exact
+  // text match — old stock decisions that no longer apply are dropped
+  // rather than accumulating across every rewrite.
+  const defaultsDecisions = defaultDecisions();
+  const doneByText = {};
+  (state.decisions || []).forEach(d => { if(d.done) doneByText[d.text] = true; });
+  state.decisions = defaultsDecisions.map(d => ({ ...d, done: !!doneByText[d.text] }));
   state.itineraryVersion = ITINERARY_VERSION;
   return true;
 }
