@@ -525,7 +525,7 @@ function defaultDays(){
     { date:"Nov 3 (Tue)", tag:"Old Tokyo — Asakusa & Skytree" },
     { date:"Nov 4 (Wed)", tag:"Tokyo DisneySea" },
     { date:"Nov 5 (Thu)", tag:"Ikebukuro + Akihabara" },
-    { date:"Nov 6 (Fri)", tag:"Toyosu + teamLab Planets + Odaiba" },
+    { date:"Nov 6 (Fri)", tag:"teamLab Planets + Odaiba" },
     { date:"Nov 7 (Sat)", tag:"Harajuku + Shibuya" },
     { date:"Nov 8 (Sun)", tag:"Ghibli + Nakano Broadway" },
     { date:"Nov 9 (Mon)", tag:"Mt. Fuji Day Trip" },
@@ -534,13 +534,14 @@ function defaultDays(){
   ];
   const seeds = [
     [
-      {time:"1:45 PM", name:"Land at Haneda", note:"Transfer to Shinjuku (~40–50 min)", lat:35.5494, lon:139.7798},
-      {time:"Landing + 1.5 hrs", name:"Check in — Hotel Gracery Shinjuku", note:"Airport Limousine Bus or train", lat:35.6952, lon:139.7028},
-      {time:"Landing + 2 hrs", name:"Godzilla head terrace", note:"Hotel's 8th floor", lat:35.6952, lon:139.7028},
-      {time:"Optional, before ~2 PM", name:"TOKYO ANIME NEXT (Ikebukuro)", note:"Only realistic if immigration/baggage clear fast — today is the event's final day (Oct 30–Nov 2)", lat:35.7295, lon:139.7189, link:"https://www.google.com/maps/search/?api=1&query=Ikebukuro+Sunshine+City+Tokyo"},
-      {time:"7:00 PM", name:"Omoide Yokocho", note:"Yakitori alley — some stalls expect a drink order, oolong tea or soda covers it", lat:35.6938, lon:139.6997},
-      {time:"8:30 PM", name:"Tokyo Metropolitan Government Building observatory", note:"10 min walk — free night view", lat:35.6896, lon:139.6917, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Metropolitan+Government+Building+Observation+Deck"},
-      {time:"10:00 PM", name:"Back at the hotel", note:"Rest up", lat:35.6952, lon:139.7028}
+      {time:"1:45 PM", name:"Land at Haneda Terminal 3", note:"Immigration, bags, customs — have Visit Japan Web QR codes ready. Allow ~1 hr", lat:35.5494, lon:139.7798},
+      {time:"2:45 PM", name:"Set up Suica in Apple Wallet", note:"Grab cash from a 7-Eleven ATM", lat:35.5494, lon:139.7798},
+      {time:"3:00 PM", name:"Airport Limousine Bus to Busta Shinjuku", note:"~50–75 min", lat:35.6902, lon:139.7003},
+      {time:"4:15 PM", name:"Check in — Hotel Gracery Shinjuku", note:"Shower, recharge", lat:35.6952, lon:139.7028},
+      {time:"5:00 PM", name:"Godzilla head terrace", note:"Hotel's 8th floor — neon comes on right after sunset", lat:35.6952, lon:139.7028},
+      {time:"6:30 PM", name:"Omoide Yokocho", note:"Yakitori dinner — order oolong tea or soda", lat:35.6938, lon:139.6997},
+      {time:"8:00 PM", name:"Tokyo Metropolitan Government Building observatory", note:"10 min walk — free", lat:35.6896, lon:139.6917, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Metropolitan+Government+Building+Observation+Deck"},
+      {time:"9:30 PM", name:"Back at the hotel", note:"Early night for jet lag", lat:35.6952, lon:139.7028}
     ],
     [
       {time:"7:00 AM", name:"Leave for Asakusa", note:"~35 min", lat:35.6952, lon:139.7028},
@@ -566,25 +567,23 @@ function defaultDays(){
     [
       {time:"9:30 AM", name:"Leave for Ikebukuro", note:"15 min", lat:35.6952, lon:139.7028},
       {time:"10:00 AM", name:"Pokémon Center Mega Tokyo", note:"Sunshine City — arrive at opening", lat:35.7295, lon:139.7189},
-      {time:"11:30 AM", name:"Animate flagship store", note:"Anime merch", lat:35.7301, lon:139.7168},
-      {time:"12:30 PM", name:"Lunch in Ikebukuro", note:"Ramen is a strong pick here", lat:35.7295, lon:139.7189},
+      {time:"11:15 AM", name:"Pikachu Sweets", note:"Same floor — Pikachu waffles + drinks. Your Pokémon café fix if the real one falls through", lat:35.7295, lon:139.7189},
+      {time:"11:45 AM", name:"Animate flagship store", note:"Anime merch", lat:35.7301, lon:139.7168},
+      {time:"12:45 PM", name:"Ramen lunch in Ikebukuro", note:"", lat:35.7295, lon:139.7189},
       {time:"1:30 PM", name:"Train to Akihabara", note:"25 min", lat:35.6984, lon:139.7731},
       {time:"2:00 PM", name:"Card shops for Pokémon singles", note:"Cardrush + the Radio Kaikan card floors", lat:35.7013, lon:139.7714, link:"https://www.google.com/maps/search/?api=1&query=Radio+Kaikan+Akihabara+Tokyo"},
       {time:"3:30 PM", name:"Mandarake Complex", note:"Anime merch", lat:35.6996, lon:139.7714},
       {time:"4:30 PM", name:"Super Potato", note:"Retro games", lat:35.6989, lon:139.7731, link:"https://www.google.com/maps/search/?api=1&query=Super+Potato+Akihabara+Tokyo"},
       {time:"5:30 PM", name:"GiGO arcades", note:"Claw machines, rhythm games", lat:35.6989, lon:139.7726},
-      {time:"7:00 PM", name:"Ameyoko market", note:"Walk/train to Ueno (5 min) — street food dinner", lat:35.7080, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Ameyoko+Market+Ueno+Tokyo"},
+      {time:"7:00 PM", name:"Ueno Ameyoko street food", note:"5 min — skip the kaisendon seafood bowls, they're raw", lat:35.7080, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Ameyoko+Market+Ueno+Tokyo"},
       {time:"9:00 PM", name:"Back to Shinjuku", note:"30 min", lat:35.6952, lon:139.7028}
     ],
     [
-      {time:"6:00 AM", name:"Leave for Toyosu", note:"45 min — early start today", lat:35.6952, lon:139.7028},
-      {time:"6:45 AM", name:"Toyosu Market tuna auction observation deck", note:"", lat:35.6455, lon:139.7828},
-      {time:"8:00 AM", name:"Sushi breakfast", note:"Inside the market", lat:35.6455, lon:139.7828},
-      {time:"9:30 AM", name:"Senkyaku Banrai", note:"Edo-style food hall next door — browse, snack", lat:35.6459, lon:139.7825, link:"https://www.google.com/maps/search/?api=1&query=Senkyaku+Banrai+Toyosu+Tokyo"},
-      {time:"11:00 AM", name:"teamLab Planets TOKYO", note:"Booked — 10 min walk. Entry window 11:00–11:30 AM, stay as long as you like after. Wear shorts or rollable pants, you wade through water", lat:35.6465, lon:139.7930, link:"https://www.google.com/maps/search/?api=1&query=teamLab+Planets+TOKYO"},
-      {time:"1:00 PM", name:"Lunch near Toyosu", note:"", lat:35.6455, lon:139.7828},
-      {time:"2:30 PM", name:"Head to Odaiba", note:"15 min on the Yurikamome line", lat:35.6296, lon:139.7754},
-      {time:"3:00 PM", name:"Unicorn Gundam — DiverCity", note:"Shop inside", lat:35.6296, lon:139.7754, link:"https://www.google.com/maps/search/?api=1&query=DiverCity+Tokyo+Plaza+Unicorn+Gundam"},
+      {time:"9:30 AM", name:"Leave for Toyosu", note:"40 min", lat:35.6952, lon:139.7028},
+      {time:"11:00 AM", name:"teamLab Planets TOKYO", note:"Booked — entry window 11:00–11:30 AM. Allow ~1.5–2 hrs. Wear shorts or rollable pants, the water is only knee-deep. (A later draft said 10:15 AM — 11:00 AM is the confirmed booking, verify if that changed)", lat:35.6465, lon:139.7930, link:"https://www.google.com/maps/search/?api=1&query=teamLab+Planets+TOKYO"},
+      {time:"~1:00 PM", name:"Lunch at Senkyaku Banrai", note:"Grilled stalls only — wagyu skewers, yakisoba", lat:35.6459, lon:139.7825, link:"https://www.google.com/maps/search/?api=1&query=Senkyaku+Banrai+Toyosu+Tokyo"},
+      {time:"2:00 PM", name:"Yurikamome to Odaiba", note:"15 min", lat:35.6296, lon:139.7754},
+      {time:"2:30 PM", name:"Unicorn Gundam — DiverCity", note:"Shop inside", lat:35.6296, lon:139.7754, link:"https://www.google.com/maps/search/?api=1&query=DiverCity+Tokyo+Plaza+Unicorn+Gundam"},
       {time:"4:45 PM", name:"Odaiba Seaside Park at sunset", note:"Sunset ~4:40 PM in early November", lat:35.6280, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Odaiba+Seaside+Park+Tokyo"},
       {time:"6:30 PM", name:"Dinner in Odaiba", note:"Rainbow Bridge lights up at night", lat:35.6270, lon:139.7770},
       {time:"8:30 PM", name:"Back to Shinjuku", note:"50 min", lat:35.6952, lon:139.7028}
@@ -599,47 +598,73 @@ function defaultDays(){
       {time:"4:00 PM", name:"Shibuya Sky", note:"Target this slot for sunset + night view — book Oct 24, midnight JST (14 days out)", lat:35.6580, lon:139.7016, link:"https://www.google.com/maps/search/?api=1&query=Shibuya+Sky+Tokyo"},
       {time:"6:00 PM", name:"Shibuya Scramble after dark", note:"", lat:35.6595, lon:139.7005},
       {time:"7:00 PM", name:"Dinner in Shibuya", note:"Steak Land Kobe-tei — casual teppan wagyu, no dress code, line up for dinner", lat:35.6580, lon:139.6975, link:"https://www.google.com/maps/search/?api=1&query=Steak+Land+Kobe-tei+Shibuya+Tokyo"},
-      {time:"9:00 PM", name:"Back to Shinjuku", note:"5 min", lat:35.6952, lon:139.7028}
+      {time:"9:00 PM", name:"Back to Shinjuku", note:"5 min", lat:35.6952, lon:139.7028},
+      {time:"Backup", name:"Shibuya PARCO rooftop", note:"If Shibuya Sky sells out — free, lower view, still works at sunset", lat:35.6615, lon:139.6982}
     ],
     [
+      {time:"", name:"Plan A — Ghibli tickets secured", note:""},
       {time:"9:30 AM", name:"Leave for Mitaka", note:"20 min", lat:35.6952, lon:139.7028},
-      {time:"10:00 AM", name:"Ghibli Museum", note:"Entry time is set by your ticket, allow ~2 hrs. Book Oct 10, 10:00 AM JST", lat:35.6962, lon:139.5703, link:"https://www.google.com/maps/search/?api=1&query=Ghibli+Museum+Mitaka"},
+      {time:"10:00 AM", name:"Ghibli Museum", note:"Entry time is set by your ticket, allow ~2 hrs. Book Fri Oct 9, 9:00 PM ET / Oct 10, 10:00 AM JST", lat:35.6962, lon:139.5703, link:"https://www.google.com/maps/search/?api=1&query=Ghibli+Museum+Mitaka"},
       {time:"12:00 PM", name:"Inokashira Park to Kichijoji", note:"20 min walk", lat:35.7008, lon:139.5744, link:"https://www.google.com/maps/search/?api=1&query=Inokashira+Park+Tokyo"},
       {time:"12:30 PM", name:"Lunch in Kichijoji", note:"", lat:35.7031, lon:139.5798},
       {time:"2:00 PM", name:"Train to Nakano", note:"15 min — same line back toward Shinjuku", lat:35.7080, lon:139.6655},
       {time:"2:30 PM", name:"Nakano Broadway", note:"Mandarake shops — cards, figures, vintage anime goods. Shops open ~noon", lat:35.7080, lon:139.6655},
       {time:"6:00 PM", name:"Back to Shinjuku", note:"5 min", lat:35.6952, lon:139.7028},
       {time:"7:00 PM", name:"Fuunji tsukemen", note:"Near Shinjuku Station — expect a line", lat:35.6866, lon:139.6924, link:"https://www.google.com/maps/search/?api=1&query=Fuunji+Ramen+Yoyogi+Tokyo"},
-      {time:"Evening", name:"Free time", note:"Rest before the Fuji day", lat:35.6952, lon:139.7028}
+      {time:"", name:"Plan B — no Ghibli tickets", note:""},
+      {time:"9:30 AM", name:"Leave for Kichijoji", note:"15 min", lat:35.6952, lon:139.7028},
+      {time:"10:00 AM", name:"Inokashira Park loop", note:"Fall leaves turning — stop at the small Benzaiten shrine by the pond", lat:35.7008, lon:139.5744, link:"https://www.google.com/maps/search/?api=1&query=Inokashira+Park+Tokyo"},
+      {time:"11:30 AM", name:"Kichijoji shopping streets + Harmonica Yokocho", note:"", lat:35.7031, lon:139.5798},
+      {time:"12:30 PM", name:"Lunch in Kichijoji", note:"Try menchi-katsu, the area's fried meat cutlet specialty", lat:35.7031, lon:139.5798},
+      {time:"2:00 PM", name:"Nakano Broadway", note:"Train to Nakano, 10 min", lat:35.7080, lon:139.6655},
+      {time:"5:00 PM", name:"Tokyo Station Character Street", note:"25 min — Donguri Kyowakoku (official Ghibli shop) plus dozens of character stores in the same strip", lat:35.6812, lon:139.7671, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Character+Street+Tokyo+Station"},
+      {time:"7:00 PM", name:"Dinner at Tokyo Ramen Street", note:"Same station", lat:35.6812, lon:139.7671, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Ramen+Street+Tokyo+Station"},
+      {time:"8:30 PM", name:"Back to Shinjuku", note:"15 min", lat:35.6952, lon:139.7028},
+      {time:"Tip", name:"Check Klook for resale Ghibli tickets", note:"Costs more, sometimes has slots after Lawson sells out", lat:35.6952, lon:139.7028}
     ],
     [
-      {time:"7:30 AM", name:"Walk to Busta Shinjuku", note:"2 min", lat:35.6902, lon:139.7003, link:"https://www.google.com/maps/search/?api=1&query=Busta+Shinjuku+Tokyo"},
-      {time:"7:45 AM", name:"Highway bus to Kawaguchiko", note:"~2 hrs", lat:35.5170, lon:138.7527},
+      {time:"7:30 AM", name:"Walk to Shinjuku Station or Busta Shinjuku", note:"", lat:35.6902, lon:139.7003, link:"https://www.google.com/maps/search/?api=1&query=Busta+Shinjuku+Tokyo"},
+      {time:"7:45 AM", name:"Fuji Excursion train or highway bus", note:"~2 hrs. Train reserved seats open Thu Oct 8, 9:00 PM ET / Oct 9, 10:00 AM JST", lat:35.5170, lon:138.7527},
       {time:"9:45 AM", name:"Arrive Kawaguchiko", note:"Fuji views are clearest in the morning", lat:35.5170, lon:138.7527},
       {time:"10:30 AM", name:"Chureito Pagoda", note:"~400 steps to the photo spot", lat:35.4931, lon:138.8006, link:"https://www.google.com/maps/search/?api=1&query=Chureito+Pagoda+Fujiyoshida"},
       {time:"12:30 PM", name:"Hoto noodle lunch", note:"The local specialty", lat:35.5019, lon:138.7473},
       {time:"2:00 PM", name:"Lake Kawaguchi shoreline", note:"Autumn leaves near peak", lat:35.5019, lon:138.7473, link:"https://www.google.com/maps/search/?api=1&query=Lake+Kawaguchiko+Japan"},
       {time:"4:00 PM", name:"Sunset over the lake", note:"", lat:35.5019, lon:138.7473},
-      {time:"5:00 PM", name:"Bus back to Shinjuku", note:"~2 hrs — traffic can add time", lat:35.6902, lon:139.7003},
-      {time:"7:30 PM", name:"Easy dinner near the hotel", note:"", lat:35.6952, lon:139.7028}
+      {time:"5:00 PM", name:"Head back", note:"~2 hrs — traffic can add time", lat:35.6902, lon:139.7003},
+      {time:"7:30 PM", name:"Easy dinner near the hotel", note:"", lat:35.6952, lon:139.7028},
+      {time:"Evening, if missed", name:"Pokémon Café backup check", note:"Free cancellations close 10 PM the day before — seats often reappear right before then", lat:35.6835, lon:139.7745},
+      {time:"Backup", name:"Check Fuji live cams the night before", note:"If clouded over, swap Day 8 with Day 9 — Fuji clouds often clear within a day", lat:35.5019, lon:138.7473}
     ],
     [
+      {time:"", name:"Plan A — Pokémon Café reservation secured", note:""},
       {time:"9:00 AM", name:"Leave for Azabudai Hills", note:"25 min", lat:35.6952, lon:139.7028},
       {time:"9:30 AM", name:"teamLab Borderless", note:"Allow ~2–3 hrs", lat:35.6627, lon:139.7418, link:"https://www.google.com/maps/search/?api=1&query=teamLab+Borderless+Azabudai+Hills+Tokyo"},
       {time:"12:30 PM", name:"Lunch at Azabudai Hills", note:"", lat:35.6627, lon:139.7418},
       {time:"1:30 PM", name:"Walk to Tokyo Tower", note:"10 min", lat:35.6586, lon:139.7454, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Tower"},
       {time:"3:00 PM", name:"Ginza shopping", note:"15 min", lat:35.6717, lon:139.7650},
       {time:"5:00 PM", name:"Nihonbashi: Pokémon Center DX", note:"10 min", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Center+DX+Nihonbashi+Tokyo"},
-      {time:"Reserved slot", name:"Pokémon Café", note:"Right next door — fit it to your booking", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Nihonbashi+Tokyo"},
-      {time:"7:30 PM", name:"Farewell dinner", note:"Omakase sushi or wagyu yakiniku", lat:35.6717, lon:139.7650},
-      {time:"10:00 PM", name:"Back to the hotel", note:"Pack", lat:35.6952, lon:139.7028}
+      {time:"Reserved slot", name:"Pokémon Café", note:"Right next door — arrive 15 min early, adjust surrounding times to fit", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Nihonbashi+Tokyo"},
+      {time:"7:30 PM", name:"Farewell wagyu dinner", note:"", lat:35.6717, lon:139.7650},
+      {time:"9:30 PM", name:"Don Quijote Shinjuku", note:"Snacks + souvenirs", lat:35.6944, lon:139.7036, link:"https://www.google.com/maps/search/?api=1&query=Don+Quijote+Shinjuku+Tokyo"},
+      {time:"10:30 PM", name:"Pack", note:"Set two alarms", lat:35.6952, lon:139.7028},
+      {time:"", name:"Plan B — no café reservation", note:""},
+      {time:"9:00 AM – 3:00 PM", name:"Same as Plan A", note:"Borderless, lunch, Tokyo Tower", lat:35.6627, lon:139.7418},
+      {time:"3:00 PM", name:"Ginza — Itoya + Ginza Six rooftop", note:"Itoya is the 12-floor stationery store; Ginza Six rooftop garden is free", lat:35.6717, lon:139.7650, link:"https://www.google.com/maps/search/?api=1&query=Itoya+Ginza+Tokyo"},
+      {time:"5:00 PM", name:"Pokémon Center Tokyo DX", note:"Café merch counter needs no reservation — café-exclusive plush + tableware still available", lat:35.6835, lon:139.7745, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Center+DX+Nihonbashi+Tokyo"},
+      {time:"6:00 PM", name:"Nihonbashi depachika", note:"Dessert", lat:35.6835, lon:139.7745},
+      {time:"7:30 PM", name:"Farewell wagyu dinner", note:"", lat:35.6717, lon:139.7650},
+      {time:"9:30 PM", name:"Don Quijote Shinjuku", note:"Snacks + souvenirs", lat:35.6944, lon:139.7036, link:"https://www.google.com/maps/search/?api=1&query=Don+Quijote+Shinjuku+Tokyo"},
+      {time:"10:30 PM", name:"Pack", note:"Set two alarms", lat:35.6952, lon:139.7028},
+      {time:"Note", name:"Farewell dinner options (all cooked)", note:"Wagyu yakiniku, sukiyaki/shabu-shabu, or teppanyaki — skip the raw egg dip at sukiyaki spots", lat:35.6717, lon:139.7650}
     ],
     [
-      {time:"Flight − 6 hrs", name:"Shinjuku Gyoen", note:"Opens 9 AM — only works with a flight after ~2 PM", lat:35.6852, lon:139.7100, link:"https://www.google.com/maps/search/?api=1&query=Shinjuku+Gyoen+National+Garden+Tokyo"},
-      {time:"Flight − 4.5 hrs", name:"Don Quijote", note:"Last snacks + souvenirs", lat:35.6944, lon:139.7036, link:"https://www.google.com/maps/search/?api=1&query=Don+Quijote+Shinjuku+Tokyo"},
-      {time:"Flight − 4 hrs", name:"Check out", note:"Store bags at the front desk earlier if needed", lat:35.6952, lon:139.7028},
-      {time:"Flight − 3.5 hrs", name:"Airport Limousine Bus", note:"From Busta Shinjuku, ~60–75 min to Haneda", lat:35.6902, lon:139.7003},
-      {time:"Flight − 2.5 hrs", name:"At the airport", note:"Check in + security", lat:35.5494, lon:139.7798}
+      {time:"5:30 AM", name:"Wake up", note:"Final bag check", lat:35.6952, lon:139.7028},
+      {time:"6:00 AM", name:"Check out", note:"", lat:35.6952, lon:139.7028},
+      {time:"6:15 AM", name:"Airport Limousine Bus from Busta Shinjuku", note:"Rush hour can push the ride past an hour — reserve seats ahead", lat:35.6902, lon:139.7003},
+      {time:"7:30 AM", name:"Arrive Haneda Terminal 3", note:"Check in with Cathay, clear security", lat:35.5494, lon:139.7798},
+      {time:"8:15 AM", name:"Breakfast + last shopping", note:"Past security", lat:35.5494, lon:139.7798},
+      {time:"9:30 AM", name:"At the gate", note:"", lat:35.5494, lon:139.7798},
+      {time:"10:10 AM", name:"Depart", note:"", lat:35.5494, lon:139.7798}
     ]
   ];
   return meta.map((m,i)=>({ id: uid(), label:`Day ${i+1}`, date:m.date, tag:m.tag, open: i===0, stops: seeds[i].map(s=>({id:uid(),...s})) }));
@@ -691,6 +716,7 @@ function defaultClusters(){
     { name:"Ikebukuro", tag:"Pokémon + anime", spots:[
       {name:"Otome Road", note:"", done:false},
       {name:"Pokémon Center Mega Tokyo", note:"Sunshine City — arrive at opening", done:false},
+      {name:"Pikachu Sweets", note:"Same floor as the Pokémon Center — Pikachu waffles + drinks, a Pokémon café fix if the real one falls through", done:false},
       {name:"Animate main store", note:"", done:false},
       {name:"Rikuro Ojisan's Cheesecake", note:"Famous jiggly baked cheesecake near Sunshine City — best fresh out of the oven, casual walk-up", done:false, link:"https://www.google.com/maps/search/?api=1&query=Rikuro+Ojisan%27s+Cheesecake+Ikebukuro+Tokyo"}
     ]},
@@ -702,7 +728,7 @@ function defaultClusters(){
       {name:"Odaiba Seaside Park", note:"Sunset + Rainbow Bridge at night", done:false, link:"https://www.google.com/maps/search/?api=1&query=Odaiba+Seaside+Park+Tokyo"}
     ]},
     { name:"Mitaka / Kichijoji / Nakano", tag:"Ghibli + manga", spots:[
-      {name:"Ghibli Museum", note:"Timed tickets — book Oct 10, 10:00 AM JST, can't be changed or refunded", done:false, link:"https://www.google.com/maps/search/?api=1&query=Ghibli+Museum+Mitaka"},
+      {name:"Ghibli Museum", note:"Timed tickets — book Fri Oct 9, 9:00 PM ET / Oct 10, 10:00 AM JST. One shot/month, max 6 tickets, can't be changed or refunded", done:false, link:"https://www.google.com/maps/search/?api=1&query=Ghibli+Museum+Mitaka"},
       {name:"Inokashira Park", note:"Walk from Mitaka to Kichijoji", done:false, link:"https://www.google.com/maps/search/?api=1&query=Inokashira+Park+Tokyo"},
       {name:"Nakano Broadway", note:"Mandarake flagship, 8 floors — shops open ~noon", done:false},
       {name:"Fuunji", note:"Iconic tsukemen near Shinjuku Station — expect a line", done:false, link:"https://www.google.com/maps/search/?api=1&query=Fuunji+Ramen+Yoyogi+Tokyo"}
@@ -718,9 +744,18 @@ function defaultClusters(){
     ]},
     { name:"Ginza / Nihonbashi", tag:"shopping + Pokémon", spots:[
       {name:"Ginza shopping", note:"", done:false},
+      {name:"Itoya", note:"12-floor stationery store", done:false, link:"https://www.google.com/maps/search/?api=1&query=Itoya+Ginza+Tokyo"},
+      {name:"Ginza Six rooftop garden", note:"Free", done:false},
       {name:"Tokyo Tower", note:"Walk from Azabudai Hills", done:false, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+Tower"},
       {name:"Pokémon Center DX (Nihonbashi)", note:"", done:false, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Center+DX+Nihonbashi+Tokyo"},
-      {name:"Pokémon Café (Nihonbashi)", note:"Reservation required — right next to the Center DX", done:false, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Nihonbashi+Tokyo"}
+      {name:"Pokémon Café (Nihonbashi)", note:"Reservations open Thu Oct 1, 5:00 AM ET / 6:00 PM JST. Free cancellations close 10 PM the day before — seats often reappear then", done:false, link:"https://www.google.com/maps/search/?api=1&query=Pokemon+Cafe+Nihonbashi+Tokyo"}
+    ]},
+    { name:"Rainy-Day Backup", tag:"any day", spots:[
+      {name:"Sunshine City, Ikebukuro", note:"Aquarium + Pokémon floor — all indoors", done:false},
+      {name:"Akihabara", note:"Arcades, card shops + Mandarake — nearly all indoors", done:false},
+      {name:"Round1 Stadium", note:"Bowling, arcade, karaoke + sports games under one roof", done:false, link:"https://www.google.com/maps/search/?api=1&query=Round1+Stadium+Tokyo"},
+      {name:"Tokyo National Museum (Ueno)", note:"Samurai armor, swords + art", done:false, link:"https://www.google.com/maps/search/?api=1&query=Tokyo+National+Museum+Ueno"},
+      {name:"Depachika food halls", note:"Mitsukoshi, Takashimaya or Isetan Shinjuku", done:false}
     ]}
   ];
   return seed.map(c=>({ id: uid(), name:c.name, tag:c.tag, spots: c.spots.map(s=>({id:uid(),...s})) }));
@@ -728,12 +763,14 @@ function defaultClusters(){
 
 function defaultDecisions(){
   return [
-    "Buy DisneySea ticket for Nov 4 — on sale now, ¥9,900/adult. Direct on the official site is ~$14 cheaper than Klook for two, unless your card fails 3-D Secure",
-    "Book Ghibli Museum tickets (Nov 8) — on sale Oct 10, 10:00 AM JST. One shot per calendar month, max 6 tickets, cannot be changed/transferred/refunded",
-    "Book Shibuya Sky sunset slot (Nov 7, ~4:00 PM) — opens exactly 14 days ahead: Oct 24, midnight JST. Saturday sunset slots can sell out same-day",
-    "Reserve Pokémon Café (Nihonbashi, Nov 10) — no confirmed public release-window found, check their site directly and book early",
-    "Book Mt Fuji highway bus (Kawaguchiko, Nov 9) a few weeks ahead — November is peak foliage season, reserved seats can sell out",
-    "Grab an IC card (Suica/Pasmo) at Haneda on arrival"
+    "Book now: DisneySea ticket, teamLab Borderless (if not done), wagyu farewell dinner reservation, Airport Limousine Bus for Nov 11",
+    "Pokémon Café (Nihonbashi, Nov 10 Plan A) — reservations open Thu Oct 1, 5:00 AM ET / 6:00 PM JST",
+    "Fuji Excursion train reserved seats (Nov 9) — open Thu Oct 8, 9:00 PM ET / Oct 9, 10:00 AM JST (or book the highway bus instead)",
+    "Ghibli Museum tickets (Nov 8) — on sale Fri Oct 9, 9:00 PM ET / Oct 10, 10:00 AM JST. One shot per calendar month, max 6 tickets, cannot be changed/transferred/refunded",
+    "Shibuya Sky sunset slot (Nov 7, ~4:00 PM) — a recent draft said ~Oct 10 onward, but sourced research says it opens exactly 14 days ahead (Oct 24, midnight JST). Verify on Shibuya Sky's site closer to the date",
+    "Complete Visit Japan Web for both passengers before Nov 1",
+    "Grab an IC card (Suica/Pasmo) at Haneda, or set up Suica in Apple Wallet on arrival",
+    "Check Fuji live cams the night of Nov 8 — if clouded over, swap Day 8 (Fuji) with Day 9 (Borderless/farewell)"
   ].map(text=>({ id: uid(), text, done:false }));
 }
 
@@ -745,7 +782,8 @@ function defaultState(){
     expenses: [],
     budgetGoal: 786000,
     fxRate: 150,
-    fxRateAt: null
+    fxRateAt: null,
+    itineraryVersion: ITINERARY_VERSION
   };
 }
 
@@ -753,6 +791,38 @@ function defaultState(){
 // so there's no cross-device sync channel — everything lives in localStorage
 // on whichever device/browser has it open. Export/Import covers backup. ----
 const LOCAL_KEY = 'tokyo-trip-state-v2';
+
+// The itinerary keeps getting rewritten wholesale (new day themes, times,
+// even Plan A/B branches) rather than tweaked incrementally, so per-tag
+// stale-stop patching (see backfillNov2026FullReplan below) doesn't scale —
+// a day can keep the same tag but get entirely different stops. Bump this
+// whenever defaultDays()/defaultClusters() change in a way that should
+// overwrite a saved plan, and migrateItineraryVersion does a clean wholesale
+// replace, carrying over "done" flags for any stop/spot name that survives.
+const ITINERARY_VERSION = 2;
+
+function migrateItineraryVersion(state){
+  if(state.itineraryVersion === ITINERARY_VERSION) return false;
+  const defaultsDays = defaultDays();
+  const doneByDay = (state.days || []).map(d => {
+    const m = {}; (d.stops || []).forEach(s => { if(s.done) m[s.name] = true; });
+    return m;
+  });
+  state.days = defaultsDays.map((d, i) => ({
+    ...d,
+    open: state.days && state.days[i] ? !!state.days[i].open : d.open,
+    stops: d.stops.map(s => ({ ...s, id: uid(), done: !!(doneByDay[i] && doneByDay[i][s.name]) }))
+  }));
+  const defaultsClusters = defaultClusters();
+  const doneBySpot = {};
+  (state.clusters || []).forEach(c => (c.spots || []).forEach(s => { if(s.done) doneBySpot[c.name + '|' + s.name] = true; }));
+  state.clusters = defaultsClusters.map(c => ({
+    id: uid(), name: c.name, tag: c.tag,
+    spots: c.spots.map(s => ({ id: uid(), ...s, done: !!doneBySpot[c.name + '|' + s.name] }))
+  }));
+  state.itineraryVersion = ITINERARY_VERSION;
+  return true;
+}
 
 function backfillStopCoords(days){
   const byName = {};
@@ -901,19 +971,18 @@ function backfillDecisionsRefresh(decisions){
     "Book Nozomi/Tobu tickets in advance if doing a day trip",
     "Buy DisneySea ticket for Nov 4 — opens Sept 4, 2:00 PM Japan time",
     "Confirm 2026–27 Yomiuriland Jewellumination exact dates/hours before Nov 8 (expected ~4:00–8:30 PM nightly, not yet officially announced)",
-    "Decide if Samurai Restaurant Time or a cooking class gets a fixed evening slot"
-  ];
-  let changed = false;
-  for(let i = decisions.length - 1; i >= 0; i--){
-    if(staleTexts.includes(decisions[i].text)){ decisions.splice(i, 1); changed = true; }
-  }
-  const newTexts = [
+    "Decide if Samurai Restaurant Time or a cooking class gets a fixed evening slot",
     "Buy DisneySea ticket for Nov 4 — on sale now, ¥9,900/adult. Direct on the official site is ~$14 cheaper than Klook for two, unless your card fails 3-D Secure",
     "Book Ghibli Museum tickets (Nov 8) — on sale Oct 10, 10:00 AM JST. One shot per calendar month, max 6 tickets, cannot be changed/transferred/refunded",
     "Book Shibuya Sky sunset slot (Nov 7, ~4:00 PM) — opens exactly 14 days ahead: Oct 24, midnight JST. Saturday sunset slots can sell out same-day",
     "Reserve Pokémon Café (Nihonbashi, Nov 10) — no confirmed public release-window found, check their site directly and book early",
     "Book Mt Fuji highway bus (Kawaguchiko, Nov 9) a few weeks ahead — November is peak foliage season, reserved seats can sell out"
   ];
+  let changed = false;
+  for(let i = decisions.length - 1; i >= 0; i--){
+    if(staleTexts.includes(decisions[i].text)){ decisions.splice(i, 1); changed = true; }
+  }
+  const newTexts = defaultDecisions().map(d => d.text);
   newTexts.forEach(text => {
     if(!decisions.some(d => d.text === text)){ decisions.push({ id: uid(), text, done:false }); changed = true; }
   });
@@ -960,7 +1029,8 @@ function loadState(){
   // localStorage — that saved copy otherwise wins wholesale over the
   // (now-richer) default seed data, so every new default field/stop needs
   // an explicit backfill pass here.
-  let needsSave = backfillStopCoords(state.days);
+  let needsSave = migrateItineraryVersion(state);
+  if(backfillStopCoords(state.days)) needsSave = true;
   if(backfillNovemberReshuffle(state)) needsSave = true;
   if(backfillTokyoStationShinjukuReshuffle(state)) needsSave = true;
   if(backfillNov2026FullReplan(state)) needsSave = true;
