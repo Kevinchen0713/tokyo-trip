@@ -799,7 +799,7 @@ const LOCAL_KEY = 'tokyo-trip-state-v2';
 // whenever defaultDays()/defaultClusters() change in a way that should
 // overwrite a saved plan, and migrateItineraryVersion does a clean wholesale
 // replace, carrying over "done" flags for any stop/spot name that survives.
-const ITINERARY_VERSION = 2;
+const ITINERARY_VERSION = 3;
 
 function migrateItineraryVersion(state){
   if(state.itineraryVersion === ITINERARY_VERSION) return false;
@@ -1023,7 +1023,15 @@ function backfillClusterSpots(clusters){
 function loadState(){
   let loaded = null;
   try{ const raw = localStorage.getItem(LOCAL_KEY); if(raw) loaded = JSON.parse(raw); }catch(e){}
+  // Object.assign(defaultState(), loaded) fills in missing fields from the
+  // defaults, but that means a saved state with no itineraryVersion field
+  // silently inherits the CURRENT version from defaultState() instead of
+  // being treated as outdated — the version check below would then compare
+  // the current version against itself and skip the migration entirely.
+  // Capture the true saved version (or its absence) before merging.
+  const loadedVersion = loaded ? loaded.itineraryVersion : ITINERARY_VERSION;
   state = loaded ? Object.assign(defaultState(), loaded) : defaultState();
+  state.itineraryVersion = loadedVersion;
   // Anyone who used the app before stop coordinates (or, later, food-spot
   // Google Maps links) were added has an older, thinner stop list saved in
   // localStorage — that saved copy otherwise wins wholesale over the
