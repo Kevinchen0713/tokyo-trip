@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Tokyo Trip Planner</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -307,6 +307,17 @@
   .backup-card{ background: var(--ink-soft); border:1px solid var(--line); border-radius:14px; padding:16px 18px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
   .backup-note{ color:var(--grey); font-size:12px; flex:1; min-width:200px; }
 
+  .private-notes{ width:100%; background: var(--ink-soft); border:1px solid var(--line); color:var(--paper); border-radius:14px; padding:14px 16px; font-family:'JetBrains Mono', monospace; font-size:13px; line-height:1.5; margin-bottom:22px; resize:vertical; }
+
+  /* Stop check-off + today */
+  .stop input[type=checkbox]{ margin-top:4px; accent-color: var(--vermilion); flex-shrink:0; }
+  .stop.done .stop-name{ text-decoration: line-through; color: var(--grey); }
+  .day-card.today{ border-color: var(--vermilion); }
+  .today-pill{ font-family:'JetBrains Mono', monospace; font-size:10.5px; font-weight:700; color: var(--ink); background: var(--gold); padding:2px 8px; border-radius:20px; }
+  .stop-time .here{ display:block; color: var(--teal); }
+  .day-wx{ font-family:'JetBrains Mono', monospace; font-size:11.5px; color: var(--grey); white-space:nowrap; }
+  @media(max-width:480px){ .day-count{ display:none; } }
+
   .empty{ color:var(--grey); font-size:13px; padding: 14px 0; font-style:italic; }
   ::placeholder{ color: rgba(245,241,232,0.35); }
 </style>
@@ -480,15 +491,15 @@
       <div class="booked-card">
         <div class="bk-head"><span class="bk-name">Mt. Fuji bus</span><span class="bk-check">✓ booked</span></div>
         <div class="bk-detail">
-          Nov 9, 7:15 AM · Bus 1101, Seats 7C + 7D<br>
-          Reservation No. 187837356 · mobile ticket
+          Nov 9, 7:15 AM · Keio bus 1101 from Busta Shinjuku<br>
+          Mobile ticket · reservation no. in Private notes below
         </div>
       </div>
       <div class="booked-card">
         <div class="bk-head"><span class="bk-name">Mt. Fuji train back</span><span class="bk-check">✓ booked</span></div>
         <div class="bk-detail">
-          Nov 9, 4:48 PM · Fuji-Excursion 44, Car 2, Seats 6A + 6B<br>
-          Reservation E81222
+          Nov 9, 4:48 PM · Fuji-Excursion 44<br>
+          Seats + reservation no. in Private notes below
         </div>
       </div>
       <div class="booked-card">
@@ -512,14 +523,18 @@
       </div>
     </div>
 
+    <h2 class="section-title">Private notes <span class="jp">メモ</span></h2>
+    <p class="section-note">Reservation numbers, seats, anything you don't want in the public repo. Saved only on this device (and in your backup file).</p>
+    <textarea class="private-notes" id="privateNotes" rows="5" placeholder="e.g. Fuji bus: reservation no. …, seats …"></textarea>
+
     <h2 class="section-title">Open decisions <span class="jp">要確認</span></h2>
     <p class="section-note">Check these off as you handle them.</p>
     <div class="decision-list" id="decisionList"></div>
 
     <h2 class="section-title">Calendar <span class="jp">カレンダー</span></h2>
-    <p class="section-note">Adds each day of the trip, your flights, and the DisneySea ticket window to your phone's calendar.</p>
+    <p class="section-note">Adds each day of the trip, your flights, and every timed booking to your phone's calendar.</p>
     <div class="backup-card" style="margin-bottom:22px;">
-      <span class="backup-note">One .ics file, all 12 events — re-download any time after editing the itinerary to update it (add it again; most calendar apps will create duplicates rather than replace).</span>
+      <span class="backup-note">One .ics file — re-download any time after editing the itinerary to update it (add it again; most calendar apps will create duplicates rather than replace).</span>
       <button class="btn small ghost" id="icsBtn">Add to Calendar</button>
     </div>
 
@@ -563,6 +578,16 @@ let state = null;
 let saveTimer = null;
 
 function uid(){ return Math.random().toString(36).slice(2,9); }
+
+// Everything rendered through innerHTML (typed-in names, OpenStreetMap
+// place names, imported backups) goes through this first.
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// Local calendar date (not UTC) — in Tokyo, toISOString() is still
+// "yesterday" until 9 AM.
+function isoDate(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
 function defaultDays(){
   const meta = [
@@ -642,7 +667,7 @@ function defaultDays(){
       {time:"9:30 AM", name:"Lake Kawaguchi", note:"Oishi Park, Ropeway (3 hr)", lat:35.5019, lon:138.7473, link:"https://www.google.com/maps/search/?api=1&query=Lake+Kawaguchiko+Japan"},
       {time:"12:30 PM", name:"Hōtō noodle lunch", note:"Cooked and warm (1 hr)"},
       {time:"Afternoon", name:"Chureito Pagoda", note:"398 steps (2 hr)", lat:35.4931, lon:138.8006, link:"https://www.google.com/maps/search/?api=1&query=Chureito+Pagoda+Fujiyoshida"},
-      {time:"Return", name:"Fuji Excursion", note:"Booked — Suica base fare + seat ticket (~2 hr)"},
+      {time:"4:48 PM", name:"Fuji Excursion", note:"Booked — Fuji-Excursion 44. Suica base fare + seat ticket (~2 hr)"},
       {time:"Evening", name:"Easy dinner in Shinjuku", note:"If it's cloudy, swap with a lighter day or keep it as a lake day"}
     ],
     [
@@ -680,7 +705,7 @@ function defaultClusters(){
       {name:"Round1 Kabukicho", note:"Arcade, bowling, karaoke — walk-in, no advance planning needed", done:false, link:"https://www.google.com/maps/search/?api=1&query=Round1+Kabukicho+Tokyo"}
     ]},
     { name:"Asakusa & Skytree Town", tag:"old Tokyo", spots:[
-      {name:"Senso-ji", note:"Arrive early — Culture Day holiday crowds build fast", done:false, link:"https://www.google.com/maps/search/?api=1&query=Sensoji+Temple+Asakusa+Tokyo"},
+      {name:"Senso-ji", note:"Arrive early — crowds build fast by mid-morning", done:false, link:"https://www.google.com/maps/search/?api=1&query=Sensoji+Temple+Asakusa+Tokyo"},
       {name:"Nakamise-dori", note:"Melon pan, ningyo-yaki", done:false, link:"https://www.google.com/maps/search/?api=1&query=Nakamise+Shopping+Street+Asakusa+Tokyo"},
       {name:"Asakusa Tourist Info Center, 8F", note:"Free view of Senso-ji + Skytree", done:false},
       {name:"Kirby Café", note:"Book ahead. Or the Solamachi food floor", done:false},
@@ -791,40 +816,69 @@ function defaultState(){
 const LOCAL_KEY = 'tokyo-trip-state-v2';
 
 // The itinerary keeps getting rewritten wholesale (new day themes, times,
-// even Plan A/B branches) rather than tweaked incrementally, so per-tag
-// stale-stop patching (see backfillNov2026FullReplan below) doesn't scale —
-// a day can keep the same tag but get entirely different stops. Bump this
-// whenever defaultDays()/defaultClusters() change in a way that should
-// overwrite a saved plan, and migrateItineraryVersion does a clean wholesale
-// replace, carrying over "done" flags for any stop/spot name that survives.
-const ITINERARY_VERSION = 6;
+// even Plan A/B branches) rather than tweaked incrementally. Bump this
+// whenever defaultDays()/defaultClusters()/defaultDecisions() change, and
+// migrateItineraryVersion does a clean wholesale replace, carrying over
+// "done" flags for any name that survives plus everything flagged custom
+// (stops/spots/areas added on the phone, by hand or from Nearby).
+const ITINERARY_VERSION = 7;
+
+// v6 saves predate the custom flag. v7 kept every v6 stop/spot name, so
+// anything in a v6 save that isn't in today's defaults was added by hand.
+function markLegacyCustom(state, savedVersion){
+  if(savedVersion !== 6) return;
+  const defDays = defaultDays();
+  (state.days || []).forEach((d, i) => {
+    const names = new Set((defDays[i] ? defDays[i].stops : []).map(s => s.name));
+    (d.stops || []).forEach(s => { if(!names.has(s.name)) s.custom = true; });
+  });
+  const defSpots = {};
+  defaultClusters().forEach(c => { defSpots[c.name] = new Set(c.spots.map(s => s.name)); });
+  (state.clusters || []).forEach(c => {
+    const names = defSpots[c.name];
+    if(!names){ c.custom = true; return; }
+    (c.spots || []).forEach(s => { if(!names.has(s.name)) s.custom = true; });
+  });
+}
 
 function migrateItineraryVersion(state){
   if(state.itineraryVersion === ITINERARY_VERSION) return false;
-  const defaultsDays = defaultDays();
-  const doneByDay = (state.days || []).map(d => {
-    const m = {}; (d.stops || []).forEach(s => { if(s.done) m[s.name] = true; });
-    return m;
+  markLegacyCustom(state, state.itineraryVersion);
+  const oldDays = state.days || [];
+  state.days = defaultDays().map((d, i) => {
+    const oldStops = (oldDays[i] && oldDays[i].stops) || [];
+    const doneByName = {};
+    oldStops.forEach(s => { if(s.done) doneByName[s.name] = true; });
+    return {
+      ...d,
+      open: oldDays[i] ? !!oldDays[i].open : d.open,
+      stops: [
+        ...d.stops.map(s => ({ ...s, done: !!doneByName[s.name] })),
+        ...oldStops.filter(s => s.custom)
+      ]
+    };
   });
-  state.days = defaultsDays.map((d, i) => ({
-    ...d,
-    open: state.days && state.days[i] ? !!state.days[i].open : d.open,
-    stops: d.stops.map(s => ({ ...s, id: uid(), done: !!(doneByDay[i] && doneByDay[i][s.name]) }))
-  }));
-  const defaultsClusters = defaultClusters();
+  const oldClusters = state.clusters || [];
   const doneBySpot = {};
-  (state.clusters || []).forEach(c => (c.spots || []).forEach(s => { if(s.done) doneBySpot[c.name + '|' + s.name] = true; }));
-  state.clusters = defaultsClusters.map(c => ({
-    id: uid(), name: c.name, tag: c.tag,
-    spots: c.spots.map(s => ({ id: uid(), ...s, done: !!doneBySpot[c.name + '|' + s.name] }))
-  }));
+  oldClusters.forEach(c => (c.spots || []).forEach(s => { if(s.done) doneBySpot[c.name + '|' + s.name] = true; }));
+  const clusters = defaultClusters().map(c => {
+    const old = oldClusters.find(o => o.name === c.name);
+    return {
+      ...c,
+      spots: [
+        ...c.spots.map(s => ({ ...s, done: !!doneBySpot[c.name + '|' + s.name] })),
+        ...(old ? (old.spots || []).filter(s => s.custom) : [])
+      ]
+    };
+  });
+  oldClusters.forEach(c => { if(c.custom && !clusters.some(n => n.name === c.name)) clusters.push(c); });
+  state.clusters = clusters;
   // Decisions get the same wholesale refresh, preserving "done" by exact
   // text match — old stock decisions that no longer apply are dropped
   // rather than accumulating across every rewrite.
-  const defaultsDecisions = defaultDecisions();
   const doneByText = {};
   (state.decisions || []).forEach(d => { if(d.done) doneByText[d.text] = true; });
-  state.decisions = defaultsDecisions.map(d => ({ ...d, done: !!doneByText[d.text] }));
+  state.decisions = defaultDecisions().map(d => ({ ...d, done: !!doneByText[d.text] }));
   state.itineraryVersion = ITINERARY_VERSION;
   return true;
 }
@@ -844,214 +898,34 @@ function backfillStopCoords(days){
   return changed;
 }
 
-function backfillNewDayStops(days){
-  const defaults = defaultDays();
-  let changed = false;
-  days.forEach((day, i) => {
-    const def = defaults[i];
-    if(!def) return;
-    const haveNames = new Set(day.stops.map(s => s.name));
-    if(def.stops.every(s => haveNames.has(s.name))) return;
-    // Rebuild in default order so newly-inserted food stops land in the right
-    // spot in the day's timeline instead of just tacking on to the end;
-    // saved stops (with any user edits) are kept, only missing ones are added.
-    const merged = [];
-    def.stops.forEach(ds => {
-      const saved = day.stops.find(s => s.name === ds.name);
-      merged.push(saved || { ...ds, id: uid() });
-    });
-    // Append any stop the user added themselves that isn't part of the default seed at all.
-    day.stops.forEach(s => { if(!def.stops.some(ds => ds.name === s.name)) merged.push(s); });
-    day.stops = merged;
-    changed = true;
-  });
-  return changed;
-}
-
-function backfillNovemberReshuffle(state){
-  // Nov 10 dropped Borderless/Azabudai Hills in favor of a low-key shopping/
-  // wind-down day, and Yomiuriland + Joypolis got slotted into Nov 8 / Nov 9
-  // instead — remove the stale stops/cluster by name so they don't linger
-  // alongside the new ones once backfillNewDayStops runs.
-  let changed = false;
-  const day8 = state.days[6];
-  if(day8){
-    if(day8.tag === "Ikebukuro"){ day8.tag = "Ikebukuro + Yomiuriland"; changed = true; }
-    const before = day8.stops.length;
-    day8.stops = day8.stops.filter(s => s.name !== "Second gatcha round" && s.name !== "Snack shopping");
-    if(day8.stops.length !== before) changed = true;
-  }
-  const day9 = state.days[7];
-  if(day9){
-    if(day9.tag === "Toyosu"){ day9.tag = "Toyosu + Odaiba"; changed = true; }
-    const before = day9.stops.length;
-    day9.stops = day9.stops.filter(s => s.name !== "Open");
-    if(day9.stops.length !== before) changed = true;
-  }
-  const day10 = state.days[8];
-  if(day10){
-    if(day10.tag === "Azabudai Hills + Borderless"){ day10.tag = "Shopping & Wind Down"; changed = true; }
-    const before = day10.stops.length;
-    day10.stops = day10.stops.filter(s => s.name !== "teamLab Borderless" && s.name !== "Azabudai Hills shopping/dining");
-    if(day10.stops.length !== before) changed = true;
-  }
-  const beforeClusters = state.clusters.length;
-  state.clusters = state.clusters.filter(c => c.name !== "Azabudai Hills");
-  if(state.clusters.length !== beforeClusters) changed = true;
-  return changed;
-}
-
-function backfillTokyoStationShinjukuReshuffle(state){
-  // Ginza (shopping/dinner) got dropped in favor of Tokyo Station (KITTE,
-  // Character Street, Intermediatheque), and Shimokitazawa's vintage/indie
-  // shopping got swapped for Shinjuku Gyoen + mall shopping right by the
-  // hotel — same stale-stop-removal pattern as backfillNovemberReshuffle.
-  let changed = false;
-  const day2 = state.days[1];
-  if(day2){
-    if(day2.tag === "Nakano & Shimokitazawa"){ day2.tag = "Nakano & Shinjuku"; changed = true; }
-    const before = day2.stops.length;
-    day2.stops = day2.stops.filter(s => !["Shimokitazawa","Shimokitazawa food crawl","Izakaya karaage & yakitori"].includes(s.name));
-    if(day2.stops.length !== before) changed = true;
-  }
-  const day6 = state.days[5];
-  if(day6){
-    if(day6.tag === "Tsukiji & Ginza"){ day6.tag = "Tsukiji & Tokyo Station"; changed = true; }
-    const before = day6.stops.length;
-    day6.stops = day6.stops.filter(s => !["Ginza shopping","Ginza splurge dinner"].includes(s.name));
-    if(day6.stops.length !== before) changed = true;
-  }
-  const beforeClusters = state.clusters.length;
-  state.clusters = state.clusters.filter(c => c.name !== "Shimokitazawa");
-  if(state.clusters.length !== beforeClusters) changed = true;
-  const tsukiji = state.clusters.find(c => c.name === "Tsukiji / Ginza");
-  if(tsukiji){
-    tsukiji.name = "Tsukiji / Tokyo Station";
-    tsukiji.tag = "seafood + shopping";
-    const before = tsukiji.spots.length;
-    tsukiji.spots = tsukiji.spots.filter(s => s.name !== "Ginza — Uniqlo, Mitsukoshi, Apple");
-    if(tsukiji.spots.length !== before) changed = true;
-    changed = true;
-  }
-  return changed;
-}
-
-function backfillNov2026FullReplan(state){
-  // Full itinerary rewrite: Asakusa/Skytree, Ikebukuro+Akihabara combined,
-  // Toyosu+teamLab Planets+Odaiba (teamLab moved from Nov 9 to Nov 6),
-  // Harajuku+Shibuya w/ Shibuya Sky, Ghibli+Nakano, a Mt Fuji day trip, and
-  // teamLab Borderless+Ginza/Nihonbashi restored on Nov 10. Old day content
-  // is different enough (not just a few stale stops) that each stale day's
-  // stops are replaced wholesale with the new defaults, carrying over "done"
-  // flags for any stop name that happens to survive into the new plan.
-  const defaults = defaultDays();
-  const staleTags = new Set([
-    "Nakano & Shinjuku", "Shibuya & Harajuku", "Akihabara",
-    "Tsukiji & Tokyo Station", "Tsukiji & Ginza", "Nakano & Shimokitazawa",
-    "Ikebukuro + Yomiuriland", "Ikebukuro", "Toyosu + Odaiba", "Toyosu",
-    "Shopping & Wind Down", "Azabudai Hills + Borderless"
-  ]);
-  let changed = false;
-  state.days.forEach((day, i) => {
-    const def = defaults[i];
-    if(!def || !staleTags.has(day.tag)) return;
-    const doneByName = {};
-    day.stops.forEach(s => { if(s.done) doneByName[s.name] = true; });
-    day.tag = def.tag;
-    day.stops = def.stops.map(s => ({ ...s, id: uid(), done: !!doneByName[s.name] }));
-    changed = true;
-  });
-  const staleClusterNames = new Set(["Nakano", "Tsukiji / Tokyo Station", "Tsukiji / Ginza", "Yomiuriland", "Toyosu"]);
-  const beforeClusters = state.clusters.length;
-  state.clusters = state.clusters.filter(c => !staleClusterNames.has(c.name));
-  if(state.clusters.length !== beforeClusters) changed = true;
-  return changed;
-}
-
-function backfillDecisionsRefresh(decisions){
-  const staleTexts = [
-    "Book teamLab Planets (Nov 9) — Nov tickets just opened, book soon",
-    "Book teamLab Borderless (Nov 10) — book separately from Planets",
-    "Nov 9: confirm Toyosu (current plan) or swap for Kamakura/Nikko day trip",
-    "Book Nozomi/Tobu tickets in advance if doing a day trip",
-    "Buy DisneySea ticket for Nov 4 — opens Sept 4, 2:00 PM Japan time",
-    "Confirm 2026–27 Yomiuriland Jewellumination exact dates/hours before Nov 8 (expected ~4:00–8:30 PM nightly, not yet officially announced)",
-    "Decide if Samurai Restaurant Time or a cooking class gets a fixed evening slot",
-    "Buy DisneySea ticket for Nov 4 — on sale now, ¥9,900/adult. Direct on the official site is ~$14 cheaper than Klook for two, unless your card fails 3-D Secure",
-    "Book Ghibli Museum tickets (Nov 8) — on sale Oct 10, 10:00 AM JST. One shot per calendar month, max 6 tickets, cannot be changed/transferred/refunded",
-    "Book Shibuya Sky sunset slot (Nov 7, ~4:00 PM) — opens exactly 14 days ahead: Oct 24, midnight JST. Saturday sunset slots can sell out same-day",
-    "Reserve Pokémon Café (Nihonbashi, Nov 10) — no confirmed public release-window found, check their site directly and book early",
-    "Book Mt Fuji highway bus (Kawaguchiko, Nov 9) a few weeks ahead — November is peak foliage season, reserved seats can sell out"
-  ];
-  let changed = false;
-  for(let i = decisions.length - 1; i >= 0; i--){
-    if(staleTexts.includes(decisions[i].text)){ decisions.splice(i, 1); changed = true; }
-  }
-  const newTexts = defaultDecisions().map(d => d.text);
-  newTexts.forEach(text => {
-    if(!decisions.some(d => d.text === text)){ decisions.push({ id: uid(), text, done:false }); changed = true; }
-  });
-  return changed;
-}
-
-function backfillClusterSpots(clusters){
-  const defaultClustersList = defaultClusters();
-  const defaultsByCluster = {};
-  defaultClustersList.forEach(c => { defaultsByCluster[c.name] = c.spots; });
-  let changed = false;
-  const haveClusterNames = new Set(clusters.map(c => c.name));
-  defaultClustersList.forEach(c => {
-    if(!haveClusterNames.has(c.name)){
-      clusters.push({ id: uid(), name: c.name, tag: c.tag, spots: c.spots.map(s => ({ id: uid(), ...s })) });
-      changed = true;
-    }
-  });
-  clusters.forEach(cluster => {
-    const defaults = defaultsByCluster[cluster.name];
-    if(!defaults) return;
-    const byName = {};
-    cluster.spots.forEach(s => { byName[s.name] = s; });
-    defaults.forEach(s => {
-      const existing = byName[s.name];
-      if(!existing){
-        cluster.spots.push({ id: uid(), name: s.name, note: s.note, done: false, link: s.link });
-        changed = true;
-      } else if(existing.link == null && s.link != null){
-        existing.link = s.link;
-        changed = true;
-      }
-    });
-  });
-  return changed;
+// Shared by page load and backup import, so an old backup file gets the
+// same migration as an old localStorage save.
+function hydrateState(loaded){
+  // Object.assign(defaultState(), loaded) fills in missing fields from the
+  // defaults, but that means a saved state with no itineraryVersion field
+  // silently inherits the CURRENT version from defaultState() instead of
+  // being treated as outdated. Capture the true saved version first.
+  const loadedVersion = loaded ? loaded.itineraryVersion : ITINERARY_VERSION;
+  const s = loaded ? Object.assign(defaultState(), loaded) : defaultState();
+  s.itineraryVersion = loadedVersion;
+  let changed = migrateItineraryVersion(s);
+  if(backfillStopCoords(s.days)) changed = true;
+  return { state: s, changed };
 }
 
 function loadState(){
   let loaded = null;
   try{ const raw = localStorage.getItem(LOCAL_KEY); if(raw) loaded = JSON.parse(raw); }catch(e){}
-  // Object.assign(defaultState(), loaded) fills in missing fields from the
-  // defaults, but that means a saved state with no itineraryVersion field
-  // silently inherits the CURRENT version from defaultState() instead of
-  // being treated as outdated — the version check below would then compare
-  // the current version against itself and skip the migration entirely.
-  // Capture the true saved version (or its absence) before merging.
-  const loadedVersion = loaded ? loaded.itineraryVersion : ITINERARY_VERSION;
-  state = loaded ? Object.assign(defaultState(), loaded) : defaultState();
-  state.itineraryVersion = loadedVersion;
-  // Anyone who used the app before stop coordinates (or, later, food-spot
-  // Google Maps links) were added has an older, thinner stop list saved in
-  // localStorage — that saved copy otherwise wins wholesale over the
-  // (now-richer) default seed data, so every new default field/stop needs
-  // an explicit backfill pass here.
-  let needsSave = migrateItineraryVersion(state);
-  if(backfillStopCoords(state.days)) needsSave = true;
-  if(backfillNovemberReshuffle(state)) needsSave = true;
-  if(backfillTokyoStationShinjukuReshuffle(state)) needsSave = true;
-  if(backfillNov2026FullReplan(state)) needsSave = true;
-  if(backfillNewDayStops(state.days)) needsSave = true;
-  if(backfillClusterSpots(state.clusters)) needsSave = true;
-  if(backfillDecisionsRefresh(state.decisions)) needsSave = true;
-  if(needsSave) scheduleSave();
+  const result = hydrateState(loaded);
+  state = result.state;
+  if(result.changed) scheduleSave();
+  const todayIdx = todayTripIndex();
+  if(todayIdx >= 0 && state.days[todayIdx]) state.days[todayIdx].open = true;
   render();
+  if(todayIdx >= 0){
+    const card = document.querySelectorAll('#dayList .day-card')[todayIdx];
+    if(card && document.getElementById('panel-itinerary').classList.contains('active')) card.scrollIntoView({ block:'start' });
+  }
 }
 
 function setSyncStatus(mode, label){
@@ -1102,7 +976,8 @@ document.getElementById('importInput').addEventListener('change', (e)=>{
   reader.onload = ()=>{
     try{
       const parsed = JSON.parse(reader.result);
-      state = Object.assign(defaultState(), parsed);
+      if(!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.days)) throw new Error('not a backup');
+      state = hydrateState(parsed).state;
       scheduleSave(); render();
     }catch(err){
       alert('That file could not be read as a valid backup.');
@@ -1112,39 +987,104 @@ document.getElementById('importInput').addEventListener('change', (e)=>{
   e.target.value = '';
 });
 
-// ---- Tabs ----
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
-  });
+// ---- Private notes ----
+document.getElementById('privateNotes').addEventListener('input', (e)=>{
+  state.privateNotes = e.target.value;
+  scheduleSave();
 });
 
-// ---- Countdown ----
+// ---- Tabs ----
+const TAB_KEY = 'tokyo-trip-tab';
+function showTab(name){
+  const btn = document.querySelector(`.tab-btn[data-tab="${name}"]`);
+  if(!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+}
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    showTab(btn.dataset.tab);
+    try{ localStorage.setItem(TAB_KEY, btn.dataset.tab); }catch(e){}
+  });
+});
+try{ const t = localStorage.getItem(TAB_KEY); if(t) showTab(t); }catch(e){}
+
+// ---- Countdown / today ----
+// Trip days are Tokyo calendar dates, so "today" is computed in JST no
+// matter what timezone the phone is still set to.
+function tokyoDateStr(d){
+  return new Intl.DateTimeFormat('en-CA', { timeZone:'Asia/Tokyo', year:'numeric', month:'2-digit', day:'2-digit' }).format(d);
+}
+function todayTripIndex(){
+  const today = tokyoDateStr(new Date());
+  return tripDates().findIndex(d => isoDate(d) === today);
+}
 function updateCountdown(){
-  const trip = new Date('2026-11-02T00:00:00');
-  const now = new Date();
-  const diff = Math.ceil((trip - now) / 86400000);
-  document.getElementById('countdownNum').textContent = diff > 0 ? diff : (diff===0?'Today':'—');
+  const idx = todayTripIndex();
+  const num = document.getElementById('countdownNum');
+  const lbl = num.nextElementSibling;
+  if(idx >= 0){
+    num.textContent = `${idx+1}/${TRIP_DAYS_N}`;
+    lbl.textContent = 'Trip day';
+    return;
+  }
+  const diff = Math.ceil((TRIP_START - new Date()) / 86400000);
+  num.textContent = diff > 0 ? diff : '—';
+  lbl.textContent = diff > 0 ? 'Days to go' : 'Trip over';
+}
+
+// Which of today's not-done stops is underway (or, before the first one,
+// coming up) in JST, so today's card can point at it. Stops with times
+// like "All day" or "Night" can't be placed and are skipped.
+function parseStopMinutes(t){
+  const m = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec((t || '').trim());
+  if(!m) return null;
+  let h = +m[1] % 12;
+  if(m[3].toUpperCase() === 'PM') h += 12;
+  return h*60 + (+m[2]);
+}
+function currentStop(day){
+  const parts = new Intl.DateTimeFormat('en-US', { timeZone:'Asia/Tokyo', hour:'2-digit', minute:'2-digit', hour12:false }).formatToParts(new Date());
+  const nowMin = (parseInt(parts.find(p=>p.type==='hour').value,10) % 24)*60 + parseInt(parts.find(p=>p.type==='minute').value,10);
+  const timed = day.stops.filter(s => !s.done && parseStopMinutes(s.time) != null);
+  let current = null;
+  for(const s of timed){
+    if(parseStopMinutes(s.time) <= nowMin) current = s;
+    else return current ? { id: current.id, label:'now' } : { id: s.id, label:'next' };
+  }
+  return current ? { id: current.id, label:'now' } : null;
 }
 
 // ---- Render: Itinerary ----
+let weatherByDate = {}; // isoDate -> { emoji, hi, lo }, filled by loadWeather
+
+function dayWeatherText(i){
+  const d = tripDates()[i];
+  const w = d && weatherByDate[isoDate(d)];
+  return w ? `${w.emoji} ${w.hi}°/${w.lo}°` : '';
+}
+
 function renderDays(){
   const list = document.getElementById('dayList');
   list.innerHTML = '';
-  state.days.forEach(day=>{
+  const todayIdx = todayTripIndex();
+  state.days.forEach((day, dayIdx)=>{
+    const isToday = dayIdx === todayIdx;
+    const here = isToday ? currentStop(day) : null;
     const card = document.createElement('div');
-    card.className = 'day-card' + (day.open ? ' open' : '');
+    card.className = 'day-card' + (day.open ? ' open' : '') + (isToday ? ' today' : '');
     card.innerHTML = `
       <div class="day-head">
         <div class="day-head-left">
-          <span class="day-badge">${day.label}</span>
-          <span class="day-title">${day.date}</span>
-          ${day.tag ? `<span class="day-tag">${day.tag}</span>` : ''}
+          <span class="day-badge">${esc(day.label)}</span>
+          <span class="day-title">${esc(day.date)}</span>
+          ${isToday ? '<span class="today-pill">TODAY</span>' : ''}
+          ${day.tag ? `<span class="day-tag">${esc(day.tag)}</span>` : ''}
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
+          <span class="day-wx" data-day-idx="${dayIdx}">${dayWeatherText(dayIdx)}</span>
           <span class="day-count">${day.stops.length} stop${day.stops.length!==1?'s':''}</span>
           <button class="day-map-btn map-btn" type="button">🗺 Map</button>
           <span class="chevron">▶</span>
@@ -1166,16 +1106,22 @@ function renderDays(){
     } else {
       day.stops.forEach(stop=>{
         const row = document.createElement('div');
-        row.className = 'stop';
+        row.className = 'stop' + (stop.done ? ' done' : '');
+        const hereLabel = here && here.id === stop.id ? `<span class="here">← ${here.label}</span>` : '';
         row.innerHTML = `
-          <div class="stop-time">${stop.time || ''}</div>
+          <input type="checkbox" ${stop.done?'checked':''} aria-label="Done">
+          <div class="stop-time">${esc(stop.time)}${hereLabel}</div>
           <div class="stop-main">
-            <div class="stop-name">${stop.name}</div>
-            ${stop.note ? `<div class="stop-note">${stop.note}</div>` : ''}
-            ${stop.link ? `<a class="stop-link" href="${stop.link}" target="_blank" rel="noopener">📍 Google Maps</a>` : ''}
+            <div class="stop-name">${esc(stop.name)}</div>
+            ${stop.note ? `<div class="stop-note">${esc(stop.note)}</div>` : ''}
+            ${stop.link ? `<a class="stop-link" href="${esc(stop.link)}" target="_blank" rel="noopener">📍 Google Maps</a>` : ''}
           </div>
-          <button class="stop-del">×</button>
+          <button class="stop-del" aria-label="Remove stop">×</button>
         `;
+        row.querySelector('input[type=checkbox]').addEventListener('change', (e)=>{
+          stop.done = e.target.checked;
+          scheduleSave(); renderDays();
+        });
         row.querySelector('.stop-del').addEventListener('click', (e)=>{
           e.stopPropagation();
           day.stops = day.stops.filter(s=>s.id !== stop.id);
@@ -1203,7 +1149,7 @@ function renderDays(){
       const nameInp = card.querySelector('.add-row .name');
       const noteInp = card.querySelector('.add-row .note');
       if(!nameInp.value.trim()) return;
-      const newStop = { id: uid(), time: timeInp.value.trim(), name: nameInp.value.trim(), note: noteInp.value.trim() };
+      const newStop = { id: uid(), time: timeInp.value.trim(), name: nameInp.value.trim(), note: noteInp.value.trim(), custom: true };
       day.stops.push(newStop);
       day.open = true;
       scheduleSave(); renderDays();
@@ -1229,8 +1175,8 @@ function renderClusters(){
     el.innerHTML = `
       <div class="cluster-head">
         <div>
-          <div class="cluster-name">${cluster.name}</div>
-          ${cluster.tag ? `<div class="cluster-tag">${cluster.tag}</div>` : ''}
+          <div class="cluster-name">${esc(cluster.name)}</div>
+          ${cluster.tag ? `<div class="cluster-tag">${esc(cluster.tag)}</div>` : ''}
         </div>
         <button class="stop-del cluster-del">×</button>
       </div>
@@ -1251,9 +1197,9 @@ function renderClusters(){
         row.innerHTML = `
           <input type="checkbox" ${spot.done?'checked':''}>
           <div class="spot-main ${spot.done?'done':''}" style="flex:1;">
-            <div class="spot-name">${spot.name}</div>
-            ${spot.note ? `<div class="spot-note">${spot.note}</div>` : ''}
-            ${spot.link ? `<a class="spot-link" href="${spot.link}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📍 Google Maps</a>` : ''}
+            <div class="spot-name">${esc(spot.name)}</div>
+            ${spot.note ? `<div class="spot-note">${esc(spot.note)}</div>` : ''}
+            ${spot.link ? `<a class="spot-link" href="${esc(spot.link)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📍 Google Maps</a>` : ''}
           </div>
           <button class="spot-del">×</button>
         `;
@@ -1278,7 +1224,7 @@ function renderClusters(){
       const nameInp = el.querySelector('.spot-name-inp');
       const noteInp = el.querySelector('.spot-note-inp');
       if(!nameInp.value.trim()) return;
-      cluster.spots.push({ id: uid(), name: nameInp.value.trim(), note: noteInp.value.trim(), done:false });
+      cluster.spots.push({ id: uid(), name: nameInp.value.trim(), note: noteInp.value.trim(), done:false, custom: true });
       scheduleSave(); renderClusters();
     });
 
@@ -1289,7 +1235,7 @@ function renderClusters(){
 document.getElementById('addClusterBtn').addEventListener('click', ()=>{
   const inp = document.getElementById('newClusterName');
   if(!inp.value.trim()) return;
-  state.clusters.push({ id: uid(), name: inp.value.trim(), tag:'', spots: [] });
+  state.clusters.push({ id: uid(), name: inp.value.trim(), tag:'', spots: [], custom: true });
   inp.value = '';
   scheduleSave(); renderClusters();
 });
@@ -1307,7 +1253,7 @@ function renderDecisions(){
     row.className = 'decision-row' + (d.done ? ' done' : '');
     row.innerHTML = `
       <input type="checkbox" ${d.done?'checked':''}>
-      <div class="decision-text">${d.text}</div>
+      <div class="decision-text">${esc(d.text)}</div>
     `;
     row.querySelector('input[type=checkbox]').addEventListener('change', (e)=>{
       d.done = e.target.checked;
@@ -1410,11 +1356,11 @@ function renderBudget(){
       row.className = 'expense-row';
       const dateLabel = exp.date ? exp.date.slice(5) : '—';
       row.innerHTML = `
-        <div class="exp-date">${dateLabel}</div>
+        <div class="exp-date">${esc(dateLabel)}</div>
         <div class="exp-cat-dot" style="background:${CATEGORY_COLORS[exp.category]||'#8B8A9E'}"></div>
         <div class="exp-main">
-          <div class="exp-note">${exp.note || exp.category}</div>
-          <div class="exp-cat">${exp.category}</div>
+          <div class="exp-note">${esc(exp.note || exp.category)}</div>
+          <div class="exp-cat">${esc(exp.category)}</div>
         </div>
         <div class="exp-amt">${fmtYen(exp.amount)}</div>
         <button class="exp-del">×</button>
@@ -1438,7 +1384,7 @@ document.getElementById('addExpBtn').addEventListener('click', ()=>{
   const amt = document.getElementById('expAmt').value;
   const note = document.getElementById('expNote').value;
   if(!amt || Number(amt) <= 0) return;
-  state.expenses.push({ id: uid(), date: date || new Date().toISOString().slice(0,10), category: cat, amount: Number(amt), note: note.trim() });
+  state.expenses.push({ id: uid(), date: date || isoDate(new Date()), category: cat, amount: Number(amt), note: note.trim() });
   document.getElementById('expAmt').value = '';
   document.getElementById('expNote').value = '';
   scheduleSave(); renderBudget();
@@ -1593,9 +1539,9 @@ function renderNearbyResults(results){
     const badgeText = open === true ? 'Open now' : open === false ? 'Closed now' : 'Hours unknown';
     row.innerHTML = `
       <div class="rest-main">
-        <div class="rest-name">${r.name}</div>
+        <div class="rest-name">${esc(r.name)}</div>
         <div class="rest-tags-row">
-          <div class="rest-tags">${tagsParts.join(' · ')}</div>
+          <div class="rest-tags">${esc(tagsParts.join(' · '))}</div>
           <span class="rest-badge ${badgeClass}">${badgeText}</span>
         </div>
         <a class="rest-go" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${r.lat},${r.lon}&travelmode=walking">Walking directions →</a>
@@ -1615,7 +1561,7 @@ function renderNearbyResults(results){
 function populateNearbyDaySelect(){
   const sel = document.getElementById('nearbyDaySelect');
   const prev = sel.value;
-  sel.innerHTML = state.days.map(d => `<option value="${d.id}">${d.label} — ${d.date}</option>`).join('');
+  sel.innerHTML = state.days.map(d => `<option value="${esc(d.id)}">${esc(d.label)} — ${esc(d.date)}</option>`).join('');
   if(prev && state.days.some(d=>d.id===prev)) sel.value = prev;
 }
 
@@ -1624,7 +1570,7 @@ function addNearbyStopToDay(r, btnEl){
   const day = state.days.find(d => d.id === dayId);
   if(!day) return;
   const kindText = (r.cuisine ? r.cuisine.replace(/_/g,' ') : (r.kind || '').replace(/_/g,' ')) || 'Found via Nearby';
-  day.stops.push({ id: uid(), time:'', name: r.name, note: kindText, lat: r.lat, lon: r.lon });
+  day.stops.push({ id: uid(), time:'', name: r.name, note: kindText, lat: r.lat, lon: r.lon, custom: true });
   day.open = true;
   scheduleSave();
   renderDays();
@@ -1717,8 +1663,6 @@ function tripDates(){
     return d;
   });
 }
-function isoDate(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-
 async function fetchLiveForecast(dates){
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${TOKYO_LAT}&longitude=${TOKYO_LON}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia%2FTokyo&start_date=${isoDate(dates[0])}&end_date=${isoDate(dates[dates.length-1])}`;
   const res = await fetch(url);
@@ -1769,6 +1713,7 @@ function renderWeatherStrip(days){
     chip.className = 'weather-chip';
     const label = w.date.toLocaleDateString('en-US', {month:'short', day:'numeric'});
     const emoji = w.mode === 'forecast' ? (WMO_EMOJI[w.code] || '🌡️') : (w.rainYears >= w.totalYears/2 ? '🌦️' : '🌤️');
+    weatherByDate[isoDate(w.date)] = { emoji, hi: w.hi, lo: w.lo };
     chip.innerHTML = `
       <div class="wd-date">${label}</div>
       <div class="wd-emoji">${emoji}</div>
@@ -1776,6 +1721,7 @@ function renderWeatherStrip(days){
     `;
     strip.appendChild(chip);
   });
+  document.querySelectorAll('.day-wx').forEach(el => { el.textContent = dayWeatherText(Number(el.dataset.dayIdx)); });
   const note = document.getElementById('weatherNote');
   if(days[0] && days[0].mode === 'forecast'){
     note.textContent = 'Live forecast (open-meteo.com), °C';
@@ -1936,11 +1882,19 @@ function buildICS(){
     summary: 'Flight departs — Cathay Pacific',
     description: 'CX543+CX840, 10:10 AM JST, 2h HKG layover'
   });
-  addEvent({
-    uid: 'disneysea-tickets',
-    dtStart: new Date('2026-09-04T05:00:00Z'), dtEnd: new Date('2026-09-04T05:30:00Z'),
-    summary: 'DisneySea tickets go on sale (2:00 PM JST)',
-    description: 'Exactly 2 months before Nov 4 — official site can reject foreign cards; Klook is a fallback'
+  // Timed bookings, in JST (UTC+9).
+  const BOOKINGS = [
+    { uid:'ghibli',         start:'2026-11-03T10:00', min:120, summary:'Ghibli Museum (booked)', description:'10:00 AM entry · live ticket on phone with data + passport, enter together' },
+    { uid:'teamlab-planets',start:'2026-11-06T11:00', min:90,  summary:'teamLab Planets (booked)', description:'11:00–11:30 AM entry · Toyosu · wear shorts or roll-up pants' },
+    { uid:'shibuya-sky',    start:'2026-11-07T15:40', min:90,  summary:'Shibuya Sky (booked)', description:'3:40 PM entry · sunset 4:35 · Scramble Square 14F, lockers need a ¥100 coin' },
+    { uid:'fuji-bus',       start:'2026-11-09T07:15', min:120, summary:'Keio bus 1101 → Kawaguchiko (booked)', description:'Busta Shinjuku · mobile ticket' },
+    { uid:'fuji-train',     start:'2026-11-09T16:48', min:120, summary:'Fuji-Excursion 44 → Shinjuku (booked)', description:'Suica base fare + seat ticket' },
+    { uid:'teamlab-borderless', start:'2026-11-10T09:30', min:150, summary:'teamLab Borderless (booked)', description:'9:30–10:00 AM entry · Azabudai Hills · no re-entry' },
+    { uid:'pokemon-cafe',   start:'2026-11-10T13:00', min:90,  summary:'Pokémon Café (booked)', description:'Takashimaya East Bldg 5F, Nihonbashi · bring the confirmation email, pick up 3 reserved goods' }
+  ];
+  BOOKINGS.forEach(b => {
+    const dtStart = new Date(b.start + ':00+09:00');
+    addEvent({ uid: b.uid, dtStart, dtEnd: new Date(dtStart.getTime() + b.min*60000), summary: b.summary, description: b.description });
   });
 
   lines.push('END:VCALENDAR');
@@ -2092,7 +2046,7 @@ async function openDayDetail(dayId){
     await ensureLeafletLoaded();
   }catch(e){
     document.getElementById('ddNote').textContent = "Couldn't load the map (no connection?) — stop list is still below.";
-    renderDayStopsList(day, []);
+    renderDayStopsList(day.stops, []);
     return;
   }
   if(currentDetailDayId !== dayId) return;
@@ -2118,7 +2072,7 @@ async function openDayDetail(dayId){
     const icon = s.isHotel
       ? L.divIcon({ className:'', html:`<div class="dd-marker" style="background:var(--teal);"><span>🏨</span></div>`, iconSize:[22,22], iconAnchor:[11,20] })
       : L.divIcon({ className:'', html:`<div class="dd-marker"><span>${i+1}</span></div>`, iconSize:[22,22], iconAnchor:[11,20] });
-    L.marker([s.lat, s.lon], { icon }).addTo(dayMapInstance).bindPopup(s.name);
+    L.marker([s.lat, s.lon], { icon }).addTo(dayMapInstance).bindPopup(esc(s.name));
   });
   dayMapInstance.fitBounds(located.map(s=>[s.lat,s.lon]), { padding:[30,30] });
 
@@ -2149,10 +2103,10 @@ function renderDayStopsList(seq, legs, located){
     row.innerHTML = `
       ${hasLoc ? (s.isHotel ? `<div class="dd-num" style="background:var(--teal);">🏨</div>` : `<div class="dd-num">${num}</div>`) : `<div class="dd-num" style="background:var(--grey);opacity:.5;">?</div>`}
       <div class="dd-stop-main">
-        ${s.time ? `<div class="dd-stop-time">${s.time}</div>` : ''}
-        <div class="dd-stop-name">${s.name}</div>
-        ${s.note ? `<div class="dd-stop-note">${s.note}</div>` : ''}
-        ${s.link ? `<a class="dd-stop-link" href="${s.link}" target="_blank" rel="noopener">📍 Google Maps</a>` : ''}
+        ${s.time ? `<div class="dd-stop-time">${esc(s.time)}</div>` : ''}
+        <div class="dd-stop-name">${esc(s.name)}</div>
+        ${s.note ? `<div class="dd-stop-note">${esc(s.note)}</div>` : ''}
+        ${s.link ? `<a class="dd-stop-link" href="${esc(s.link)}" target="_blank" rel="noopener">📍 Google Maps</a>` : ''}
         ${!hasLoc ? `<div class="dd-no-loc">No location set — not shown on map</div>` : ''}
       </div>
     `;
@@ -2177,6 +2131,7 @@ function renderDayStopsList(seq, legs, located){
 }
 
 function render(){
+  document.getElementById('privateNotes').value = state.privateNotes || '';
   renderDays();
   renderClusters();
   renderDecisions();
