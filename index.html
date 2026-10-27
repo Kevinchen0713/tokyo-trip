@@ -440,6 +440,152 @@
   .booked-card{ border-radius:18px; position:relative; overflow:hidden; }
   .booked-card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background: var(--teal); opacity:.7; }
   .cluster, .nearby-card, .budget-top, .expense-add, .decision-list, .backup-card{ border-radius:18px; }
+
+  /* ---- Trip extras ---- */
+  .leave-alert{ margin-top:10px; font-size:13.5px; color: var(--paper); background: rgba(227,178,60,0.12); border:1px solid rgba(227,178,60,0.3); border-radius:12px; padding:9px 12px; }
+  .leave-alert b{ color: var(--gold); }
+  .leave-alert span{ display:block; color: var(--grey); font-size:12px; margin-top:2px; }
+  .leave-alert.soon{ background: rgba(232,84,62,0.16); border-color: rgba(232,84,62,0.45); }
+  .leave-alert.urgent{ background: var(--vermilion); border-color: var(--vermilion); font-weight:700; }
+  .leave-alert.urgent b, .leave-alert.urgent span{ color: var(--paper); }
+  .leave-alert.night{ background: rgba(92,168,232,0.12); border-color: rgba(92,168,232,0.35); }
+  .leave-alert .now-actions{ margin-top:10px; }
+
+  .brief-card{ border-radius:20px; padding:16px 18px; margin-bottom:18px; background: var(--ink-soft); border:1px solid rgba(45,212,196,0.35); }
+  .brief-title{ font-family:'Shippori Mincho', serif; font-weight:800; font-size:21px; margin-top:6px; }
+  .brief-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-top:12px; }
+  .brief-grid > div{ background: var(--ink); border:1px solid var(--line); border-radius:12px; padding:9px 11px; font-size:12.5px; color: var(--grey); }
+  .brief-grid span{ display:block; font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:3px; }
+  .brief-grid b{ color: var(--paper); font-family:'JetBrains Mono', monospace; }
+  .brief-books{ margin:12px 0 0; padding-left:18px; font-size:13px; }
+  .brief-books li{ margin:3px 0; }
+  .brief-books b{ font-family:'JetBrains Mono', monospace; color: var(--gold); font-weight:600; }
+  .brief-books span{ color: var(--grey); }
+
+  .bring{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:10px; padding-top:12px; border-top:1px solid var(--line); }
+  .bring-item{ display:inline-flex; align-items:center; gap:7px; font-size:12.5px; background: var(--ink); border:1px solid var(--line); border-radius:20px; padding:5px 11px 5px 6px; cursor:pointer; }
+  .bring-item input[type=checkbox]{ width:18px; height:18px; border-radius:50%; }
+  .bring-item.done span{ text-decoration: line-through; color: var(--grey); }
+
+  .stop-tip{ font-size:12px; color: #8EC5FF; margin-top:4px; line-height:1.45; }
+  .stop-side{ display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .stop-cam{ cursor:pointer; font-size:14px; opacity:.45; padding:2px 4px; }
+  .stop-cam:hover{ opacity:1; }
+  .stop-thumb{ display:block; width:72px; height:72px; object-fit:cover; border-radius:10px; margin-top:8px; border:1px solid var(--line); cursor:pointer; }
+
+  .food-chip{ flex-wrap:wrap; row-gap:4px; }
+  .fc-rating{ font-family:'JetBrains Mono', monospace; font-size:11px; color: #F59E3B; font-weight:600; }
+  .fc-hours{ font-family:'JetBrains Mono', monospace; font-size:10.5px; color: var(--grey); }
+  .fc-hours.closed{ color: var(--vermilion); }
+  .fc-open{ color: var(--teal); font-weight:700; }
+  .fc-closed{ color: var(--vermilion); font-weight:700; }
+  .fc-actions{ display:inline-flex; gap:4px; }
+  .fc-ate{ font-size:11px; font-weight:700; color: var(--paper); background: rgba(232,84,62,0.18); border:0; border-radius:20px; padding:3px 8px; cursor:pointer; font-family:inherit; }
+
+  .picks-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px; }
+
+  .passport-card{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; background: var(--ink-soft); border:1px solid var(--line); border-radius:18px; padding:14px 16px; margin-bottom:10px; }
+  .passport-stats, .tf-stats, .recap-grid{ display:flex; gap:18px; flex-wrap:wrap; }
+  .recap-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; }
+  .pp-stat b{ display:block; font-family:'JetBrains Mono', monospace; font-size:20px; color: var(--gold); font-weight:600; }
+  .pp-stat span{ font-size:11px; color: var(--grey); text-transform:uppercase; letter-spacing:.06em; }
+  .pp-row{ display:flex; gap:12px; align-items:flex-start; padding:10px 2px; border-top:1px solid var(--line); }
+  .pp-row:first-child{ border-top:none; }
+  .pp-thumb{ width:56px; height:56px; border-radius:12px; object-fit:cover; flex-shrink:0; cursor:pointer; }
+  .empty-thumb{ display:grid; place-content:center; background: var(--ink-soft); border:1px solid var(--line); font-size:22px; cursor:default; }
+  .pp-main{ flex:1; min-width:0; }
+  .pp-name{ font-weight:700; font-size:14px; }
+  .pp-stars{ color: var(--gold); font-size:13px; letter-spacing:1px; margin-top:2px; }
+  .pp-stars .dim, .dim{ color: rgba(245,241,232,0.18); }
+  .pp-date{ font-family:'JetBrains Mono', monospace; color: var(--grey); font-size:11px; letter-spacing:0; margin-left:6px; }
+  .pp-note{ color: var(--grey); font-size:12.5px; margin-top:3px; }
+
+  .hunt-row{ display:flex; gap:12px; align-items:flex-start; padding:10px 2px; border-top:1px solid var(--line); }
+  .hunt-row:first-child{ border-top:none; }
+  .hunt-main{ flex:1; }
+  .hunt-name{ font-weight:700; font-size:14px; }
+  .hunt-row.done .hunt-name{ text-decoration: line-through; color: var(--grey); }
+  .hunt-meta{ font-size:12px; color: var(--grey); margin-top:2px; }
+  .hunt-paid{ font-size:12px; color: var(--grey); margin-top:6px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .hunt-paid input{ width:100px; background: var(--ink); border:1px solid var(--line); color: var(--paper); border-radius:8px; padding:5px 8px; font-family:'JetBrains Mono', monospace; }
+  .hunt-ok{ color: var(--teal); font-weight:700; }
+  .hunt-over{ color: var(--vermilion); font-weight:700; }
+
+  .pace{ margin-top:16px; }
+  .pace-num{ font-family:'JetBrains Mono', monospace; font-size:28px; font-weight:600; color: var(--teal); }
+  .pace-num span{ font-size:14px; color: var(--grey); margin-left:4px; }
+  .pace-sub{ font-size:12.5px; color: var(--grey); margin-top:2px; }
+  .pace-today{ display:inline-block; margin-top:8px; font-size:12.5px; font-weight:700; background: rgba(45,212,196,0.12); color: var(--teal); padding:4px 10px; border-radius:20px; }
+  .pace-today.over{ background: rgba(232,84,62,0.15); color: var(--vermilion); }
+  .day-bars{ margin-top:16px; display:flex; flex-direction:column; gap:6px; }
+  .db-head{ font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color: var(--grey); margin-bottom:2px; }
+  .db-row{ display:flex; align-items:center; gap:10px; font-size:12px; }
+  .db-row.today .db-lbl{ color: var(--vermilion); font-weight:700; }
+  .db-lbl{ width:52px; color: var(--grey); font-family:'JetBrains Mono', monospace; font-size:11px; flex-shrink:0; }
+  .db-track{ flex:1; height:8px; background: var(--ink); border-radius:5px; position:relative; overflow:hidden; }
+  .db-fill{ position:absolute; left:0; top:0; bottom:0; background: var(--teal); border-radius:5px; }
+  .db-fill.over{ background: var(--vermilion); }
+  .db-target{ position:absolute; top:-2px; bottom:-2px; width:2px; background: rgba(245,241,232,0.45); z-index:1; }
+  .db-amt{ width:76px; text-align:right; font-family:'JetBrains Mono', monospace; font-size:11.5px; flex-shrink:0; }
+  .expense-add .cur{ width:56px; }
+  .expense-add .who{ width:auto; }
+  .exp-orig{ font-size:10.5px; color: var(--grey); text-align:right; font-weight:400; }
+
+  .split-card{ background: var(--ink-soft); border:1px solid var(--line); border-radius:18px; padding:16px 18px; }
+  .split-names{ display:flex; align-items:center; gap:10px; margin-bottom:12px; color: var(--grey); }
+  .split-names input{ flex:1; min-width:0; background: var(--ink); border:1px solid var(--line); color: var(--paper); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:13px; }
+  .split-line{ font-size:16px; }
+  .split-line b{ color: var(--gold); }
+  .split-line span{ color: var(--grey); font-size:13px; }
+  .split-sub{ font-size:12px; color: var(--grey); margin-top:6px; }
+
+  .tf-also{ display:inline-flex; align-items:center; gap:7px; font-size:12px; color: var(--grey); }
+  .tf-also input[type=checkbox]{ width:18px; height:18px; }
+  .tf-stats{ background: var(--ink-soft); border:1px solid var(--line); border-radius:18px; padding:14px 16px; margin-bottom:10px; }
+  .tf-warn{ font-size:12.5px; color: var(--gold); background: rgba(227,178,60,0.1); border-radius:12px; padding:9px 12px; margin-bottom:10px; }
+
+  .show-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px; }
+  .show-btn{ text-align:left; background: var(--ink-soft); border:1px solid var(--line); border-radius:16px; padding:14px; color: var(--paper); font-family:inherit; font-weight:700; font-size:13.5px; cursor:pointer; display:flex; flex-direction:column; gap:4px; }
+  .show-btn span{ font-size:22px; }
+  .show-btn small{ font-weight:400; color: var(--grey); font-size:12px; }
+  .phrase-list{ display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+  .phrase-btn{ text-align:left; background: var(--ink); border:1px solid var(--line); border-radius:12px; padding:10px 12px; color: var(--paper); font-family:inherit; cursor:pointer; display:flex; flex-direction:column; gap:3px; }
+  .ph-en{ font-size:12.5px; font-weight:700; }
+  .ph-jp{ font-size:12px; color: var(--grey); }
+  .tip-row{ padding:10px 0; border-top:1px solid var(--line); }
+  .tip-row:first-child{ border-top:none; }
+  .tip-place{ font-weight:700; font-size:13.5px; }
+  .tip-text{ color: var(--grey); font-size:12.5px; margin-top:2px; line-height:1.5; }
+
+  .show-overlay{ position:fixed; inset:0; z-index:2000; background:#FFFFFF; color:#111; display:flex; align-items:center; justify-content:center; padding: calc(24px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom)); overflow-y:auto; }
+  .show-close{ position:absolute; top: calc(12px + env(safe-area-inset-top)); right:14px; width:44px; height:44px; border-radius:50%; border:0; background:#EEE; font-size:24px; cursor:pointer; color:#111; }
+  .show-body{ max-width:640px; width:100%; text-align:center; }
+  .show-jp{ font-size: clamp(36px, 11vw, 64px); font-weight:800; line-height:1.25; font-family:'Zen Kaku Gothic New', sans-serif; }
+  .show-sub{ font-size: clamp(22px, 6.5vw, 36px); font-weight:700; margin-top:14px; }
+  .show-ask{ font-size: clamp(20px, 5.5vw, 30px); margin-top:22px; padding-top:18px; border-top:2px solid #EEE; }
+  .show-ro{ font-size:18px; color:#555; margin-top:16px; }
+  .show-en{ font-size:14px; color:#777; margin-top:16px; }
+  .show-picks{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:26px; }
+  .show-picks .chip{ background:#F2F2F2; color:#333; border-color:#DDD; font-size:14px; }
+  .show-picks .chip.active{ background:#E8543E; color:#FFF; border-color:#E8543E; }
+  .show-photo{ max-width:100%; max-height:75vh; border-radius:12px; }
+  .show-photo-actions{ margin-top:14px; }
+  .show-photo-actions .btn{ color:#111; border-color:#CCC; }
+
+  .sheet-overlay{ position:fixed; inset:0; z-index:1500; background: rgba(10,10,20,0.6); display:flex; align-items:flex-end; justify-content:center; }
+  .sheet{ width:100%; max-width:560px; background: var(--ink-soft); border:1px solid var(--line); border-radius:22px 22px 0 0; padding:18px 18px calc(18px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; gap:10px; }
+  .sheet-title{ font-family:'Shippori Mincho', serif; font-weight:800; font-size:20px; }
+  .sheet input[type=text], .sheet textarea{ background: var(--ink); border:1px solid var(--line); color: var(--paper); border-radius:10px; padding:10px 12px; font-family:inherit; font-size:14px; resize:none; }
+  .log-stars{ display:flex; gap:6px; }
+  .log-stars button{ background:none; border:0; font-size:30px; color: rgba(245,241,232,0.2); cursor:pointer; padding:0 2px; }
+  .log-stars button.on{ color: var(--gold); }
+  .sheet-row{ display:flex; align-items:center; gap:10px; }
+  .sheet-actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:4px; }
+
+  .recap-line{ font-size:13px; margin-top:12px; color: var(--grey); }
+  .recap-line b{ color: var(--paper); }
+  .recap-photos{ display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-top:14px; }
+  .recap-photos img{ width:100%; aspect-ratio:1; object-fit:cover; border-radius:10px; cursor:pointer; }
 </style>
 
 </head>
@@ -468,6 +614,7 @@
     <h2 class="section-title">Day by day <span class="jp">日程</span></h2>
     <p class="section-note">Tap a day to open it. Tap a dot to check a stop off.</p>
     <div class="now-card" id="nowCard" hidden></div>
+    <div class="brief-card" id="briefCard" hidden></div>
     <div class="weather-strip" id="weatherStrip"></div>
     <p class="weather-note" id="weatherNote">Loading weather…</p>
     <div id="dayList"></div>
@@ -475,13 +622,31 @@
 
   <!-- FOOD CRAWL -->
   <div class="panel" id="panel-food">
-    <h2 class="section-title">Food &amp; shopping <span class="jp">食べ歩き</span></h2>
+    <h2 class="section-title">Food passport <span class="jp">食べ記録</span></h2>
+    <p class="section-note">Log what you ate — a rating, one line, a photo. Tap "✓ Ate" on any food option to start one.</p>
+    <div class="passport-card">
+      <div class="passport-stats" id="passportStats"></div>
+      <button class="btn" id="logMealBtn" type="button">+ Log a meal</button>
+    </div>
+    <div class="passport-list" id="passportList"></div>
+
+    <h2 class="section-title" style="margin-top:26px;">Food &amp; shopping <span class="jp">食べ歩き</span></h2>
     <p class="section-note">Grouped by neighborhood so you can crawl on foot without zigzagging across the city.</p>
     <div class="cluster-grid" id="clusterGrid"></div>
     <div class="new-cluster-row">
       <input type="text" id="newClusterName" placeholder="Add a neighborhood (e.g. Kichijoji)">
       <button class="btn" id="addClusterBtn">Add area</button>
     </div>
+
+    <h2 class="section-title" style="margin-top:26px;">Collector hunt list <span class="jp">探し物</span></h2>
+    <p class="section-note">Cards, figures and games you're hunting, with the most you'll pay. Check off finds and note what you paid.</p>
+    <div class="expense-add">
+      <input type="text" class="note" id="huntItem" placeholder="Item (e.g. Charizard ex SAR)">
+      <input type="number" class="amt" id="huntMax" placeholder="Max ¥" inputmode="numeric">
+      <input type="text" class="note" id="huntWhere" placeholder="Where (Cardrush, Mandarake…)">
+      <button class="btn" id="addHuntBtn" type="button">Add</button>
+    </div>
+    <div class="hunt-list" id="huntList"></div>
   </div>
 
   <!-- NEARBY -->
@@ -496,6 +661,17 @@
       <span class="calc-eq">JPY</span>
     </div>
     <div class="nearby-card">
+      <div class="picks-head">
+        <div>
+          <div class="cluster-name">Your food picks</div>
+          <div class="cluster-tag">open now first · Tabelog ★ · hours from Tabelog</div>
+        </div>
+        <button class="btn small ghost" id="picksLocateBtn" type="button">Sort by distance</button>
+      </div>
+      <div class="rest-list" id="picksList"></div>
+    </div>
+    <div class="nearby-card">
+      <div class="cluster-name" style="margin-bottom:12px;">Anything nearby</div>
       <div class="chip-row" id="categoryChips">
         <button class="chip active" data-cat="food">🍜 Food</button>
         <button class="chip" data-cat="entertainment">🎮 Entertainment</button>
@@ -522,7 +698,7 @@
   <!-- BUDGET -->
   <div class="panel" id="panel-budget">
     <h2 class="section-title">Trip budget <span class="jp">予算</span></h2>
-    <p class="section-note">Log spend as you go. Amounts entered in yen.</p>
+    <p class="section-note">Log spend as you go, in yen or dollars (converted at the live rate).</p>
 
     <div class="budget-top">
       <div class="fx-card">
@@ -545,7 +721,9 @@
           <span id="remainLabel">¥0 remaining</span>
         </div>
       </div>
+      <div class="pace" id="paceBox"></div>
       <div class="cat-breakdown" id="catBreakdown"></div>
+      <div class="day-bars" id="dayBars"></div>
     </div>
 
     <div class="expense-add">
@@ -558,17 +736,51 @@
         <option>Lodging</option>
         <option>Other</option>
       </select>
-      <input type="number" class="amt" id="expAmt" placeholder="¥ amount">
+      <select class="cur" id="expCur" aria-label="Currency"><option value="JPY">¥</option><option value="USD">$</option></select>
+      <input type="number" class="amt" id="expAmt" placeholder="Amount" inputmode="decimal">
       <input type="text" class="note" id="expNote" placeholder="What was it?">
+      <select class="who" id="expPaidBy" aria-label="Paid by"></select>
+      <select class="who" id="expSplit" aria-label="Split"><option value="shared">Split ½</option><option value="solo">Just theirs</option></select>
       <button class="btn" id="addExpBtn">Add</button>
     </div>
 
     <div class="expense-list" id="expenseList"></div>
+
+    <h2 class="section-title" style="margin-top:26px;">Split <span class="jp">割り勘</span></h2>
+    <p class="section-note">Who paid what, and who owes whom. Rename yourselves here.</p>
+    <div class="split-card">
+      <div class="split-names"><input type="text" id="traveler0" aria-label="Traveler 1"><span>&amp;</span><input type="text" id="traveler1" aria-label="Traveler 2"></div>
+      <div id="splitResult"></div>
+    </div>
+
+    <h2 class="section-title" style="margin-top:26px;">Tax-free <span class="jp">免税</span></h2>
+    <p class="section-note">Log each tax-free receipt. Most stores need ¥5,000+ before tax (about ¥5,500 with tax) at one store on one day. Japan moved to a refund system on Nov 1, 2026: you pay the tax at the till and get it back after customs checks the goods as you leave, so keep tax-free items unused, together, and in your carry-on, and leave time for the kiosk at Haneda. Ask the store if anything's unclear.</p>
+    <div class="expense-add">
+      <input type="text" class="note" id="tfStore" placeholder="Store (e.g. Pokémon Center Mega)">
+      <input type="number" class="amt" id="tfAmt" placeholder="¥ incl. tax" inputmode="numeric">
+      <input type="text" class="note" id="tfWhat" placeholder="What (optional)">
+      <label class="tf-also"><input type="checkbox" id="tfAlsoExpense" checked> also log as expense</label>
+      <button class="btn" id="addTfBtn" type="button">Add</button>
+    </div>
+    <div id="taxFreeSummary"></div>
+    <div class="expense-list" id="taxFreeList"></div>
   </div>
 
   <!-- INFO -->
   <div class="panel" id="panel-info">
-    <h2 class="section-title">Booked <span class="jp">予約済み</span></h2>
+    <h2 class="section-title">Show cards <span class="jp">見せる</span></h2>
+    <p class="section-note">Tap one and hold your phone up to a taxi driver or server.</p>
+    <div class="show-grid">
+      <button type="button" class="show-btn" data-show="hotel"><span>🏨</span>Hotel, for the taxi<small>ホテルグレイスリー新宿</small></button>
+      <button type="button" class="show-btn" data-show="haneda"><span>✈️</span>Haneda T3, for the taxi<small>羽田空港 第3ターミナル</small></button>
+    </div>
+    <div class="phrase-list" id="phraseList"></div>
+
+    <h2 class="section-title" style="margin-top:26px;">Getting there <span class="jp">乗り換え</span></h2>
+    <p class="section-note">Which exit and station for each big stop. These also show under the matching stops in the plan.</p>
+    <div class="decision-list" id="transitTips"></div>
+
+    <h2 class="section-title" style="margin-top:26px;">Booked <span class="jp">予約済み</span></h2>
     <p class="section-note">Confirmation details for the trip.</p>
     <div class="info-grid">
       <div class="booked-card">
@@ -665,6 +877,22 @@
       <button class="btn small ghost" id="icsBtn">Add to Calendar</button>
     </div>
 
+    <h2 class="section-title" style="margin-top:24px;">Trip recap <span class="jp">思い出</span></h2>
+    <p class="section-note">Fills in as you check off stops, log meals and add photos. Share it as an image at the end.</p>
+    <div class="budget-top" id="recapBox"></div>
+    <div class="backup-card" style="margin-bottom:22px;">
+      <span class="backup-note">Makes a picture of your stats and best photos.</span>
+      <button class="btn small" id="recapShareBtn" type="button">Share recap</button>
+    </div>
+
+    <h2 class="section-title" style="margin-top:24px;">Share with your travel partner <span class="jp">共有</span></h2>
+    <p class="section-note">Each phone keeps its own copy. Send yours over (AirDrop works), and merge theirs to pull in their expenses, meals, finds and checkmarks — nothing of yours gets overwritten. Photos stay on each phone.</p>
+    <div class="backup-card" style="margin-bottom:22px;">
+      <button class="btn small" id="shareBackupBtn" type="button">Send my copy</button>
+      <label class="btn small ghost" style="cursor:pointer;">Merge partner's copy<input type="file" id="mergeInput" accept="application/json,.json" style="display:none;"></label>
+      <span class="backup-note" id="mergeStatus"></span>
+    </div>
+
     <h2 class="section-title" style="margin-top:24px;">Data & backup <span class="jp">バックアップ</span></h2>
     <p class="section-note">Everything here is saved only in this browser. Export a backup before switching devices or clearing Safari data.</p>
     <div class="backup-card">
@@ -674,6 +902,28 @@
     </div>
   </div>
 
+</div>
+
+<div class="show-overlay" id="showOverlay" hidden>
+  <button type="button" class="show-close" id="showClose" aria-label="Close">×</button>
+  <div class="show-body" id="showBody"></div>
+</div>
+
+<div class="sheet-overlay" id="logSheet" hidden>
+  <div class="sheet">
+    <div class="sheet-title">Log a meal</div>
+    <input type="text" id="logName" placeholder="What / where (e.g. Fuunji tsukemen)">
+    <div class="log-stars" id="logStars"></div>
+    <textarea id="logNote" rows="2" placeholder="One line — what was good?"></textarea>
+    <div class="sheet-row">
+      <label class="btn small ghost" style="cursor:pointer;">📷 Add photo<input type="file" id="logPhoto" accept="image/*" style="display:none;"></label>
+      <span class="backup-note" id="logPhotoName"></span>
+    </div>
+    <div class="sheet-actions">
+      <button type="button" class="btn ghost" id="logCancel">Cancel</button>
+      <button type="button" class="btn" id="logSave">Save</button>
+    </div>
+  </div>
 </div>
 
 <nav class="tabbar" aria-label="Sections">
@@ -954,6 +1204,11 @@ function defaultState(){
     clusters: defaultClusters(),
     decisions: defaultDecisions(),
     expenses: [],
+    foodLog: [],
+    taxFree: [],
+    hunt: [],
+    bringDone: {},
+    travelers: ['Me', 'Partner'],
     budgetGoal: 786000,
     fxRate: 150,
     fxRateAt: null,
@@ -1151,6 +1406,9 @@ function showTab(name){
   btn.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
   document.body.dataset.tab = name;
+  // These summarise data edited on other tabs, so refresh on the way in.
+  if(state && name === 'info') renderRecap();
+  if(state && name === 'nearby') renderPicks();
 }
 document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
@@ -1250,7 +1508,7 @@ function renderDays(){
         </div>
         <div class="stops-wrap timeline"></div>
         <div class="hourly" data-day-idx="${dayIdx}">${hourlyHtml(dayIdx)}</div>
-        <div class="stops-wrap"></div>
+        ${bringHtml(isoDate(tripDates()[dayIdx] || new Date(0)))}
         ${day.food && day.food.length ? `<div class="food-opts"><span class="food-lbl">🍜 Food options</span>${day.food.map(f => foodChipHtml(f, day)).join('')}</div>` : ''}
         <button class="add-toggle" type="button">+ Add a stop</button>
         <div class="add-row" hidden>
@@ -1276,9 +1534,14 @@ function renderDays(){
             ${stop.time || hereLabel ? `<div class="stop-time">${esc(stop.time)}${hereLabel}</div>` : ''}
             <div class="stop-name">${esc(stop.name)}</div>
             ${stop.note ? `<div class="stop-note">${esc(stop.note)}</div>` : ''}
+            ${tipFor(stop.name) ? `<div class="stop-tip">🚉 ${esc(tipFor(stop.name))}</div>` : ''}
             ${stop.link ? `<a class="stop-link" href="${esc(stop.link)}" target="_blank" rel="noopener">📍 Google Maps</a>` : ''}
+            ${photoKeys.has('stop:' + stop.id) ? `<img class="stop-thumb" data-photo="stop:${esc(stop.id)}" hidden alt="">` : ''}
           </div>
-          <button class="stop-del" aria-label="Remove stop">×</button>
+          <div class="stop-side">
+            <button class="stop-del" aria-label="Remove stop">×</button>
+            <label class="stop-cam" aria-label="Add photo">📷<input type="file" accept="image/*" data-stop-photo="${esc(stop.id)}" style="display:none;"></label>
+          </div>
         `;
         row.querySelector('input[type=checkbox]').addEventListener('change', (e)=>{
           stop.done = e.target.checked;
@@ -1331,6 +1594,7 @@ function renderDays(){
 
     list.appendChild(card);
   });
+  hydratePhotos(list);
   renderNowCard();
 }
 
@@ -1350,19 +1614,6 @@ function spotTabelogUrl(spot){
   const name = spot.name.replace(/\s*\([^)]*\)/, '').replace(/ — .*$/, '');
   return tabelogUrl(name, paren ? paren[1] : '');
 }
-function foodChipHtml(f, day){
-  const paren = /\(([^)]*)\)$/.exec(f);
-  const timeNote = paren && /\d/.test(paren[1]);
-  const name = f.replace(/\s*\([^)]*\)$/, '');
-  const area = paren && !timeNote ? paren[1] : (day.foodArea || '').replace(/\s*Tokyo$/, '');
-  const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + (area || '') + ' Tokyo')}`;
-  return `<span class="food-chip">
-    <span class="fc-name">${esc(name)}${timeNote ? ` <span class="fc-note">${esc(paren[1])}</span>` : ''}</span>
-    <a href="${esc(maps)}" target="_blank" rel="noopener">Map</a>
-    <a class="tb" href="${esc(tabelogUrl(name, area))}" target="_blank" rel="noopener">Tabelog</a>
-  </span>`;
-}
-
 // "Nov 4 (Wed)" -> { m:'Nov', d:'4', w:'Wed' } for the day tile.
 function dayParts(date){
   const m = /^(\w+)\s+(\d+)\s*\((\w+)\)/.exec(date || '');
@@ -1387,7 +1638,9 @@ function renderNowCard(){
   el.hidden = false;
   el.innerHTML = `
     <div class="now-eyebrow">Today · ${esc(day.label)} · ${esc(day.tag || '')}</div>
+    ${bookingAlertHtml()}
     ${rainHeadsUp()}
+    ${lastTrainHtml()}
     ${cur ? `
       <span class="now-label">${here.label === 'now' ? 'Now' : 'Up next'}</span>
       <div class="now-time">${esc(cur.time)}</div>
@@ -1396,6 +1649,7 @@ function renderNowCard(){
       <div class="now-actions">
         <a class="btn small" href="${esc(directions(cur))}" target="_blank" rel="noopener">Directions</a>
         <button class="btn small ghost now-map" type="button">Day map</button>
+        <button class="btn small ghost" type="button" data-show="hotel">🚕 Hotel card</button>
       </div>
       ${after ? `<div class="now-after">Then <b>${esc(after.time)}</b> · ${esc(after.name)}</div>` : ''}
     ` : `
@@ -1569,6 +1823,8 @@ function renderBudget(){
   document.getElementById('remainLabel').textContent = fmtYen(Math.max(goal-total,0)) + ' remaining';
   document.getElementById('progressFill').style.width = goal ? Math.min(100,(total/goal)*100)+'%' : '0%';
   document.getElementById('spentNum').textContent = fmtYen(total);
+  renderPacing(total, goal);
+  renderSplit();
 
   const byCat = {};
   state.expenses.forEach(e=>{ byCat[e.category] = (byCat[e.category]||0) + Number(e.amount||0); });
@@ -1606,9 +1862,9 @@ function renderBudget(){
         <div class="exp-cat-dot" style="background:${CATEGORY_COLORS[exp.category]||'#8B8A9E'}"></div>
         <div class="exp-main">
           <div class="exp-note">${esc(exp.note || exp.category)}</div>
-          <div class="exp-cat">${esc(exp.category)}</div>
+          <div class="exp-cat">${esc(exp.category)} · ${esc(travelerName(Number(exp.paidBy || 0)))}${(exp.split || 'shared') === 'solo' ? ' only' : ' · split'}</div>
         </div>
-        <div class="exp-amt">${fmtYen(exp.amount)}</div>
+        <div class="exp-amt">${fmtYen(exp.amount)}${exp.usd ? `<div class="exp-orig">$${Number(exp.usd).toFixed(2)}</div>` : ''}</div>
         <button class="exp-del">×</button>
       `;
       row.querySelector('.exp-del').addEventListener('click', ()=>{
@@ -1630,7 +1886,15 @@ document.getElementById('addExpBtn').addEventListener('click', ()=>{
   const amt = document.getElementById('expAmt').value;
   const note = document.getElementById('expNote').value;
   if(!amt || Number(amt) <= 0) return;
-  state.expenses.push({ id: uid(), date: date || isoDate(new Date()), category: cat, amount: Number(amt), note: note.trim() });
+  const usd = document.getElementById('expCur').value === 'USD';
+  const fx = Number(state.fxRate) || 150;
+  state.expenses.push({
+    id: uid(), date: date || isoDate(new Date()), category: cat,
+    amount: usd ? Math.round(Number(amt) * fx) : Number(amt), usd: usd ? Number(amt) : undefined,
+    note: note.trim(),
+    paidBy: Number(document.getElementById('expPaidBy').value || 0),
+    split: document.getElementById('expSplit').value
+  });
   document.getElementById('expAmt').value = '';
   document.getElementById('expNote').value = '';
   scheduleSave(); renderBudget();
@@ -2037,6 +2301,7 @@ function renderWeather(note){
   document.querySelectorAll('.day-wx').forEach(el => { el.innerHTML = dayWeatherHtml(Number(el.dataset.dayIdx)); });
   document.querySelectorAll('.hourly').forEach(el => { el.innerHTML = hourlyHtml(Number(el.dataset.dayIdx)); });
   renderNowCard();
+  if(state) renderBrief();
 }
 
 let weatherFetchedAt = 0;
@@ -2196,19 +2461,6 @@ function buildICS(){
     summary: 'Flight departs — Cathay Pacific',
     description: 'CX543+CX840, 10:10 AM JST, 2h HKG layover'
   });
-  // Timed bookings, in JST (UTC+9).
-  const BOOKINGS = [
-    { uid:'ghibli',         start:'2026-11-03T10:00', min:120, summary:'Ghibli Museum (booked)', description:'10:00 AM entry · live ticket on phone with data + passport, enter together' },
-    { uid:'disneysea',      start:'2026-11-05T08:15', min:765, summary:'Tokyo DisneySea (booked)', description:'Leave the hotel 7:15 AM · gates 8:15 · buy Premier Access in the app once inside · Fantasy Springs first' },
-    { uid:'teamlab-planets',start:'2026-11-06T11:00', min:90,  summary:'teamLab Planets (booked)', description:'11:00–11:30 AM entry · Toyosu · wear shorts or roll-up pants' },
-    { uid:'shibuya-sky',    start:'2026-11-07T15:40', min:90,  summary:'Shibuya Sky (booked)', description:'3:40 PM entry · sunset 4:35 · Scramble Square 14F, lockers need a ¥100 coin' },
-    { uid:'fuji-bus',       start:'2026-11-09T07:15', min:120, summary:'Keio bus 1101 → Kawaguchiko (booked)', description:'Busta Shinjuku · mobile ticket' },
-    { uid:'fuji-train',     start:'2026-11-09T16:48', min:120, summary:'Fuji-Excursion 44 → Shinjuku (booked)', description:'Suica base fare + seat ticket' },
-    { uid:'cathay-checkin', start:'2026-11-09T10:10', min:15,  summary:'Cathay online check-in opens', description:'For CX543 on Nov 11' },
-    { uid:'teamlab-borderless', start:'2026-11-10T09:30', min:150, summary:'teamLab Borderless (booked)', description:'9:30–10:00 AM entry · Azabudai Hills · no re-entry' },
-    { uid:'pokemon-cafe',   start:'2026-11-10T13:00', min:90,  summary:'Pokémon Café (booked)', description:'Takashimaya East Bldg 5F, Nihonbashi · bring the confirmation email, pick up 3 reserved goods' },
-    { uid:'klook-van',      start:'2026-11-11T05:05', min:35,  summary:'Klook van to Haneda T3 (booked)', description:'Gracery entrance, be down at 5:00 with all bags · PA Travel · free wait until 5:35' }
-  ];
   BOOKINGS.forEach(b => {
     const dtStart = new Date(b.start + ':00+09:00');
     addEvent({ uid: b.uid, dtStart, dtEnd: new Date(dtStart.getTime() + b.min*60000), summary: b.summary, description: b.description });
@@ -2447,6 +2699,859 @@ function renderDayStopsList(seq, legs, located){
   });
 }
 
+// =====================================================================
+// Trip extras: bookings + leave-by, show-the-driver / phrase cards,
+// station tips, saved picks (Tabelog data), food passport, photos,
+// budget pacing + split, tax-free log, hunt list, tomorrow briefing,
+// recap, and merging a travel partner's backup.
+// =====================================================================
+
+// ---- Small JST helpers ----
+const OSM_DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function tokyoDow(d){
+  const wd = new Intl.DateTimeFormat('en-US', { timeZone:'Asia/Tokyo', weekday:'short' }).format(d || new Date());
+  return OSM_DOW.indexOf(wd);
+}
+function fmtClock(d){
+  return new Intl.DateTimeFormat('en-US', { timeZone:'Asia/Tokyo', hour:'numeric', minute:'2-digit' }).format(d);
+}
+function fmtIn(mins){
+  if(mins < 60) return `${mins} min`;
+  return `${Math.floor(mins/60)} h ${String(mins%60).padStart(2,'0')} min`;
+}
+function jstDate(isoDay, hhmm){ return new Date(`${isoDay}T${hhmm}:00+09:00`); }
+function shortDate(iso){
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m-1, d).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+}
+
+// ---- Bookings, with when to leave (JST). Also feeds the calendar export. ----
+const BOOKINGS = [
+  { uid:'ghibli',         title:'Ghibli Museum',       start:'2026-11-03T10:00', min:120, leaveBy:'09:00', leaveNote:'JR Chuo Line to Mitaka, then a 15 min walk',
+    summary:'Ghibli Museum (booked)', description:'10:00 AM entry · live ticket on phone with data + passport, enter together' },
+  { uid:'disneysea',      title:'DisneySea gates',     start:'2026-11-05T08:15', min:765, leaveBy:'07:15', leaveNote:'JR to Maihama',
+    summary:'Tokyo DisneySea (booked)', description:'Leave the hotel 7:15 AM · gates 8:15 · buy Premier Access in the app once inside · Fantasy Springs first' },
+  { uid:'teamlab-planets',title:'teamLab Planets',     start:'2026-11-06T11:00', min:90,  leaveBy:'10:20', leaveNote:'Subway to Shin-Toyosu',
+    summary:'teamLab Planets (booked)', description:'11:00–11:30 AM entry · Toyosu · wear shorts or roll-up pants' },
+  { uid:'shibuya-sky',    title:'Shibuya Sky',         start:'2026-11-07T15:40', min:90,  leaveBy:'15:15', leaveNote:'Walk to Scramble Square 14F — be there by 3:30 for lockers',
+    summary:'Shibuya Sky (booked)', description:'3:40 PM entry · sunset 4:35 · Scramble Square 14F, lockers need a ¥100 coin' },
+  { uid:'fuji-bus',       title:'Keio bus 1101',       start:'2026-11-09T07:15', min:120, leaveBy:'06:45', leaveNote:'Walk to Busta Shinjuku, 4F',
+    summary:'Keio bus 1101 → Kawaguchiko (booked)', description:'Busta Shinjuku · mobile ticket' },
+  { uid:'cathay-checkin', title:'Cathay online check-in opens', start:'2026-11-09T10:10', min:15,
+    summary:'Cathay online check-in opens', description:'For CX543 on Nov 11' },
+  { uid:'fuji-train',     title:'Fuji-Excursion 44',   start:'2026-11-09T16:48', min:120, leaveBy:'16:00', leaveNote:'Train from Shimoyoshida back to Kawaguchiko',
+    summary:'Fuji-Excursion 44 → Shinjuku (booked)', description:'Suica base fare + seat ticket' },
+  { uid:'teamlab-borderless', title:'teamLab Borderless', start:'2026-11-10T09:30', min:150, leaveBy:'08:00', leaveNote:'Subway to Azabudai Hills for breakfast first',
+    summary:'teamLab Borderless (booked)', description:'9:30–10:00 AM entry · Azabudai Hills · no re-entry' },
+  { uid:'pokemon-cafe',   title:'Pokémon Café',        start:'2026-11-10T13:00', min:90,  leaveBy:'12:15', leaveNote:'Subway to Nihonbashi',
+    summary:'Pokémon Café (booked)', description:'Takashimaya East Bldg 5F, Nihonbashi · bring the confirmation email, pick up 3 reserved goods' },
+  { uid:'klook-van',      title:'Klook van to Haneda', start:'2026-11-11T05:05', min:35,  leaveBy:'05:00', leaveNote:'Downstairs at the Gracery entrance with all bags',
+    summary:'Klook van to Haneda T3 (booked)', description:'Gracery entrance, be down at 5:00 with all bags · PA Travel · free wait until 5:35' }
+];
+function bookingTimes(b){
+  const at = new Date(b.start + ':00+09:00');
+  const leave = b.leaveBy ? jstDate(b.start.slice(0, 10), b.leaveBy) : null;
+  return { at, leave };
+}
+
+// Now card line: the next booking today and when to leave for it.
+function bookingAlertHtml(){
+  const now = new Date();
+  const today = tokyoDateStr(now);
+  const next = BOOKINGS
+    .map(b => ({ b, ...bookingTimes(b) }))
+    .filter(x => x.at > now && tokyoDateStr(x.at) === today)
+    .sort((a, z) => a.at - z.at)[0];
+  if(!next) return '';
+  const { b, at, leave } = next;
+  if(leave && leave <= now){
+    return `<div class="leave-alert urgent">🏃 Leave now for <b>${esc(b.title)}</b> — starts ${fmtClock(at)}<span>${esc(b.leaveNote || '')}</span></div>`;
+  }
+  const target = leave || at;
+  const mins = Math.max(1, Math.round((target - now) / 60000));
+  return `<div class="leave-alert ${mins <= 30 ? 'soon' : ''}">⏰ ${leave ? `Leave by <b>${fmtClock(leave)}</b> for` : `<b>${fmtClock(at)}</b> ·`} ${esc(b.title)}${leave ? ` (${fmtClock(at)})` : ''} · in ${fmtIn(mins)}${b.leaveNote ? `<span>${esc(b.leaveNote)}</span>` : ''}</div>`;
+}
+
+// Late-night banner: last trains back to Shinjuku run out around midnight.
+function lastTrainHtml(){
+  const m = tokyoNowMinutes();
+  if(!(m >= 22*60 || m < 90)) return '';
+  const route = `https://www.google.com/maps/dir/?api=1&destination=${HOTEL_STOP.lat},${HOTEL_STOP.lon}&travelmode=transit`;
+  return `<div class="leave-alert night">🚃 Last trains back to Shinjuku leave roughly 11:30 PM–12:30 AM depending on the line. Check the route now; after that it's a taxi.
+    <div class="now-actions"><a class="btn small" href="${route}" target="_blank" rel="noopener">Route to hotel</a><button class="btn small ghost" type="button" data-show="hotel">🚕 Show taxi card</button></div></div>`;
+}
+
+// ---- Show cards: hotel/airport for drivers, phrases for restaurants & shops ----
+const SHOW_PLACES = {
+  hotel:  { jp:'ホテルグレイスリー新宿', sub:'東京都新宿区歌舞伎町1-19-1', ask:'このホテルまでお願いします。', en:'Hotel Gracery Shinjuku · 1-19-1 Kabukicho, Shinjuku · "To this hotel, please."' },
+  haneda: { jp:'羽田空港 第3ターミナル', sub:'国際線 出発', ask:'羽田空港の第3ターミナルまでお願いします。', en:'Haneda Airport Terminal 3 · international departures · "To Haneda Terminal 3, please."' }
+};
+const PHRASES = [
+  { jp:'2人です。', ro:'Futari desu.', en:'Two people.' },
+  { jp:'カードで払えますか？', ro:'Kādo de haraemasu ka?', en:'Can I pay by card?' },
+  { jp:'英語のメニューはありますか？', ro:'Eigo no menyū wa arimasu ka?', en:'Do you have an English menu?' },
+  { jp:'おすすめは何ですか？', ro:'Osusume wa nan desu ka?', en:'What do you recommend?' },
+  { jp:'これをください。', ro:'Kore o kudasai.', en:'This one, please.' },
+  { jp:'お会計をお願いします。', ro:'Okaikei o onegaishimasu.', en:'The bill, please.' },
+  { jp:'持ち帰りでお願いします。', ro:'Mochikaeri de onegaishimasu.', en:'To go, please.' },
+  { jp:'免税できますか？', ro:'Menzei dekimasu ka?', en:'Can I buy this tax-free?' },
+  { jp:'トイレはどこですか？', ro:'Toire wa doko desu ka?', en:'Where is the restroom?' },
+  { jp:'コインロッカーはどこですか？', ro:'Koin rokkā wa doko desu ka?', en:'Where are the coin lockers?' },
+  { jp:'写真を撮ってもらえますか？', ro:'Shashin o totte moraemasu ka?', en:'Could you take our photo?' },
+  { jp:'大丈夫です、ありがとうございます。', ro:'Daijōbu desu, arigatō gozaimasu.', en:"No thanks, I'm fine." },
+  { jp:'＿＿は食べられません。', ro:'＿＿ wa taberaremasen.', en:"I can't eat ＿＿.",
+    pick:[['豚肉','pork'],['牛肉','beef'],['卵','egg'],['乳製品','dairy'],['小麦','wheat'],['えび・かに','shrimp / crab'],['ナッツ','nuts'],['生もの','raw food']] }
+];
+
+function openShow(html){
+  document.getElementById('showBody').innerHTML = html;
+  document.getElementById('showOverlay').hidden = false;
+}
+function closeShow(){
+  document.getElementById('showOverlay').hidden = true;
+  document.getElementById('showBody').innerHTML = '';
+}
+function showPlace(key){
+  const p = SHOW_PLACES[key];
+  openShow(`<div class="show-jp">${esc(p.jp)}</div><div class="show-sub">${esc(p.sub)}</div><div class="show-ask">${esc(p.ask)}</div><div class="show-en">${esc(p.en)}</div>`);
+}
+function showPhrase(i){
+  const ph = PHRASES[i];
+  const render = (pick) => {
+    const jp = pick ? ph.jp.replace('＿＿', pick[0]) : ph.jp;
+    const en = pick ? ph.en.replace('＿＿', pick[1]) : ph.en;
+    const ro = pick ? ph.ro.replace('＿＿', pick[0]) : ph.ro;
+    openShow(`<div class="show-jp">${esc(jp)}</div><div class="show-ro">${esc(ro)}</div><div class="show-en">${esc(en)}</div>
+      ${ph.pick ? `<div class="show-picks">${ph.pick.map((p, j) => `<button type="button" class="chip${pick === p ? ' active' : ''}" data-pick="${j}">${esc(p[1])}</button>`).join('')}</div>` : ''}`);
+    document.querySelectorAll('#showBody [data-pick]').forEach(b => b.addEventListener('click', () => render(ph.pick[+b.dataset.pick])));
+  };
+  render(ph.pick ? ph.pick[0] : null);
+}
+function renderShowCards(){
+  document.getElementById('phraseList').innerHTML = PHRASES.map((p, i) =>
+    `<button type="button" class="phrase-btn" data-phrase="${i}"><span class="ph-en">${esc(p.en)}</span><span class="ph-jp">${esc(p.jp)}</span></button>`).join('');
+}
+document.getElementById('showClose').addEventListener('click', closeShow);
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-show],[data-phrase]');
+  if(!t) return;
+  if(t.dataset.show) showPlace(t.dataset.show);
+  else showPhrase(+t.dataset.phrase);
+});
+
+// ---- Station / getting-there tips, matched to stop names ----
+const TRANSIT_TIPS = [
+  { match:/Gracery|Check in at Gracery|Downstairs at the Gracery/i, place:'Hotel Gracery Shinjuku', tip:'Lobby is on 8F (the Godzilla terrace). JR Shinjuku East Exit is ~5 min on foot; Seibu-Shinjuku Station is closer.' },
+  { match:/Busta/i, place:'Busta Shinjuku', tip:'The 4F bus terminal above JR Shinjuku\'s New South Exit. Follow signs for the Expressway Bus Terminal.' },
+  { match:/Mitaka|Ghibli/i, place:'Ghibli Museum', tip:'JR Mitaka Station South Exit. ~15 min walk along the Tamagawa canal path, or the yellow Ghibli community bus from the South Exit.' },
+  { match:/Nakano/i, place:'Nakano Broadway', tip:'JR Nakano North Exit, then straight through the Sun Mall arcade into Broadway.' },
+  { match:/Sensō-ji|Senso-ji|Asakusa Tourist/i, place:'Sensō-ji', tip:'Ginza Line Asakusa Station Exit 1 comes up right by the Kaminarimon gate.' },
+  { match:/Solamachi|Sumida Aquarium/i, place:'Solamachi', tip:'Walk across Azuma Bridge (~20 min) or take the Tobu line one stop to Tokyo Skytree Station. Pokémon Center Skytree Town is on 4F.' },
+  { match:/Ameyoko|Ueno/i, place:'Ameyoko', tip:'Runs under the tracks between JR Ueno and Okachimachi stations.' },
+  { match:/Maihama|Gates|Fantasy Springs/i, place:'Tokyo DisneySea', tip:'At JR Maihama, change to the Disney Resort Line (separate fare, Suica works) and ride to Tokyo DisneySea Station.' },
+  { match:/teamLab Planets|Shin-Toyosu/i, place:'teamLab Planets', tip:'Shin-Toyosu Station (Yurikamome), ~1 min walk. You\'ll be barefoot in knee-deep water; lockers are inside.' },
+  { match:/DiverCity|Gundam/i, place:'DiverCity / Gundam', tip:'Daiba Station (Yurikamome), ~5 min walk. The Unicorn Gundam stands outside in the Festival Plaza.' },
+  { match:/Meiji Jingu/i, place:'Meiji Jingu', tip:'JR Harajuku Station — the main torii is right across the bridge.' },
+  { match:/Scramble Square|Shibuya Sky/i, place:'Shibuya Sky', tip:'Shibuya Scramble Square connects straight into Shibuya Station; take the elevators to the 14F Shibuya Sky entrance.' },
+  { match:/Ikebukuro/i, place:'Pokémon Center Mega Tokyo', tip:'In Sunshine City (Alpa 2F), ~10 min walk from JR Ikebukuro East Exit.' },
+  { match:/Akihabara/i, place:'Akihabara', tip:'JR Akihabara Electric Town Exit puts you on Chuo-dori, car-free on Sunday afternoons.' },
+  { match:/Chureito|Shimoyoshida/i, place:'Chureito Pagoda', tip:'From Shimoyoshida Station it\'s ~10 min to the shrine, then the 398 steps up to the pagoda.' },
+  { match:/Kawaguchiko|Oishi|Ropeway/i, place:'Kawaguchiko', tip:'The retro sightseeing buses leave from in front of Kawaguchiko Station; check the day-pass options at the station counter.' },
+  { match:/Azabudai|Borderless/i, place:'teamLab Borderless', tip:'Kamiyacho Station (Hibiya Line) connects to Azabudai Hills. Borderless is in Garden Plaza B, B1.' },
+  { match:/Pokémon Café|Nihonbashi Takashimaya/i, place:'Pokémon Café', tip:'Nihonbashi Takashimaya S.C. East Building, 5F. Nihonbashi Station (Ginza/Tozai lines) has exits straight into Takashimaya.' },
+  { match:/Haneda/i, place:'Haneda Terminal 3', tip:'International departures are on 3F. Arriving, the Limousine Bus ticket counter is in the arrivals lobby.' }
+];
+function tipFor(name){
+  const t = TRANSIT_TIPS.find(t => t.match.test(name || ''));
+  return t ? t.tip : '';
+}
+function renderTips(){
+  document.getElementById('transitTips').innerHTML = TRANSIT_TIPS.map(t =>
+    `<div class="tip-row"><div class="tip-place">🚉 ${esc(t.place)}</div><div class="tip-text">${esc(t.tip)}</div></div>`).join('');
+}
+
+// ---- Saved picks with Tabelog data (rating, location, opening hours) ----
+// Pulled from each restaurant's Tabelog page in Oct 2026. Hours are per
+// weekday (0 = Sun) as "HH:MM-HH:MM"; an end before the start runs past
+// midnight. A missing weekday means "not listed", [] means closed.
+const everyDay = (...r) => ({ 0:r, 1:r, 2:r, 3:r, 4:r, 5:r, 6:r });
+const TB = 'https://tabelog.com/en/';
+const PICKS = {
+  'Fuunji':              { tb:'tokyo/A1304/A130401/13044091/', name:'Fuunji Shinjuku honten', rating:3.76, lat:35.68684, lon:139.69665, hours: everyDay('11:00-15:00','17:00-21:00') },
+  'Kuramu':              { tb:'tokyo/A1304/A130401/13316646/', name:'Kuramu Kabukicho',     rating:3.47, lat:35.69424, lon:139.70202, hours: everyDay('11:00-07:00') },
+  'Tatsunoya':           { tb:'tokyo/A1304/A130401/13094166/', name:'Ramen Tatsunoya Shinjuku', rating:3.52, lat:35.69606, lon:139.69841, hours: everyDay('11:00-22:00') },
+  'Menya Musashi':       { tb:'tokyo/A1304/A130401/13001013/', name:'Soshi Menya Musashi',  rating:3.47, lat:35.69558, lon:139.69866, hours: everyDay('11:00-22:30') },
+  'Satou menchi katsu':  { tb:'tokyo/A1320/A132001/13005778/', name:'Satou Kichijoji',      rating:3.53, lat:35.70397, lon:139.57903, hours: null },
+  'Tarekatsu':           { tb:'tokyo/A1320/A132001/13090716/', name:'Tarekatsu Kichijoji',  rating:3.49, lat:35.70290, lon:139.57781, hours: everyDay('11:00-22:30') },
+  'Iseya Koen branch':   { tb:'tokyo/A1320/A132001/13005878/', name:'Iseya Koen',           rating:3.49, lat:35.70066, lon:139.57815,
+                           hours: { 0:['12:00-22:00'], 1:[], 2:['12:00-22:00'], 3:[], 4:['12:00-22:00'], 5:['12:00-22:00'], 6:['12:00-22:00'] } },
+  'Asakusa Gyukatsu':    { tb:'tokyo/A1311/A131102/13172454/', name:'Asakusa Gyukatsu',     rating:3.45, lat:35.71078, lon:139.79596, hours: everyDay('11:00-22:00') },
+  'Daikokuya':           { tb:'tokyo/A1311/A131102/13003696/', name:'Daikokuya Tempura Honten', rating:3.49, lat:35.71275, lon:139.79558, hours: everyDay('11:00-20:00') },
+  'Tenya':               { tb:'tokyo/A1311/A131102/13228234/', name:'Tenya Asakusa',        rating:3.05, lat:35.71149, lon:139.79281,
+                           hours: { 0:['10:00-22:00'], 1:['10:30-22:00'], 2:['10:30-22:00'], 3:['10:30-22:00'], 4:['10:30-22:00'], 5:['10:30-22:00'], 6:['10:00-22:00'] } },
+  'Katsugyu gyukatsu':   { tb:'tokyo/A1313/A131306/13236851/', name:'Katsugyu DiverCity',   rating:3.06, lat:35.62510, lon:139.77584, hours: everyDay('11:00-22:00') },
+  'AFURI':               { tb:'tokyo/A1306/A130601/13095244/', name:'AFURI Harajuku',       rating:3.25, lat:35.67301, lon:139.70381, hours: everyDay('10:00-23:00') },
+  'Ichiran Shibuya':     { tb:'tokyo/A1303/A130301/13001762/', name:'Ichiran Shibuya',      rating:3.21, lat:35.66113, lon:139.70099, hours: everyDay('00:00-24:00') },
+  'Mutekiya':            { tb:'tokyo/A1305/A130501/13003927/', name:'Mutekiya Ikebukuro',   rating:3.61, lat:35.72691, lon:139.71166, hours: everyDay('10:30-03:30') },
+  'Kyushu Jangara':      { tb:'tokyo/A1310/A131001/13000344/', name:'Kyushu Jangara Akihabara', rating:3.47, lat:35.70079, lon:139.77069, hours: everyDay('11:00-22:00') },
+  'Kosaku':              { tb:'yamanashi/A1903/A190303/19000046/', name:'Kosaku Kawaguchiko', rating:3.49, lat:35.49576, lon:138.75687, hours: everyDay('11:00-20:00') },
+  'Hoto Tempura Wakana': { tb:'yamanashi/A1903/A190301/19011648/', name:'Hoto Tempura Wakana', rating:3.44, lat:35.50481, lon:138.75928,
+                           hours: { 0:['11:30-14:30','17:30-20:00'], 1:['11:30-14:30','17:30-20:00'], 2:[], 3:[], 4:['11:30-14:30','17:30-20:00'], 5:['11:30-14:30','17:30-20:00'], 6:['11:30-14:30','17:30-20:00'] } },
+  'Fudo':                { tb:'yamanashi/A1903/A190303/19004308/', name:'Hoto Fudo (station)', rating:3.48, lat:35.49887, lon:138.76866, hours: everyDay('11:00-19:00') },
+  'Balcony by 6th':      { tb:'tokyo/A1307/A130701/13290916/', name:'Balcony by 6th',       rating:3.52, lat:35.66162, lon:139.74035,
+                           hours: { 1:['08:00-23:00'], 2:['08:00-23:00'], 3:['08:00-23:00'], 4:['08:00-23:00'], 5:['08:00-23:00'], 6:['07:45-23:00'] } },
+  'Shogun Burger':       { tb:'tokyo/A1304/A130401/13227776/', name:'Shogun Burger Shinjuku', rating:3.69, lat:35.69408, lon:139.70248, hours: everyDay('11:00-04:00') },
+  'Gyukatsu Motomura':   { tb:'tokyo/A1304/A130401/13289082/', name:'Gyukatsu Motomura Shinjuku', rating:3.19, lat:35.69463, lon:139.70059, hours: everyDay('11:00-22:00') },
+  'Kamo to Negi':        { tb:'tokyo/A1304/A130401/13295874/', name:'Kamo to Negi (Lumine Shinjuku)', rating:3.59, lat:35.68967, lon:139.70062, hours: everyDay('07:00-23:00') }
+};
+function toMin(hhmm){ const [h, m] = hhmm.split(':').map(Number); return h*60 + m; }
+// true/false, or null when the hours aren't known for that weekday.
+function pickOpenAt(p, dow, min){
+  if(!p.hours || p.hours[dow] === undefined) return null;
+  const spans = r => r.map(s => s.split('-').map(toMin));
+  if(spans(p.hours[dow]).some(([s, e]) => e > s ? (min >= s && min < e) : min >= s)) return true;
+  const prev = p.hours[(dow + 6) % 7];
+  if(prev && spans(prev).some(([s, e]) => e <= s && min < e)) return true;
+  return false;
+}
+function pickHoursText(p, dow){
+  if(!p.hours || p.hours[dow] === undefined) return '';
+  const r = p.hours[dow];
+  if(!r.length) return `Closed ${OSM_DOW[dow]}`;
+  if(r[0] === '00:00-24:00') return 'Open 24 h';
+  return `${OSM_DOW[dow]} ${r.map(s => s.replace('-', '–')).join(', ')}`;
+}
+function pickOpenNow(p){ return pickOpenAt(p, tokyoDow(), tokyoNowMinutes()); }
+
+// Food chip on a day card: Tabelog rating + that day's hours when known.
+function foodChipHtml(f, day){
+  const paren = /\(([^)]*)\)$/.exec(f);
+  const timeNote = paren && /\d/.test(paren[1]);
+  const name = f.replace(/\s*\([^)]*\)$/, '');
+  const area = paren && !timeNote ? paren[1] : (day.foodArea || '').replace(/\s*Tokyo$/, '');
+  const p = PICKS[name];
+  const maps = p
+    ? `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`
+    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + (area || '') + ' Tokyo')}`;
+  const tb = p ? TB + p.tb : tabelogUrl(name, area);
+  const dayIdx = state.days.indexOf(day);
+  const date = tripDates()[dayIdx];
+  let hours = '';
+  if(p && date){
+    const dow = date.getDay();
+    const txt = pickHoursText(p, dow);
+    const closed = p.hours && p.hours[dow] && !p.hours[dow].length;
+    let now = '';
+    if(dayIdx === todayTripIndex()){
+      const o = pickOpenNow(p);
+      now = o === true ? '<span class="fc-open">open now</span>' : o === false ? '<span class="fc-closed">closed now</span>' : '';
+    }
+    hours = txt || now ? `<span class="fc-hours${closed ? ' closed' : ''}">${esc(txt)} ${now}</span>` : '';
+  }
+  return `<span class="food-chip">
+    <span class="fc-name">${esc(name)}${p ? ` <span class="fc-rating">★${p.rating.toFixed(2)}</span>` : ''}${timeNote && !p ? ` <span class="fc-note">${esc(paren[1])}</span>` : ''}</span>
+    ${hours}
+    <span class="fc-actions">
+      <a href="${esc(maps)}" target="_blank" rel="noopener">Map</a>
+      <a class="tb" href="${esc(tb)}" target="_blank" rel="noopener">Tabelog</a>
+      <button type="button" class="fc-ate" data-log="${esc(name)}">✓ Ate</button>
+    </span>
+  </span>`;
+}
+
+// Nearby tab: your saved picks, open ones first, nearest first once we know where you are.
+let picksHere = null; // { lat, lon } once located
+function allPicks(){
+  const out = [];
+  state.days.forEach((d, i) => (d.food || []).forEach(f => {
+    const name = f.replace(/\s*\([^)]*\)$/, '');
+    if(PICKS[name] && !out.some(o => o.key === name)) out.push({ key: name, p: PICKS[name], dayIdx: i, day: d });
+  }));
+  return out;
+}
+function renderPicks(){
+  const wrap = document.getElementById('picksList');
+  const rows = allPicks().map(x => {
+    const open = pickOpenNow(x.p);
+    const dist = picksHere ? haversine(picksHere.lat, picksHere.lon, x.p.lat, x.p.lon) : null;
+    return { ...x, open, dist };
+  });
+  rows.sort((a, b) => {
+    const rank = o => o === true ? 0 : o === null ? 1 : 2;
+    if(rank(a.open) !== rank(b.open)) return rank(a.open) - rank(b.open);
+    if(a.dist != null && b.dist != null) return a.dist - b.dist;
+    return b.p.rating - a.p.rating;
+  });
+  wrap.innerHTML = rows.map(r => {
+    const badge = r.open === true ? '<span class="rest-badge open">Open now</span>' : r.open === false ? '<span class="rest-badge closed">Closed now</span>' : '<span class="rest-badge unknown">Hours unknown</span>';
+    const dist = r.dist == null ? '' : r.dist < 1000 ? `${Math.round(r.dist)} m` : `${(r.dist/1000).toFixed(1)} km`;
+    return `<div class="rest-card">
+      <div class="rest-main">
+        <div class="rest-name">${esc(r.key)} <span class="fc-rating">★${r.p.rating.toFixed(2)}</span></div>
+        <div class="rest-tags-row"><div class="rest-tags">${esc(r.day.label)} · ${esc(pickHoursText(r.p, tokyoDow()) || r.p.name)}</div>${badge}</div>
+        <div class="rest-links">
+          <a class="rest-go" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${r.p.lat},${r.p.lon}&travelmode=transit">Directions →</a>
+          <a class="rest-go tb" target="_blank" rel="noopener" href="${TB + r.p.tb}">Tabelog →</a>
+        </div>
+      </div>
+      <div class="rest-side"><div class="rest-dist">${dist}</div></div>
+    </div>`;
+  }).join('');
+}
+document.getElementById('picksLocateBtn').addEventListener('click', (e) => {
+  const btn = e.currentTarget;
+  if(!('geolocation' in navigator)) return;
+  btn.disabled = true; btn.textContent = 'Locating…';
+  navigator.geolocation.getCurrentPosition(pos => {
+    picksHere = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+    btn.disabled = false; btn.textContent = 'Sorted by distance ✓';
+    renderPicks();
+  }, () => { btn.disabled = false; btn.textContent = 'Location unavailable — try again'; }, { enableHighAccuracy:true, timeout:15000, maximumAge:60000 });
+});
+
+// ---- Photos (IndexedDB — too big for localStorage) ----
+const PhotoDB = (() => {
+  let dbp = null;
+  function db(){
+    if(!dbp) dbp = new Promise((res, rej) => {
+      const r = indexedDB.open('tokyo-trip-photos', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('photos');
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    });
+    return dbp;
+  }
+  async function run(mode, fn){
+    const d = await db();
+    return new Promise((res, rej) => {
+      const t = d.transaction('photos', mode);
+      const req = fn(t.objectStore('photos'));
+      t.oncomplete = () => res(req ? req.result : undefined);
+      t.onerror = () => rej(t.error);
+    });
+  }
+  return {
+    put: (k, v) => run('readwrite', s => s.put(v, k)),
+    get: k => run('readonly', s => s.get(k)),
+    del: k => run('readwrite', s => s.delete(k)),
+    keys: () => run('readonly', s => s.getAllKeys())
+  };
+})();
+let photoKeys = new Set();
+const photoUrls = {};
+async function loadPhotoKeys(){
+  try{ photoKeys = new Set(await PhotoDB.keys()); }catch(e){ photoKeys = new Set(); }
+}
+async function photoUrl(key){
+  if(photoUrls[key]) return photoUrls[key];
+  const blob = await PhotoDB.get(key);
+  if(!blob) return null;
+  return (photoUrls[key] = URL.createObjectURL(blob));
+}
+// Phone photos are 3–10 MB; shrink to ~1600 px JPEG before storing.
+function shrinkImage(file, max = 1600){
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.naturalWidth * scale);
+      c.height = Math.round(img.naturalHeight * scale);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      c.toBlob(b => b ? res(b) : rej(new Error('encode failed')), 'image/jpeg', 0.82);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('not an image')); };
+    img.src = url;
+  });
+}
+async function savePhoto(key, file){
+  const blob = await shrinkImage(file);
+  await PhotoDB.put(key, blob);
+  if(photoUrls[key]){ URL.revokeObjectURL(photoUrls[key]); delete photoUrls[key]; }
+  photoKeys.add(key);
+}
+async function deletePhoto(key){
+  await PhotoDB.del(key);
+  photoKeys.delete(key);
+  if(photoUrls[key]){ URL.revokeObjectURL(photoUrls[key]); delete photoUrls[key]; }
+}
+// Fills every <img data-photo="key"> currently on the page.
+function hydratePhotos(root){
+  (root || document).querySelectorAll('img[data-photo]').forEach(async img => {
+    const url = await photoUrl(img.dataset.photo);
+    if(url){ img.src = url; img.hidden = false; }
+  });
+}
+async function viewPhoto(key, onDelete){
+  const url = await photoUrl(key);
+  if(!url) return;
+  openShow(`<img class="show-photo" src="${url}" alt=""><div class="show-photo-actions"><button type="button" class="btn ghost small" id="photoDelBtn">Delete photo</button></div>`);
+  document.getElementById('photoDelBtn').addEventListener('click', async () => {
+    await deletePhoto(key);
+    closeShow();
+    if(onDelete) onDelete();
+  });
+}
+document.addEventListener('click', (e) => {
+  const img = e.target.closest('img[data-photo]');
+  if(img && !img.closest('#showBody')) viewPhoto(img.dataset.photo, () => { renderDays(); renderPassport(); renderRecap(); });
+});
+// Stop photo inputs are rendered by renderDays (data-stop-photo="<stop id>").
+document.addEventListener('change', async (e) => {
+  const inp = e.target.closest('input[data-stop-photo]');
+  if(!inp || !inp.files[0]) return;
+  try{ await savePhoto('stop:' + inp.dataset.stopPhoto, inp.files[0]); }catch(err){}
+  inp.value = '';
+  renderDays();
+});
+
+// ---- Food passport ----
+let logPhotoFile = null, logRating = 0;
+function openLogSheet(name){
+  document.getElementById('logName').value = name || '';
+  document.getElementById('logNote').value = '';
+  document.getElementById('logPhotoName').textContent = '';
+  logPhotoFile = null;
+  setLogRating(0);
+  document.getElementById('logSheet').hidden = false;
+  if(!name) document.getElementById('logName').focus();
+}
+function setLogRating(n){
+  logRating = n;
+  document.querySelectorAll('#logStars button').forEach((b, i) => b.classList.toggle('on', i < n));
+}
+document.getElementById('logStars').innerHTML = [1,2,3,4,5].map(n => `<button type="button" aria-label="${n} stars">★</button>`).join('');
+document.querySelectorAll('#logStars button').forEach((b, i) => b.addEventListener('click', () => setLogRating(i + 1)));
+document.getElementById('logPhoto').addEventListener('change', (e) => {
+  logPhotoFile = e.target.files[0] || null;
+  document.getElementById('logPhotoName').textContent = logPhotoFile ? '📷 photo added' : '';
+});
+document.getElementById('logCancel').addEventListener('click', () => { document.getElementById('logSheet').hidden = true; });
+document.getElementById('logSave').addEventListener('click', async () => {
+  const name = document.getElementById('logName').value.trim();
+  if(!name) return;
+  const entry = { id: uid(), name, rating: logRating, note: document.getElementById('logNote').value.trim(), date: tokyoDateStr(new Date()), ts: Date.now() };
+  if(logPhotoFile){
+    try{ await savePhoto('food:' + entry.id, logPhotoFile); entry.photo = true; }catch(e){}
+  }
+  state.foodLog.push(entry);
+  document.getElementById('logSheet').hidden = true;
+  scheduleSave(); renderPassport();
+});
+document.getElementById('logMealBtn').addEventListener('click', () => openLogSheet(''));
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('.fc-ate');
+  if(b) openLogSheet(b.dataset.log);
+});
+const stars = n => n ? '★'.repeat(n) + '<span class="dim">' + '★'.repeat(5 - n) + '</span>' : '<span class="dim">no rating</span>';
+function renderPassport(){
+  const log = [...state.foodLog].sort((a, b) => b.ts - a.ts);
+  const rated = log.filter(x => x.rating);
+  const avg = rated.length ? (rated.reduce((s, x) => s + x.rating, 0) / rated.length).toFixed(1) : '–';
+  document.getElementById('passportStats').innerHTML = `
+    <div class="pp-stat"><b>${log.length}</b><span>meals</span></div>
+    <div class="pp-stat"><b>${avg}</b><span>avg ★</span></div>
+    <div class="pp-stat"><b>${log.filter(x => x.rating === 5).length}</b><span>5-star</span></div>`;
+  const list = document.getElementById('passportList');
+  if(!log.length){ list.innerHTML = '<div class="empty">Nothing logged yet. Tap "✓ Ate" on any food option, or log a meal here.</div>'; return; }
+  list.innerHTML = log.map(x => `
+    <div class="pp-row">
+      ${x.photo ? `<img class="pp-thumb" data-photo="food:${esc(x.id)}" hidden alt="">` : '<div class="pp-thumb empty-thumb">🍜</div>'}
+      <div class="pp-main">
+        <div class="pp-name">${esc(x.name)}</div>
+        <div class="pp-stars">${stars(x.rating)} <span class="pp-date">${esc(shortDate(x.date))}</span></div>
+        ${x.note ? `<div class="pp-note">${esc(x.note)}</div>` : ''}
+      </div>
+      <button class="exp-del" data-del-log="${esc(x.id)}" aria-label="Delete">×</button>
+    </div>`).join('');
+  list.querySelectorAll('[data-del-log]').forEach(b => b.addEventListener('click', async () => {
+    const id = b.dataset.delLog;
+    state.foodLog = state.foodLog.filter(x => x.id !== id);
+    deletePhoto('food:' + id).catch(() => {});
+    scheduleSave(); renderPassport();
+  }));
+  hydratePhotos(list);
+}
+
+// ---- Collector hunt list ----
+function renderHunt(){
+  const wrap = document.getElementById('huntList');
+  if(!state.hunt.length){ wrap.innerHTML = '<div class="empty">Nothing on the list yet.</div>'; return; }
+  const fx = Number(state.fxRate) || 150;
+  wrap.innerHTML = state.hunt.map(h => {
+    const paid = h.paid ? Number(h.paid) : null;
+    const verdict = paid != null && h.max ? (paid <= h.max ? '<span class="hunt-ok">under max ✓</span>' : '<span class="hunt-over">over max</span>') : '';
+    return `<div class="hunt-row${h.done ? ' done' : ''}">
+      <input type="checkbox" data-hunt-done="${esc(h.id)}" ${h.done ? 'checked' : ''} aria-label="Found">
+      <div class="hunt-main">
+        <div class="hunt-name">${esc(h.name)}</div>
+        <div class="hunt-meta">${h.max ? `max ${fmtYen(h.max)} (≈$${Math.round(h.max/fx)})` : 'no max'}${h.where ? ` · ${esc(h.where)}` : ''}</div>
+        ${h.done ? `<div class="hunt-paid">Paid ¥ <input type="number" inputmode="numeric" data-hunt-paid="${esc(h.id)}" value="${paid ?? ''}" placeholder="0"> ${verdict}</div>` : ''}
+      </div>
+      <button class="exp-del" data-hunt-del="${esc(h.id)}" aria-label="Remove">×</button>
+    </div>`;
+  }).join('');
+  wrap.querySelectorAll('[data-hunt-done]').forEach(c => c.addEventListener('change', () => {
+    const h = state.hunt.find(x => x.id === c.dataset.huntDone); h.done = c.checked; scheduleSave(); renderHunt();
+  }));
+  wrap.querySelectorAll('[data-hunt-paid]').forEach(i => i.addEventListener('change', () => {
+    const h = state.hunt.find(x => x.id === i.dataset.huntPaid); h.paid = i.value ? Number(i.value) : null; scheduleSave(); renderHunt();
+  }));
+  wrap.querySelectorAll('[data-hunt-del]').forEach(b => b.addEventListener('click', () => {
+    state.hunt = state.hunt.filter(x => x.id !== b.dataset.huntDel); scheduleSave(); renderHunt();
+  }));
+}
+document.getElementById('addHuntBtn').addEventListener('click', () => {
+  const name = document.getElementById('huntItem').value.trim();
+  if(!name) return;
+  state.hunt.push({ id: uid(), name, max: Number(document.getElementById('huntMax').value) || null, where: document.getElementById('huntWhere').value.trim(), done:false });
+  ['huntItem','huntMax','huntWhere'].forEach(id => document.getElementById(id).value = '');
+  scheduleSave(); renderHunt();
+});
+
+// ---- Budget: daily pacing, per-day bars, two-person split ----
+function tripPhase(){
+  const today = tokyoDateStr(new Date());
+  const dates = tripDates().map(isoDate);
+  if(today < dates[0]) return { phase:'before', daysLeft: TRIP_DAYS_N, today };
+  if(today > dates[dates.length - 1]) return { phase:'after', daysLeft: 0, today };
+  return { phase:'during', daysLeft: TRIP_DAYS_N - dates.indexOf(today), today };
+}
+function renderPacing(total, goal){
+  const box = document.getElementById('paceBox');
+  const { phase, daysLeft, today } = tripPhase();
+  const byDate = {};
+  state.expenses.forEach(e => { byDate[e.date] = (byDate[e.date] || 0) + Number(e.amount || 0); });
+  if(!goal){ box.innerHTML = ''; }
+  else if(phase === 'after'){
+    box.innerHTML = `<div class="pace-sub">Trip done — ${fmtYen(total)} of ${fmtYen(goal)} (${Math.round(total/goal*100)}%).</div>`;
+  } else {
+    // Spend logged today is part of today's allowance, not already-gone money.
+    const spentToday = phase === 'during' ? (byDate[today] || 0) : 0;
+    const perDay = Math.max(0, (goal - total + spentToday) / daysLeft);
+    const left = perDay - spentToday;
+    box.innerHTML = `
+      <div class="pace-num">${fmtYen(perDay)}<span>/day</span></div>
+      <div class="pace-sub">to stay on budget over the ${daysLeft} day${daysLeft !== 1 ? 's' : ''} ${phase === 'before' ? 'of the trip' : 'left, including today'}</div>
+      ${phase === 'during' ? `<div class="pace-today ${left < 0 ? 'over' : ''}">Today: ${fmtYen(spentToday)} spent · ${left >= 0 ? fmtYen(left) + ' left' : fmtYen(-left) + ' over'}</div>` : ''}`;
+  }
+  const dates = tripDates().map(isoDate);
+  const target = goal ? goal / TRIP_DAYS_N : 0;
+  const max = Math.max(1, target, ...dates.map(d => byDate[d] || 0));
+  const bars = document.getElementById('dayBars');
+  bars.innerHTML = dates.some(d => byDate[d]) ? `<div class="db-head">Per day${target ? ` · line = ${fmtYen(target)} even split` : ''}</div>` + dates.map(d => {
+    const v = byDate[d] || 0;
+    return `<div class="db-row${d === today ? ' today' : ''}"><span class="db-lbl">${esc(shortDate(d))}</span>
+      <span class="db-track">${target ? `<i class="db-target" style="left:${target/max*100}%"></i>` : ''}<i class="db-fill${target && v > target ? ' over' : ''}" style="width:${v/max*100}%"></i></span>
+      <span class="db-amt">${v ? fmtYen(v) : ''}</span></div>`;
+  }).join('') : '';
+}
+function travelerName(i){ return (state.travelers && state.travelers[i]) || (i ? 'Partner' : 'Me'); }
+function renderSplit(){
+  document.getElementById('traveler0').value = travelerName(0);
+  document.getElementById('traveler1').value = travelerName(1);
+  const sel = document.getElementById('expPaidBy');
+  const prev = sel.value;
+  sel.innerHTML = [0, 1].map(i => `<option value="${i}">${esc(travelerName(i))} paid</option>`).join('');
+  if(prev) sel.value = prev;
+  let bal = 0, paid = [0, 0];
+  state.expenses.forEach(e => {
+    const who = Number(e.paidBy || 0), amt = Number(e.amount || 0);
+    paid[who] += amt;
+    if((e.split || 'shared') === 'shared') bal += who === 0 ? amt/2 : -amt/2;
+  });
+  const res = document.getElementById('splitResult');
+  const line = Math.round(bal) === 0 ? 'All square 🤝'
+    : bal > 0 ? `<b>${esc(travelerName(1))}</b> owes <b>${esc(travelerName(0))}</b> ${fmtYen(bal)}`
+    : `<b>${esc(travelerName(0))}</b> owes <b>${esc(travelerName(1))}</b> ${fmtYen(-bal)}`;
+  const fx = Number(state.fxRate) || 150;
+  res.innerHTML = `<div class="split-line">${line}${Math.round(bal) ? ` <span>(≈$${Math.abs(Math.round(bal/fx))})</span>` : ''}</div>
+    <div class="split-sub">${esc(travelerName(0))} paid ${fmtYen(paid[0])} · ${esc(travelerName(1))} paid ${fmtYen(paid[1])} · "Split ½" expenses are shared evenly</div>`;
+}
+['traveler0','traveler1'].forEach((id, i) => document.getElementById(id).addEventListener('change', (e) => {
+  state.travelers = [travelerName(0), travelerName(1)];
+  state.travelers[i] = e.target.value.trim() || (i ? 'Partner' : 'Me');
+  scheduleSave(); renderBudget();
+}));
+
+// ---- Tax-free log ----
+function renderTaxFree(){
+  const list = document.getElementById('taxFreeList');
+  const sum = document.getElementById('taxFreeSummary');
+  const items = [...state.taxFree].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  const total = items.reduce((s, x) => s + Number(x.amount || 0), 0);
+  // Stores usually need ¥5,000+ before tax (≈¥5,500 with tax) per store, per day.
+  const groups = {};
+  const names = {};
+  items.forEach(x => { const k = x.date + '|' + x.store.toLowerCase(); names[k] = x.store; groups[k] = (groups[k] || 0) + Number(x.amount || 0); });
+  const under = Object.entries(groups).filter(([, v]) => v < 5500).map(([k]) => names[k]);
+  sum.innerHTML = items.length ? `
+    <div class="tf-stats">
+      <div class="pp-stat"><b>${fmtYen(total)}</b><span>tax-free buys</span></div>
+      <div class="pp-stat"><b>≈${fmtYen(total * 10 / 110)}</b><span>tax back (10%)</span></div>
+      <div class="pp-stat"><b>${items.length}</b><span>receipts</span></div>
+    </div>
+    ${under.length ? `<div class="tf-warn">⚠️ Under the ~¥5,500 (incl. tax) same-store, same-day minimum: ${under.map(esc).join(', ')}. These may not qualify.</div>` : ''}` : '';
+  list.innerHTML = items.length ? items.map(x => `
+    <div class="expense-row">
+      <div class="exp-date">${esc(x.date ? x.date.slice(5) : '—')}</div>
+      <div class="exp-main"><div class="exp-note">${esc(x.store)}</div>${x.what ? `<div class="exp-cat">${esc(x.what)}</div>` : ''}</div>
+      <div class="exp-amt">${fmtYen(x.amount)}</div>
+      <button class="exp-del" data-tf-del="${esc(x.id)}">×</button>
+    </div>`).join('') : '<div class="empty">No tax-free purchases yet.</div>';
+  list.querySelectorAll('[data-tf-del]').forEach(b => b.addEventListener('click', () => {
+    state.taxFree = state.taxFree.filter(x => x.id !== b.dataset.tfDel); scheduleSave(); renderTaxFree();
+  }));
+}
+document.getElementById('addTfBtn').addEventListener('click', () => {
+  const store = document.getElementById('tfStore').value.trim();
+  const amount = Number(document.getElementById('tfAmt').value);
+  if(!store || !amount) return;
+  const date = tokyoDateStr(new Date());
+  const what = document.getElementById('tfWhat').value.trim();
+  state.taxFree.push({ id: uid(), store, amount, what, date });
+  if(document.getElementById('tfAlsoExpense').checked){
+    state.expenses.push({ id: uid(), date, category:'Shopping / Collectibles', amount, note: `${store}${what ? ' — ' + what : ''} (tax-free)`, paidBy: Number(document.getElementById('expPaidBy').value || 0), split:'shared' });
+  }
+  ['tfStore','tfAmt','tfWhat'].forEach(id => document.getElementById(id).value = '');
+  scheduleSave(); renderTaxFree(); renderBudget();
+});
+
+// ---- What to bring, per trip date ----
+const BRING = {
+  '2026-11-02': ['Passports', 'Suica set up in Wallet', 'Yen for the Limousine Bus (~¥1,400 each)'],
+  '2026-11-03': ['Ghibli live ticket — phone with data', 'Passports (you enter together)', 'Comfortable shoes'],
+  '2026-11-04': ['Coins for Nakamise snacks', 'Comfortable shoes'],
+  '2026-11-05': ['Disney app signed in + card for Premier Access', 'Battery pack', 'Poncho if rain is forecast'],
+  '2026-11-06': ['Shorts or roll-up pants (teamLab water)', 'Small towel'],
+  '2026-11-07': ['¥100 coins for the Shibuya Sky lockers', 'Passport for tax-free shopping'],
+  '2026-11-08': ['Cash + ¥100/¥500 coins for card shops and gachapon', 'Passport for tax-free', 'Pack the Fuji day bag tonight'],
+  '2026-11-09': ['Keio bus mobile ticket', 'Warm layers — Kawaguchiko mornings are cold', 'Suica topped up', 'Fuji-Excursion seats (Private notes)'],
+  '2026-11-10': ['Pokémon Café confirmation email', 'Passport', 'Luggage scale'],
+  '2026-11-11': ['Passports', 'Klook booking no. (Private notes)', 'Tax-free items unused, in one bag']
+};
+function bringHtml(iso){
+  const items = BRING[iso];
+  if(!items) return '';
+  return `<div class="bring"><span class="food-lbl">🎒 Bring</span>${items.map(t => {
+    const k = iso + '|' + t;
+    return `<label class="bring-item${state.bringDone[k] ? ' done' : ''}"><input type="checkbox" data-bring="${esc(k)}" ${state.bringDone[k] ? 'checked' : ''}><span>${esc(t)}</span></label>`;
+  }).join('')}</div>`;
+}
+document.addEventListener('change', (e) => {
+  const c = e.target.closest('input[data-bring]');
+  if(!c) return;
+  if(c.checked) state.bringDone[c.dataset.bring] = true; else delete state.bringDone[c.dataset.bring];
+  scheduleSave();
+  document.querySelectorAll(`input[data-bring="${CSS.escape(c.dataset.bring)}"]`).forEach(x => { x.checked = c.checked; x.closest('.bring-item').classList.toggle('done', c.checked); });
+});
+
+// ---- Tomorrow briefing (Plan tab, evenings) ----
+function renderBrief(){
+  const el = document.getElementById('briefCard');
+  const { phase, today } = tripPhase();
+  const dates = tripDates().map(isoDate);
+  let idx = -1;
+  if(phase === 'before'){
+    // Show Day 1 from two days out (Oct 31 / Nov 1).
+    if(daysAhead(dates[0]) <= 2) idx = 0;
+  } else if(phase === 'during' && tokyoNowMinutes() >= 17*60){
+    idx = dates.indexOf(today) + 1;
+  }
+  const day = idx >= 0 && idx < state.days.length ? state.days[idx] : null;
+  if(!day){ el.hidden = true; return; }
+  const iso = dates[idx];
+  const w = weatherByDate[iso];
+  const timed = day.stops.filter(s => parseStopMinutes(s.time) != null)
+    .sort((a, b) => parseStopMinutes(a.time) - parseStopMinutes(b.time));
+  const wakeStop = day.stops.find(s => /^wake up/i.test(s.name));
+  const first = timed.find(s => s !== wakeStop);
+  const wakeMin = wakeStop ? parseStopMinutes(wakeStop.time) : first ? parseStopMinutes(first.time) - 60 : null;
+  const wake = wakeMin != null ? fmtHour(Math.floor(wakeMin / 60)).replace(' ', `:${String(wakeMin % 60).padStart(2, '0')} `) : null;
+  const books = BOOKINGS.filter(b => b.start.startsWith(iso)).map(b => {
+    const { at, leave } = bookingTimes(b);
+    return `<li><b>${fmtClock(at)}</b> ${esc(b.title)}${leave ? ` <span>· leave by ${fmtClock(leave)}</span>` : ''}</li>`;
+  }).join('');
+  el.hidden = false;
+  el.innerHTML = `
+    <div class="now-eyebrow">${phase === 'before' ? 'First day' : 'Tomorrow'} · ${esc(day.label)} · ${esc(day.date)}</div>
+    <div class="brief-title">${esc(day.tag || '')}</div>
+    <div class="brief-grid">
+      ${wake ? `<div><span>Wake up</span><b>${wake}</b></div>` : ''}
+      ${first ? `<div><span>First up</span><b>${esc(first.time)}</b> ${esc(first.name)}</div>` : ''}
+      ${w ? `<div><span>Weather${w.site === 'fuji' ? ' · Kawaguchiko' : ''}</span><b>${w.emoji} ${w.hi}°/${w.lo}°</b>${w.rain != null ? ` 💧${w.rain}%${w.rain >= 50 ? ' — pack an umbrella' : ''}` : ''}</div>` : ''}
+    </div>
+    ${books ? `<ul class="brief-books">${books}</ul>` : ''}
+    ${bringHtml(iso)}`;
+}
+
+// ---- Recap ----
+function recapStats(){
+  const done = [];
+  state.days.forEach(d => d.stops.forEach(s => { if(s.done) done.push(s); }));
+  let km = 0;
+  state.days.forEach(d => {
+    const pts = d.stops.filter(s => s.done && s.lat != null);
+    for(let i = 1; i < pts.length; i++) km += haversine(pts[i-1].lat, pts[i-1].lon, pts[i].lat, pts[i].lon) / 1000;
+  });
+  const spent = state.expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
+  const byCat = {};
+  state.expenses.forEach(e => { byCat[e.category] = (byCat[e.category] || 0) + Number(e.amount || 0); });
+  const topCat = Object.entries(byCat).sort((a, b) => b[1] - a[1])[0];
+  const best = [...state.foodLog].filter(x => x.rating).sort((a, b) => b.rating - a.rating || b.ts - a.ts).slice(0, 3);
+  const total = state.days.reduce((s, d) => s + d.stops.length, 0);
+  return { done: done.length, total, km, spent, topCat, best, meals: state.foodLog.length, found: state.hunt.filter(h => h.done).length };
+}
+function recapPhotoKeys(){
+  const keys = [];
+  state.days.forEach(d => d.stops.forEach(s => { if(photoKeys.has('stop:' + s.id)) keys.push('stop:' + s.id); }));
+  state.foodLog.forEach(x => { if(photoKeys.has('food:' + x.id)) keys.push('food:' + x.id); });
+  return keys;
+}
+function renderRecap(){
+  const r = recapStats();
+  const fx = Number(state.fxRate) || 150;
+  const keys = recapPhotoKeys();
+  document.getElementById('recapBox').innerHTML = `
+    <div class="recap-grid">
+      <div class="pp-stat"><b>${r.done}/${r.total}</b><span>stops done</span></div>
+      <div class="pp-stat"><b>${r.km.toFixed(1)} km</b><span>between them</span></div>
+      <div class="pp-stat"><b>${r.meals}</b><span>meals logged</span></div>
+      <div class="pp-stat"><b>${fmtYen(r.spent)}</b><span>≈$${Math.round(r.spent/fx).toLocaleString()} spent</span></div>
+      <div class="pp-stat"><b>${r.found}</b><span>hunt finds</span></div>
+      <div class="pp-stat"><b>${keys.length}</b><span>photos</span></div>
+    </div>
+    ${r.topCat ? `<div class="recap-line">Biggest category: <b>${esc(r.topCat[0])}</b> (${fmtYen(r.topCat[1])})</div>` : ''}
+    ${r.best.length ? `<div class="recap-line">Best meals: ${r.best.map(x => `<b>${esc(x.name)}</b> ${'★'.repeat(x.rating)}`).join(' · ')}</div>` : ''}
+    ${keys.length ? `<div class="recap-photos">${keys.slice(0, 12).map(k => `<img data-photo="${esc(k)}" hidden alt="">`).join('')}</div>` : '<div class="recap-line dim">Add photos to stops (📷) and meals to fill this in.</div>'}`;
+  hydratePhotos(document.getElementById('recapBox'));
+}
+async function recapImage(){
+  const r = recapStats();
+  const c = document.createElement('canvas');
+  c.width = 1080; c.height = 1350;
+  const g = c.getContext('2d');
+  const grad = g.createLinearGradient(0, 0, 1080, 1350);
+  grad.addColorStop(0, '#35234a'); grad.addColorStop(0.55, '#1A1B2E'); grad.addColorStop(1, '#16263a');
+  g.fillStyle = grad; g.fillRect(0, 0, 1080, 1350);
+  g.fillStyle = '#2DD4C4'; g.font = '600 30px "JetBrains Mono", monospace';
+  g.fillText('NOV 2 – 11, 2026', 80, 120);
+  g.fillStyle = '#F5F1E8'; g.font = '800 96px "Shippori Mincho", serif';
+  g.fillText('東京 Tokyo', 80, 230);
+  const fx = Number(state.fxRate) || 150;
+  const stats = [
+    [`${r.done}`, 'stops'], [`${r.km.toFixed(0)} km`, 'between them'], [`${r.meals}`, 'meals logged'],
+    [fmtYen(r.spent), `≈$${Math.round(r.spent/fx).toLocaleString()}`]
+  ];
+  stats.forEach(([big, small], i) => {
+    const x = 80 + (i % 2) * 470, y = 340 + Math.floor(i / 2) * 150;
+    g.fillStyle = '#E3B23C'; g.font = '600 64px "JetBrains Mono", monospace'; g.fillText(big, x, y);
+    g.fillStyle = '#8B8A9E'; g.font = '500 30px "Zen Kaku Gothic New", sans-serif'; g.fillText(small, x, y + 44);
+  });
+  if(r.best[0]){
+    g.fillStyle = '#F5F1E8'; g.font = '700 34px "Zen Kaku Gothic New", sans-serif';
+    g.fillText(`Best meal: ${r.best[0].name} ${'★'.repeat(r.best[0].rating)}`.slice(0, 48), 80, 690);
+  }
+  const keys = recapPhotoKeys().slice(0, 6);
+  const imgs = (await Promise.all(keys.map(async k => {
+    const url = await photoUrl(k);
+    return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = url; });
+  }))).filter(Boolean);
+  const cell = 296, gap = 16, top = 740;
+  imgs.forEach((im, i) => {
+    const x = 80 + (i % 3) * (cell + gap), y = top + Math.floor(i / 3) * (cell + gap);
+    const s = Math.min(im.width, im.height);
+    g.drawImage(im, (im.width - s) / 2, (im.height - s) / 2, s, s, x, y, cell, cell);
+  });
+  return new Promise(res => c.toBlob(res, 'image/jpeg', 0.9));
+}
+document.getElementById('recapShareBtn').addEventListener('click', async () => {
+  const r = recapStats();
+  const text = `Tokyo, Nov 2–11 2026: ${r.done} stops, ${r.meals} meals logged${r.best[0] ? `, best: ${r.best[0].name}` : ''}.`;
+  try{
+    const blob = await recapImage();
+    const file = new File([blob], 'tokyo-recap.jpg', { type:'image/jpeg' });
+    if(navigator.canShare && navigator.canShare({ files:[file] })){
+      await navigator.share({ files:[file], text });
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'tokyo-recap.jpg';
+    document.body.appendChild(a); a.click(); a.remove();
+  }catch(e){ /* share sheet dismissed */ }
+});
+
+// ---- Share with / merge from your travel partner ----
+function mergeState(other){
+  const byId = (mine, theirs) => {
+    const ids = new Set(mine.map(x => x.id));
+    (theirs || []).forEach(x => { if(!ids.has(x.id)) mine.push(x); });
+  };
+  byId(state.expenses, other.expenses);
+  byId(state.foodLog, other.foodLog);
+  byId(state.taxFree, other.taxFree);
+  byId(state.hunt, other.hunt);
+  (other.hunt || []).forEach(h => { const m = state.hunt.find(x => x.id === h.id); if(m && h.done){ m.done = true; if(m.paid == null) m.paid = h.paid; } });
+  (other.days || []).forEach((od, i) => {
+    const d = state.days[i];
+    if(!d) return;
+    (od.stops || []).forEach(os => {
+      const m = d.stops.find(s => s.id === os.id || s.name === os.name);
+      if(m){ if(os.done) m.done = true; }
+      else if(os.custom) d.stops.push(os);
+    });
+  });
+  (other.clusters || []).forEach(oc => {
+    const c = state.clusters.find(x => x.name === oc.name);
+    if(!c){ if(oc.custom) state.clusters.push(oc); return; }
+    (oc.spots || []).forEach(os => {
+      const m = c.spots.find(s => s.name === os.name);
+      if(m){ if(os.done) m.done = true; }
+      else if(os.custom) c.spots.push(os);
+    });
+  });
+  (other.decisions || []).forEach(od => { const m = state.decisions.find(d => d.text === od.text); if(m && od.done) m.done = true; });
+  Object.assign(state.bringDone, other.bringDone || {});
+}
+document.getElementById('mergeInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const parsed = JSON.parse(reader.result);
+      if(!parsed || !Array.isArray(parsed.days)) throw new Error('not a backup');
+      mergeState(hydrateState(parsed).state);
+      scheduleSave(); render();
+      document.getElementById('mergeStatus').textContent = `Merged ✓ — expenses, meals, finds and checkmarks from ${file.name}`;
+    }catch(err){
+      document.getElementById('mergeStatus').textContent = "That file isn't a trip backup.";
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+document.getElementById('shareBackupBtn').addEventListener('click', async () => {
+  const json = JSON.stringify(state, null, 2);
+  const file = new File([json], 'tokyo-trip-backup.json', { type:'application/json' });
+  try{
+    if(navigator.canShare && navigator.canShare({ files:[file] })){ await navigator.share({ files:[file], title:'Tokyo trip backup' }); return; }
+  }catch(e){ return; }
+  document.getElementById('exportBtn').click();
+});
+
+function renderExtras(){
+  renderPassport();
+  renderHunt();
+  renderTaxFree();
+  renderPicks();
+  renderBrief();
+  renderRecap();
+}
+setInterval(() => { if(state){ renderBrief(); } }, 60000);
+
 function render(){
   document.getElementById('privateNotes').value = state.privateNotes || '';
   renderDays();
@@ -2456,11 +3561,16 @@ function render(){
   renderBudget();
   updateCountdown();
   populateNearbyDaySelect();
+  renderExtras();
 }
 
+renderShowCards();
+renderTips();
 loadState();
 fetchFxRate(false);
 loadWeather();
+// Photos live in IndexedDB; once their keys load, redraw what shows thumbnails.
+loadPhotoKeys().then(() => { renderDays(); renderPassport(); renderRecap(); });
 
 if('serviceWorker' in navigator){
   window.addEventListener('load', ()=>{
