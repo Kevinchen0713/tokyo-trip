@@ -95,19 +95,23 @@
   .a2hs button:hover{ color: var(--paper); }
   .a2hs[hidden]{ display:none; }
 
-  .noren{ display:flex; gap:3px; margin-bottom:22px; overflow-x:auto; }
-  .noren button{
-    flex:1;
-    background: var(--ink-soft); border: 1px solid var(--line); border-top: none; color: var(--grey);
-    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:700; font-size: 12.5px;
-    padding: 14px 5px 12px; cursor:pointer; border-radius: 0 0 10px 10px; position:relative;
-    transition: color .2s ease, background .2s ease, transform .15s ease; white-space:nowrap;
+  .tabbar{
+    position:fixed; left:0; right:0; bottom:0; z-index:50;
+    display:flex; justify-content:center; gap:4px;
+    background: rgba(26,27,46,0.88); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4);
+    border-top:1px solid var(--line);
+    padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
   }
-  .noren button::before{ content:""; position:absolute; top:-1px; left:0; right:0; height:3px; background: transparent; border-radius: 3px 3px 0 0; transition: background .2s ease; }
-  .noren button.active{ color: var(--paper); background: var(--ink-soft); transform: translateY(2px); }
-  .noren button.active::before{ background: var(--vermilion); }
-  .noren button:hover{ color: var(--paper); }
-  .noren button:focus-visible{ outline: 2px solid var(--teal); outline-offset: 2px; }
+  .tab-btn{
+    flex:1; max-width:110px; background:none; border:0; color: var(--grey); cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px 0 4px; border-radius:12px;
+    font-family:'Zen Kaku Gothic New', sans-serif; font-weight:700; font-size:10.5px; letter-spacing:.02em;
+    transition: color .2s ease, background .2s ease;
+  }
+  .tab-btn svg{ width:22px; height:22px; stroke: currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; transition: transform .2s ease; }
+  .tab-btn.active{ color: var(--paper); }
+  .tab-btn.active svg{ color: var(--vermilion); transform: translateY(-1px); }
+  .tab-btn:focus-visible{ outline: 2px solid var(--teal); outline-offset: 2px; }
 
   .panel{ display:none; animation: fade .35s ease; }
   .panel.active{ display:block; }
@@ -118,27 +122,40 @@
   h2.section-title .jp{ color: var(--vermilion); font-size:15px; }
   .section-note{ color: var(--grey); font-size:13px; margin: 0 0 18px; }
 
-  .day-card{ background: var(--ink-soft); border: 1px solid var(--line); border-radius: 14px; margin-bottom: 12px; overflow:hidden; }
-  .day-head{ display:flex; align-items:center; justify-content:space-between; padding: 14px 18px; cursor:pointer; }
-  .day-head-left{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-  .day-badge{ font-family:'JetBrains Mono', monospace; font-size:12px; font-weight:600; background: rgba(232,84,62,0.15); color: var(--vermilion); padding: 4px 9px; border-radius: 20px; white-space:nowrap; }
-  .day-title{ font-weight:700; font-size:14.5px; }
-  .day-tag{ color: var(--teal); font-size:12px; }
-  .day-count{ color: var(--grey); font-size:12px; font-family:'JetBrains Mono', monospace; }
-  .chevron{ color: var(--grey); transition: transform .2s ease; font-size:14px; }
-  .day-card.open .chevron{ transform: rotate(90deg); }
-  .day-body{ display:none; padding: 0 18px 16px; }
+  .day-card{ background: var(--ink-soft); border: 1px solid var(--line); border-radius: 18px; margin-bottom: 10px; overflow:hidden; transition: border-color .2s ease; }
+  .day-head{ display:flex; align-items:center; gap:14px; padding: 12px 14px 12px 12px; cursor:pointer; -webkit-tap-highlight-color: transparent; }
+  .day-tile{ width:48px; flex-shrink:0; text-align:center; border-radius:12px; background: var(--ink); border:1px solid var(--line); padding:5px 0 6px; line-height:1; }
+  .day-tile .dt-m{ font-family:'JetBrains Mono', monospace; font-size:9.5px; letter-spacing:.12em; color: var(--vermilion); text-transform:uppercase; }
+  .day-tile .dt-d{ font-family:'Shippori Mincho', serif; font-weight:800; font-size:22px; margin-top:3px; }
+  .day-tile .dt-w{ font-family:'JetBrains Mono', monospace; font-size:9.5px; color: var(--grey); margin-top:3px; text-transform:uppercase; letter-spacing:.08em; }
+  .day-card.today .day-tile{ background: var(--vermilion); border-color: var(--vermilion); }
+  .day-card.today .day-tile .dt-m, .day-card.today .day-tile .dt-w{ color: rgba(245,241,232,0.85); }
+  .day-info{ flex:1; min-width:0; }
+  .day-meta{ display:flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:11px; color: var(--grey); }
+  .day-title{ font-weight:700; font-size:15px; margin-top:3px; line-height:1.3; }
+  .day-side{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0; }
+  .chevron{ width:8px; height:8px; border-right:2px solid var(--grey); border-bottom:2px solid var(--grey); transform: rotate(45deg); transition: transform .2s ease; margin: 0 4px 4px; }
+  .day-card.open .chevron{ transform: rotate(225deg); margin: 4px 4px 0; }
+  .day-body{ display:none; padding: 2px 16px 16px; }
   .day-card.open .day-body{ display:block; }
+  .day-actions{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding: 10px 0 6px; border-top:1px solid var(--line); }
+  .day-count{ color: var(--grey); font-size:11.5px; font-family:'JetBrains Mono', monospace; }
 
-  .stop{ display:flex; gap:12px; align-items:flex-start; padding: 10px 0; border-top: 1px solid var(--line); }
-  .stop:first-child{ border-top:none; }
-  .stop-time{ font-family:'JetBrains Mono', monospace; font-size:11.5px; color: var(--gold); min-width: 78px; padding-top:2px; }
-  .stop-main{ flex:1; }
-  .stop-name{ font-weight:700; font-size:14px; }
-  .stop-note{ color: var(--grey); font-size:12.5px; margin-top:2px; }
-  .stop-link{ display:inline-block; font-size:11px; color:var(--teal); text-decoration:none; margin-top:3px; }
+  .timeline{ position:relative; padding: 4px 0; }
+  .timeline::before{ content:""; position:absolute; left:11px; top:18px; bottom:18px; width:2px; background: var(--line); border-radius:2px; }
+  .stop{ position:relative; display:flex; gap:14px; align-items:flex-start; padding: 9px 0; }
+  .stop-main{ flex:1; min-width:0; }
+  .stop-time{ font-family:'JetBrains Mono', monospace; font-size:11.5px; color: var(--gold); display:flex; align-items:center; gap:8px; }
+  .stop-name{ font-weight:700; font-size:14.5px; margin-top:1px; line-height:1.35; }
+  .stop-note{ color: var(--grey); font-size:12.5px; margin-top:2px; line-height:1.45; }
+  .stop-link{ display:inline-flex; align-items:center; gap:4px; font-size:11.5px; font-weight:700; color:var(--teal); text-decoration:none; margin-top:5px; }
   .stop-link:hover{ text-decoration:underline; }
-  .stop-del{ background:none; border:none; color: var(--grey); cursor:pointer; font-size:16px; padding: 2px 6px; opacity:.6; }
+  .stop.done .stop-name{ text-decoration: line-through; text-decoration-color: rgba(245,241,232,0.35); color: var(--grey); }
+  .stop.done .stop-time{ color: var(--grey); }
+  .stop.is-here .stop-main{ background: rgba(45,212,196,0.08); border:1px solid rgba(45,212,196,0.25); border-radius:12px; padding:8px 10px; margin:-8px 0 -8px -2px; }
+  .stop.is-here input.dot{ border-color: var(--teal); box-shadow: 0 0 0 4px rgba(45,212,196,0.18); }
+  .here{ font-size:9.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color: var(--ink); background: var(--teal); padding:2px 7px; border-radius:20px; }
+  .stop-del{ background:none; border:none; color: var(--grey); cursor:pointer; font-size:16px; padding: 2px 4px; opacity:.35; }
   .stop-del:hover{ opacity:1; color: var(--vermilion); }
 
   .add-row{ display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
@@ -199,7 +216,7 @@
   @media (prefers-reduced-motion: reduce){ .spinner{ animation:none; } }
 
   /* Day detail / map */
-  .day-map-btn{ background: var(--ink); border:1px solid var(--line); color:var(--teal); font-size:11.5px; font-weight:700; padding:5px 10px; border-radius:20px; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .day-map-btn{ background: var(--ink); border:1px solid var(--line); color:var(--teal); font-size:12px; font-weight:700; padding:7px 12px; border-radius:20px; cursor:pointer; font-family:inherit; white-space:nowrap; }
   .day-map-btn:hover{ border-color: var(--teal); }
   .day-detail-overlay{ position:fixed; inset:0; background: var(--ink); z-index:1000; overflow-y:auto; display:none; -webkit-overflow-scrolling:touch; }
   .day-detail-overlay.open{ display:block; }
@@ -310,33 +327,102 @@
   .private-notes{ width:100%; background: var(--ink-soft); border:1px solid var(--line); color:var(--paper); border-radius:14px; padding:14px 16px; font-family:'JetBrains Mono', monospace; font-size:13px; line-height:1.5; margin-bottom:22px; resize:vertical; }
 
   /* Stop check-off + today */
-  .stop input[type=checkbox]{ margin-top:4px; accent-color: var(--vermilion); flex-shrink:0; }
-  .stop.done .stop-name{ text-decoration: line-through; color: var(--grey); }
-  .day-card.today{ border-color: var(--vermilion); }
+  .day-card.today{ border-color: rgba(232,84,62,0.6); }
   .today-pill{ font-family:'JetBrains Mono', monospace; font-size:10.5px; font-weight:700; color: var(--ink); background: var(--gold); padding:2px 8px; border-radius:20px; }
-  .stop-time .here{ display:block; color: var(--teal); }
   .food-opts{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:12px 0 2px; border-top:1px solid var(--line); }
   .food-lbl{ font-size:12px; color: var(--grey); margin-right:2px; }
   .food-chip{ font-size:12px; color: var(--paper); background: var(--ink); border:1px solid var(--line); padding:5px 10px; border-radius:20px; text-decoration:none; }
   .food-chip:hover{ border-color: var(--gold); }
   .day-wx{ font-family:'JetBrains Mono', monospace; font-size:11.5px; color: var(--grey); white-space:nowrap; }
-  @media(max-width:480px){ .day-count{ display:none; } }
 
   .empty{ color:var(--grey); font-size:13px; padding: 14px 0; font-style:italic; }
   ::placeholder{ color: rgba(245,241,232,0.35); }
+
+  /* ---- Polish ---- */
+  body:not([data-tab="itinerary"]) .hero, body:not([data-tab="itinerary"]) .a2hs{ display:none; }
+  body:not([data-tab="itinerary"]) .app{ padding-top: 28px; }
+  h2.section-title{ flex-wrap:wrap; row-gap:2px; }
+  [hidden]{ display:none !important; }
+  .app{ padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  body{ padding-bottom: 0; }
+  .hero{ padding: 22px 22px 20px; border-radius: 22px; }
+  .hero h1{ font-size: clamp(30px, 8vw, 44px); margin-bottom: 4px; }
+  .hero .sub{ margin-bottom: 16px; }
+  .hero .stats{ gap: 0; }
+  .stat{ flex:1; padding-right: 12px; }
+  .stat + .stat{ padding-left: 14px; border-left: 1px solid var(--line); }
+  .stat .num{ font-size: 24px; }
+  .sync-status{ margin-top: 14px; }
+  h2.section-title{ font-size: 22px; margin-top: 4px; }
+
+  /* Checkboxes: round, with a drawn tick */
+  input[type=checkbox]{
+    -webkit-appearance:none; appearance:none; flex-shrink:0; cursor:pointer;
+    width:22px; height:22px; margin:0; border-radius:7px;
+    border:2px solid rgba(245,241,232,0.28); background: var(--ink);
+    display:inline-grid; place-content:center; transition: background .15s ease, border-color .15s ease;
+  }
+  input[type=checkbox]::after{
+    content:""; width:6px; height:11px; border: solid var(--paper); border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg) translate(-1px,-1px) scale(0); transition: transform .15s ease;
+  }
+  input[type=checkbox]:checked{ background: var(--vermilion); border-color: var(--vermilion); }
+  input[type=checkbox]:checked::after{ transform: rotate(45deg) translate(-1px,-1px) scale(1); }
+  input[type=checkbox]:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+  input.dot{ width:24px; height:24px; border-radius:50%; background: var(--ink-soft); position:relative; z-index:1; margin-top:1px; }
+  .spot input[type=checkbox], .decision-row input[type=checkbox]{ margin-top:1px; }
+
+  /* Inputs */
+  input[type=text], input[type=number], input[type=date], select, textarea{ transition: border-color .15s ease, box-shadow .15s ease; }
+  input[type=text]:focus, input[type=number]:focus, input[type=date]:focus, select:focus, textarea:focus{ outline:none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(45,212,196,0.15); }
+  .btn{ border-radius: 10px; }
+  a.btn{ display:inline-flex; align-items:center; text-decoration:none; }
+
+  /* Add-stop toggle */
+  .add-toggle{ width:100%; margin-top:10px; background:none; border:1px dashed var(--line); color: var(--grey); border-radius:12px; padding:10px; font-family:inherit; font-size:12.5px; font-weight:700; cursor:pointer; }
+  .add-toggle:hover{ color: var(--paper); border-color: rgba(245,241,232,0.3); }
+
+  /* Food options */
+  .food-opts{ margin-top:8px; padding-top:12px; }
+  .food-lbl{ width:100%; font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color: var(--gold); margin-bottom:2px; }
+
+  /* Now card */
+  .now-card{
+    position:relative; overflow:hidden; border-radius:20px; padding:18px 18px 16px; margin-bottom:18px;
+    background: linear-gradient(135deg, rgba(232,84,62,0.22), rgba(42,44,69,0.9) 55%), var(--ink-soft);
+    border:1px solid rgba(232,84,62,0.35);
+  }
+  .now-eyebrow{ font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color: var(--gold); }
+  .now-label{ display:inline-block; margin-top:12px; font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color: var(--ink); background: var(--teal); padding:3px 8px; border-radius:20px; }
+  .now-time{ font-family:'JetBrains Mono', monospace; font-size:13px; color: var(--gold); margin-top:10px; }
+  .now-name{ font-family:'Shippori Mincho', serif; font-weight:800; font-size:24px; line-height:1.2; margin-top:2px; }
+  .now-note{ color: rgba(245,241,232,0.7); font-size:13px; margin-top:4px; }
+  .now-actions{ display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+  .now-after{ margin-top:14px; padding-top:12px; border-top:1px solid var(--line); color: var(--grey); font-size:12.5px; }
+  .now-after b{ font-family:'JetBrains Mono', monospace; color: var(--paper); font-weight:600; }
+
+  /* Weather strip */
+  .weather-chip{ border-radius:14px; }
+  .weather-chip.is-today{ border-color: var(--vermilion); background: rgba(232,84,62,0.12); }
+
+  /* Info cards */
+  .booked-card{ border-radius:18px; position:relative; overflow:hidden; }
+  .booked-card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background: var(--teal); opacity:.7; }
+  .cluster, .nearby-card, .budget-top, .expense-add, .decision-list, .backup-card{ border-radius:18px; }
 </style>
+
 </head>
-<body>
+<body data-tab="itinerary">
 <div class="app">
 
   <div class="hero">
-    <p class="eyebrow">Nov 2 — Nov 11, 2026 · Cathay Pacific · Hotel Gracery Shinjuku</p>
+    <p class="eyebrow">Nov 2 – 11, 2026 · Shinjuku base</p>
     <h1>東京 Tokyo Trip</h1>
     <p class="sub">Food crawls · Anime & Pokémon shopping · teamLab · DisneySea</p>
     <div class="stats">
       <div class="stat"><div class="num" id="countdownNum">—</div><div class="lbl">Days to go</div></div>
       <div class="stat"><div class="num" id="tripLenNum">9</div><div class="lbl">Nights</div></div>
-      <div class="stat"><div class="num" id="spentNum">¥0</div><div class="lbl">Logged so far</div></div>
+      <div class="stat"><div class="num" id="spentNum">¥0</div><div class="lbl">Spent</div></div>
     </div>
     <div class="sync-status" id="syncStatus"><span class="dot"></span><span class="txt">Saved on this device</span></div>
   </div>
@@ -346,18 +432,11 @@
     <button id="a2hsClose" aria-label="Dismiss">×</button>
   </div>
 
-  <div class="noren">
-    <button class="tab-btn active" data-tab="itinerary">Itinerary</button>
-    <button class="tab-btn" data-tab="food">Food Crawl</button>
-    <button class="tab-btn" data-tab="nearby">Nearby</button>
-    <button class="tab-btn" data-tab="budget">Budget</button>
-    <button class="tab-btn" data-tab="info">Info</button>
-  </div>
-
   <!-- ITINERARY -->
   <div class="panel active" id="panel-itinerary">
     <h2 class="section-title">Day by day <span class="jp">日程</span></h2>
-    <p class="section-note">Tap a day to expand. Add stops with a time and note.</p>
+    <p class="section-note">Tap a day to open it. Tap a dot to check a stop off.</p>
+    <div class="now-card" id="nowCard" hidden></div>
     <div class="weather-strip" id="weatherStrip"></div>
     <p class="weather-note" id="weatherNote">Loading weather…</p>
     <div id="dayList"></div>
@@ -365,7 +444,7 @@
 
   <!-- FOOD CRAWL -->
   <div class="panel" id="panel-food">
-    <h2 class="section-title">Food & shopping clusters <span class="jp">食べ歩き</span></h2>
+    <h2 class="section-title">Food &amp; shopping <span class="jp">食べ歩き</span></h2>
     <p class="section-note">Grouped by neighborhood so you can crawl on foot without zigzagging across the city.</p>
     <div class="cluster-grid" id="clusterGrid"></div>
     <div class="new-cluster-row">
@@ -565,6 +644,14 @@
   </div>
 
 </div>
+
+<nav class="tabbar" aria-label="Sections">
+  <button class="tab-btn active" data-tab="itinerary"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Plan</span></button>
+  <button class="tab-btn" data-tab="food"><svg viewBox="0 0 24 24"><path d="M3.5 11.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M9 8.5c0-1.5 1-1.5 1-3M13 8.5c0-1.5 1-1.5 1-3M17.5 4 12 11.5"/></svg><span>Food</span></button>
+  <button class="tab-btn" data-tab="nearby"><svg viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0C18.5 15.4 12 21 12 21Z"/><circle cx="12" cy="10" r="2.4"/></svg><span>Nearby</span></button>
+  <button class="tab-btn" data-tab="budget"><svg viewBox="0 0 24 24"><path d="m6.5 4 5.5 8 5.5-8M12 12v8M7.5 13h9M7.5 16.5h9"/></svg><span>Budget</span></button>
+  <button class="tab-btn" data-tab="info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.6v.2"/></svg><span>Info</span></button>
+</nav>
 
 <div class="day-detail-overlay" id="dayDetailOverlay">
   <div class="dd-header">
@@ -955,10 +1042,6 @@ function loadState(){
   const todayIdx = todayTripIndex();
   if(todayIdx >= 0 && state.days[todayIdx]) state.days[todayIdx].open = true;
   render();
-  if(todayIdx >= 0){
-    const card = document.querySelectorAll('#dayList .day-card')[todayIdx];
-    if(card && document.getElementById('panel-itinerary').classList.contains('active')) card.scrollIntoView({ block:'start' });
-  }
 }
 
 function setSyncStatus(mode, label){
@@ -983,7 +1066,8 @@ function scheduleSave(){
 // ---- A2HS tip ----
 (function(){
   const tip = document.getElementById('a2hsTip');
-  if(localStorage.getItem('tokyo-hide-a2hs') === '1'){ tip.hidden = true; return; }
+  const installed = navigator.standalone || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+  if(installed || localStorage.getItem('tokyo-hide-a2hs') === '1'){ tip.hidden = true; return; }
   document.getElementById('a2hsClose').addEventListener('click', ()=>{
     tip.hidden = true;
     try{ localStorage.setItem('tokyo-hide-a2hs', '1'); }catch(e){}
@@ -1035,10 +1119,12 @@ function showTab(name){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('panel-'+name).classList.add('active');
+  document.body.dataset.tab = name;
 }
 document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     showTab(btn.dataset.tab);
+    window.scrollTo(0, 0);
     try{ localStorage.setItem(TAB_KEY, btn.dataset.tab); }catch(e){}
   });
 });
@@ -1107,27 +1193,31 @@ function renderDays(){
   state.days.forEach((day, dayIdx)=>{
     const isToday = dayIdx === todayIdx;
     const here = isToday ? currentStop(day) : null;
+    const dp = dayParts(day.date);
     const card = document.createElement('div');
     card.className = 'day-card' + (day.open ? ' open' : '') + (isToday ? ' today' : '');
     card.innerHTML = `
       <div class="day-head">
-        <div class="day-head-left">
-          <span class="day-badge">${esc(day.label)}</span>
-          <span class="day-title">${esc(day.date)}</span>
-          ${isToday ? '<span class="today-pill">TODAY</span>' : ''}
-          ${day.tag ? `<span class="day-tag">${esc(day.tag)}</span>` : ''}
+        <div class="day-tile">${dp ? `<div class="dt-m">${esc(dp.m)}</div><div class="dt-d">${esc(dp.d)}</div><div class="dt-w">${esc(dp.w)}</div>` : `<div class="dt-d">${dayIdx+1}</div>`}</div>
+        <div class="day-info">
+          <div class="day-meta">${esc(day.label)}${isToday ? '<span class="here">Today</span>' : ''}</div>
+          <div class="day-title">${esc(day.tag || day.date)}</div>
         </div>
-        <div style="display:flex; align-items:center; gap:10px;">
+        <div class="day-side">
+          <span class="chevron"></span>
           <span class="day-wx" data-day-idx="${dayIdx}">${dayWeatherText(dayIdx)}</span>
-          <span class="day-count">${day.stops.length} stop${day.stops.length!==1?'s':''}</span>
-          <button class="day-map-btn map-btn" type="button">🗺 Map</button>
-          <span class="chevron">▶</span>
         </div>
       </div>
       <div class="day-body">
+        <div class="day-actions">
+          <span class="day-count">${day.stops.length} stop${day.stops.length!==1?'s':''}</span>
+          <button class="day-map-btn map-btn" type="button">Map &amp; route →</button>
+        </div>
+        <div class="stops-wrap timeline"></div>
         <div class="stops-wrap"></div>
         ${day.food && day.food.length ? `<div class="food-opts"><span class="food-lbl">🍜 Food options</span>${day.food.map(f => `<a class="food-chip" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(f.replace(/\s*\([^)]*\d[^)]*\)$/, '') + ' ' + (day.foodArea || 'Tokyo'))}">${esc(f)}</a>`).join('')}</div>` : ''}
-        <div class="add-row">
+        <button class="add-toggle" type="button">+ Add a stop</button>
+        <div class="add-row" hidden>
           <input type="text" class="time" placeholder="Time">
           <input type="text" class="name" placeholder="Stop name">
           <input type="text" class="note" placeholder="Note (optional)">
@@ -1141,12 +1231,13 @@ function renderDays(){
     } else {
       day.stops.forEach(stop=>{
         const row = document.createElement('div');
-        row.className = 'stop' + (stop.done ? ' done' : '');
-        const hereLabel = here && here.id === stop.id ? `<span class="here">← ${here.label}</span>` : '';
+        const isHere = here && here.id === stop.id;
+        row.className = 'stop' + (stop.done ? ' done' : '') + (isHere ? ' is-here' : '');
+        const hereLabel = isHere ? `<span class="here">${here.label}</span>` : '';
         row.innerHTML = `
-          <input type="checkbox" ${stop.done?'checked':''} aria-label="Done">
-          <div class="stop-time">${esc(stop.time)}${hereLabel}</div>
+          <input type="checkbox" class="dot" ${stop.done?'checked':''} aria-label="Done">
           <div class="stop-main">
+            ${stop.time || hereLabel ? `<div class="stop-time">${esc(stop.time)}${hereLabel}</div>` : ''}
             <div class="stop-name">${esc(stop.name)}</div>
             ${stop.note ? `<div class="stop-note">${esc(stop.note)}</div>` : ''}
             ${stop.link ? `<a class="stop-link" href="${esc(stop.link)}" target="_blank" rel="noopener">📍 Google Maps</a>` : ''}
@@ -1195,10 +1286,61 @@ function renderDays(){
       });
     });
     card.querySelector('.add-row').addEventListener('click', e=>e.stopPropagation());
+    card.querySelector('.add-toggle').addEventListener('click', (e)=>{
+      const row = card.querySelector('.add-row');
+      row.hidden = false;
+      e.currentTarget.hidden = true;
+      row.querySelector('.name').focus();
+    });
 
     list.appendChild(card);
   });
+  renderNowCard();
 }
+
+// "Nov 4 (Wed)" -> { m:'Nov', d:'4', w:'Wed' } for the day tile.
+function dayParts(date){
+  const m = /^(\w+)\s+(\d+)\s*\((\w+)\)/.exec(date || '');
+  return m ? { m: m[1], d: m[2], w: m[3] } : null;
+}
+
+// Hero card on the Plan tab during the trip: what's on now / next, with
+// one-tap directions.
+function renderNowCard(){
+  const el = document.getElementById('nowCard');
+  const idx = todayTripIndex();
+  const day = idx >= 0 ? state.days[idx] : null;
+  if(!day){ el.hidden = true; return; }
+  const here = currentStop(day);
+  const timed = day.stops.filter(s => !s.done && parseStopMinutes(s.time) != null)
+    .sort((a, b) => parseStopMinutes(a.time) - parseStopMinutes(b.time));
+  const cur = here ? day.stops.find(s => s.id === here.id) : null;
+  const after = cur ? timed[timed.indexOf(cur) + 1] : null;
+  const directions = s => s.lat != null
+    ? `https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=transit`
+    : (s.link || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.name + ' Tokyo')}`);
+  el.hidden = false;
+  el.innerHTML = `
+    <div class="now-eyebrow">Today · ${esc(day.label)} · ${esc(day.tag || '')}</div>
+    ${cur ? `
+      <span class="now-label">${here.label === 'now' ? 'Now' : 'Up next'}</span>
+      <div class="now-time">${esc(cur.time)}</div>
+      <div class="now-name">${esc(cur.name)}</div>
+      ${cur.note ? `<div class="now-note">${esc(cur.note)}</div>` : ''}
+      <div class="now-actions">
+        <a class="btn small" href="${esc(directions(cur))}" target="_blank" rel="noopener">Directions</a>
+        <button class="btn small ghost now-map" type="button">Day map</button>
+      </div>
+      ${after ? `<div class="now-after">Then <b>${esc(after.time)}</b> · ${esc(after.name)}</div>` : ''}
+    ` : `
+      <div class="now-name" style="margin-top:10px;">All done for today</div>
+      <div class="now-note">Everything timed is checked off. Nearby can find food around you.</div>
+    `}
+  `;
+  const mapBtn = el.querySelector('.now-map');
+  if(mapBtn) mapBtn.addEventListener('click', () => openDayDetail(day.id));
+}
+setInterval(() => { if(state) renderNowCard(); }, 60000);
 
 // ---- Render: Food Crawl ----
 function renderClusters(){
@@ -1745,7 +1887,7 @@ function renderWeatherStrip(days){
   strip.innerHTML = '';
   days.forEach(w=>{
     const chip = document.createElement('div');
-    chip.className = 'weather-chip';
+    chip.className = 'weather-chip' + (tokyoDateStr(new Date()) === isoDate(w.date) ? ' is-today' : '');
     const label = w.date.toLocaleDateString('en-US', {month:'short', day:'numeric'});
     const emoji = w.mode === 'forecast' ? (WMO_EMOJI[w.code] || '🌡️') : (w.rainYears >= w.totalYears/2 ? '🌦️' : '🌤️');
     weatherByDate[isoDate(w.date)] = { emoji, hi: w.hi, lo: w.lo };

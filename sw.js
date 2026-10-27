@@ -1,4 +1,4 @@
-const CACHE = 'tokyo-trip-v3';
+const CACHE = 'tokyo-trip-v4';
 // Third-party assets the app needs to work underground / offline: the
 // Leaflet map library, Google Fonts, and OSM map tiles you've already
 // viewed. Live API calls (weather, FX, Overpass, routing) still go
